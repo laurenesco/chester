@@ -12,12 +12,12 @@ SOURCES += \
     chessboard.cpp \
     main.cpp \
     mainwindow.cpp \
-    sprites.cpp
+    sprite.cpp
 
 HEADERS += \
     chessboard.h \
     mainwindow.h \
-    sprites.h
+    sprite.h
 
 FORMS += \
     mainwindow.ui

@@ -4,36 +4,37 @@
 ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
     chessScene = new QGraphicsScene(this);
     chessScene->setBackgroundBrush(Qt::transparent);
+
     chessView = new QGraphicsView(chessScene, this);
     chessView->setBackgroundBrush(Qt::transparent);
     chessView->setFrameStyle(QFrame::NoFrame);
     chessView->setFixedSize(700, 700);
+    chessView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    chessView->fitInView(chessScene->sceneRect(), Qt::KeepAspectRatio);
+
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(chessView);
     setLayout(layout);
-
-    chessView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    chessView->fitInView(chessScene->sceneRect(), Qt::KeepAspectRatio);
 
     createChessBoard();
     loadStartingPosition();
 }
 
 void ChessBoard::createChessBoard() {
-    // Create the visual board
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
             QGraphicsRectItem* square = new QGraphicsRectItem(file * tileSize, rank * tileSize, tileSize, tileSize);
             square->setPen(Qt::NoPen);
             chessScene->addItem(square);
 
+            // Set the alternating square colors
             if ((rank + file) % 2 == 0) {
                 square->setBrush(QColor(110, 110, 102));
             } else {
                 square->setBrush(QColor(235, 231, 221));
             }
 
-            chessSquares[rank][file] = square; // Store the square items in the array
+            chessSquares[rank][file] = square;
         }
     }
 }
