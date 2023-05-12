@@ -1,0 +1,12 @@
+pawn
+<a href="https://www.flaticon.com/free-icons/chess-piece" title="chess piece icons">Chess piece icons created by riajulislam - Flaticon</a>
+knight
+<a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by Freepik - Flaticon</a>
+bishop
+<a href="https://www.flaticon.com/free-icons/chess-piece" title="chess piece icons">Chess piece icons created by Freepik - Flaticon</a>
+king
+<a href="https://www.flaticon.com/free-icons/chess-piece" title="chess piece icons">Chess piece icons created by Freepik - Flaticon</a>
+queen
+<a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by Freepik - Flaticon</a>
+rook
+<a href="https://www.flaticon.com/free-icons/rook" title="rook icons">Rook icons created by riajulislam - Flaticon</a>
