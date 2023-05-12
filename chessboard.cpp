@@ -44,15 +44,7 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 8; j++) {
             int rank = (i == 0) ? 1 : 6;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][j];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-10, tileSize-10, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
+            addSpriteToScene("pawn", 5, 5, 10, 10, rank, j);
         }
     }
 
@@ -62,15 +54,7 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 0 : 7;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][file];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-10, tileSize-10, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
+            addSpriteToScene("rook", 5, 5, 10, 10, rank, file);
         }
     }
 
@@ -80,15 +64,7 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 1 : 6;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][file];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//knight1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-15, tileSize-15, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
+            addSpriteToScene("knight", 5, 5, 15, 15, rank, file);
         }
     }
 
@@ -98,15 +74,7 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 2 : 5;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][file];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-10, tileSize-10, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
+            addSpriteToScene("bishop", 5, 5, 10, 10, rank, file);
         }
     }
 
@@ -116,16 +84,8 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 4 : 4;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][file];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-10, tileSize-10, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
-        }
+            addSpriteToScene("king", 5, 5, 10, 10, rank, file);
+          }
     }
 
     // Place queens in opening position
@@ -134,15 +94,21 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 3 : 3;
 
-            // Create and scale the sprite
-            QGraphicsRectItem* squares = chessSquares[rank][file];
-            pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//queen1.png");
-            QPixmap scaledPiece = pieceSprite.scaled(tileSize-10, tileSize-10, Qt::KeepAspectRatio);
-            QGraphicsPixmapItem* sprite = new QGraphicsPixmapItem(scaledPiece);
-
-            // Position and add to scene!
-            sprite->setPos(squares->rect().topLeft() + QPointF(5, 5));
-            chessScene->addItem(sprite);
+            addSpriteToScene("queen", 5, 5, 10, 10, rank, file);
         }
     }
+}
+
+void ChessBoard::addSpriteToScene(QString sprite, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file)
+{
+    // Create and scale the sprite
+    QString spriteName = sprite + "1.png";
+    QGraphicsRectItem *squares = chessSquares[rank][file];
+    pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//" + spriteName);
+    QPixmap scaledPiece = pieceSprite.scaled(tileSize-shrinkX, tileSize-shrinkY, Qt::KeepAspectRatio);
+    QGraphicsPixmapItem *finalSprite = new QGraphicsPixmapItem(scaledPiece);
+
+    // Position and add to scene!
+    finalSprite->setPos(squares->rect().topLeft() + QPointF(offsetX, offsetY));
+    chessScene->addItem(finalSprite);
 }

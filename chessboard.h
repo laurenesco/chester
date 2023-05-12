@@ -24,6 +24,7 @@ private:
 
     void createChessBoard();
     void loadStartingPosition();
+    void addSpriteToScene(QString sprite, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file);
 };
 
 #endif // CHESSBOARD_H
