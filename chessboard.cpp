@@ -23,16 +23,9 @@ ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
 void ChessBoard::createChessBoard() {
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
-            QGraphicsRectItem* square = new QGraphicsRectItem(file * tileSize, rank * tileSize, tileSize, tileSize);
+            ChessSquare *square = new ChessSquare(file * tileSize, rank * tileSize, tileSize, tileSize);
             square->setPen(Qt::NoPen);
             chessScene->addItem(square);
-
-            // Set the alternating square colors
-            if ((rank + file) % 2 == 0) {
-                square->setBrush(QColor(110, 110, 102));
-            } else {
-                square->setBrush(QColor(235, 231, 221));
-            }
 
             chessSquares[rank][file] = square;
         }
@@ -113,3 +106,4 @@ void ChessBoard::addSpriteToScene(QString sprite, int offsetX, int offsetY, int 
     finalSprite->setPos(squares->rect().topLeft() + QPointF(offsetX, offsetY));
     chessScene->addItem(finalSprite);
 }
+

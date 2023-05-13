@@ -2,10 +2,12 @@
 #define CHESSBOARD_H
 
 #include "sprite.h"
+#include "chesssquare.h"
 #include <QWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QGraphicsItem>
 #include <QPixmap>
 
 // Functions in the ChessBoard class
@@ -32,6 +34,7 @@ private:
     void createChessBoard();
     void loadStartingPosition();
     void addSpriteToScene(QString sprite, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file);
+    void onSquareClicked(QGraphicsSceneMouseEvent* event);
 };
 
 #endif // CHESSBOARD_H
