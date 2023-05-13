@@ -16,7 +16,11 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+    int rank;
+    int file;
+
     void highlightSquareRed(ChessSquare *square);
+    void setBaseColor(int rank, int file);
 };
 
 #endif // CHESSSQUARE_H
