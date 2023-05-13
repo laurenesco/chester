@@ -10,14 +10,16 @@ CONFIG += c++17
 
 SOURCES += \
     chessboard.cpp \
+    chesssquare.cpp \
     main.cpp \
     mainwindow.cpp \
-    sprites.cpp
+    sprite.cpp
 
 HEADERS += \
     chessboard.h \
+    chesssquare.h \
     mainwindow.h \
-    sprites.h
+    sprite.h
 
 FORMS += \
     mainwindow.ui
