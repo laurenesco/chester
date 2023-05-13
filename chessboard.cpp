@@ -37,8 +37,14 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 8; j++) {
             int rank = (i == 0) ? 1 : 6;
+            bool isDark = false;
 
-            addSpriteToScene("pawn", 5, 5, 10, 10, rank, j);
+            ChessPiece *pawn;
+
+            if (i == 0) { pawn = &lightPawn[j]; }
+            else { pawn = &darkPawn[j]; isDark = true; }
+
+            addPieceToScene(pawn, 5, 5, 10, 10, rank, j, isDark);
         }
     }
 
@@ -47,8 +53,14 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 0 : 7;
+            bool isDark = false;
 
-            addSpriteToScene("rook", 5, 5, 10, 10, rank, file);
+            ChessPiece *rook;
+
+            if (i == 0) { rook = &lightRook; }
+            else { rook = &darkRook; isDark = true; }
+
+            addPieceToScene(rook, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
@@ -57,8 +69,14 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 1 : 6;
+            bool isDark = false;
 
-            addSpriteToScene("knight", 5, 5, 15, 15, rank, file);
+            ChessPiece *knight;
+
+            if (i == 0) { knight = &lightKnight; }
+            else { knight = &darkKnight; isDark = true; }
+
+            addPieceToScene(knight, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
@@ -67,8 +85,14 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 2 : 5;
+            bool isDark = false;
 
-            addSpriteToScene("bishop", 5, 5, 10, 10, rank, file);
+            ChessPiece *bishop;
+
+            if (i == 0) { bishop = &lightBishop; }
+            else { bishop = &darkBishop; isDark = true; }
+
+            addPieceToScene(bishop, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
@@ -77,8 +101,14 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 4 : 4;
+            bool isDark = false;
 
-            addSpriteToScene("king", 5, 5, 10, 10, rank, file);
+            ChessPiece *king;
+
+            if (i == 0) { king = &lightKing; }
+            else { king = &darkKing; isDark = true; }
+
+            addPieceToScene(king, 5, 5, 10, 10, rank, file, isDark);
           }
     }
 
@@ -87,18 +117,25 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 3 : 3;
+            bool isDark = false;
 
-            addSpriteToScene("queen", 5, 5, 10, 10, rank, file);
-        }
+            ChessPiece *queen;
+
+            if (i == 0) { queen = &lightQueen; }
+            else { queen = &darkQueen; isDark = true; }
+
+            addPieceToScene(queen, 5, 5, 10, 10, rank, file, isDark);
+          }
     }
 }
 
-void ChessBoard::addSpriteToScene(QString sprite, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file)
+void ChessBoard::addPieceToScene(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark)
 {
     // Create and scale the sprite
-    QString spriteName = sprite + "1.png";
+    QPixmap pieceSprite;
+    if (isDark) { pieceSprite = piece->getDarkIcon(); }
+    else { pieceSprite = piece->getLightIcon(); }
     QGraphicsRectItem *squares = chessSquares[rank][file];
-    pieceSprite = QPixmap("C://Users//laesc//OneDrive//Desktop//chester//icons//" + spriteName);
     QPixmap scaledPiece = pieceSprite.scaled(tileSize-shrinkX, tileSize-shrinkY, Qt::KeepAspectRatio);
     QGraphicsPixmapItem *finalSprite = new QGraphicsPixmapItem(scaledPiece);
 
@@ -106,4 +143,3 @@ void ChessBoard::addSpriteToScene(QString sprite, int offsetX, int offsetY, int 
     finalSprite->setPos(squares->rect().topLeft() + QPointF(offsetX, offsetY));
     chessScene->addItem(finalSprite);
 }
-
