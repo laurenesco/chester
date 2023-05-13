@@ -20,7 +20,7 @@ void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::RightButton) {
         highlightSquareRed(this);
     } else if (event->button() == Qt::LeftButton) {
-
+        preMove(this);
     }
     QGraphicsRectItem::mousePressEvent(event);
 }
@@ -31,4 +31,14 @@ void ChessSquare::highlightSquareRed(ChessSquare *square) {
     } else {
         setBaseColor(rank, file);
     }
+}
+
+void ChessSquare::preMove(ChessSquare *square) {
+    square->setBrush(QColor(252, 223, 116));
+}
+
+// Evaluate if a selected square is a valid move for the currently selected piece
+bool ChessSquare::isValidMove(ChessSquare *square, ChessPiece piece)
+{
+    return false;
 }

@@ -5,6 +5,8 @@
 #include <QBrush>
 #include <QGraphicsSceneMouseEvent>
 
+#include "chesspiece.h"
+
 class ChessBoard;
 
 class ChessSquare : public QGraphicsRectItem
@@ -21,6 +23,8 @@ private:
 
     void highlightSquareRed(ChessSquare *square);
     void setBaseColor(int rank, int file);
+    void preMove(ChessSquare *square);
+    bool isValidMove(ChessSquare *square, ChessPiece piece);
 };
 
 #endif // CHESSSQUARE_H
