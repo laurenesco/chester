@@ -18,6 +18,7 @@ SOURCES += \
     chessboard.cpp \
     chesspiece.cpp \
     chesssquare.cpp \
+    logic.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -31,6 +32,7 @@ HEADERS += \
     chessboard.h \
     chesspiece.h \
     chesssquare.h \
+    logic.h \
     mainwindow.h
 
 FORMS += \

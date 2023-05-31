@@ -1,7 +1,6 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "sprite.h"
 #include "PieceClasses//bishop.h"
 #include "PieceClasses//rook.h"
 #include "PieceClasses//pawn.h"
@@ -21,8 +20,7 @@
 //--------------------------------------
 // ChessBoard(QWidget *parent)     - Configures the QGraphicsScene and QGraphicsView where the game takes place
 // void createChessBoard()               - Generates the gridLayout and Labels which act as the board
-// void loadStartingPosition()           - Generates the correct rank and file positions for all the pieces, then calls addSpriteToScene()
-// void addSpriteToScene(...)            - Creates, scales, and adds the sprite to the specified location
+// void loadStartingPosition()           - Generates the correct rank and file positions for all the pieces, then calls addPieceToOpeningSquare()
 
 class ChessBoard : public QWidget {
     Q_OBJECT
@@ -59,7 +57,7 @@ private:
 
     void createChessBoard();
     void loadStartingPosition();
-    void addPieceToScene(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
+    void addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
 };
 

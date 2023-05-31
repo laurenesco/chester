@@ -33,7 +33,7 @@ void ChessBoard::createChessBoard() {
 }
 
 void ChessBoard::loadStartingPosition() {
-    // Place pawns in opening position
+    // Pawns
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 8; j++) {
             int rank = (i == 0) ? 1 : 6;
@@ -44,11 +44,11 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { pawn = &lightPawn[j]; }
             else { pawn = &darkPawn[j]; isDark = true; }
 
-            addPieceToScene(pawn, 5, 5, 10, 10, rank, j, isDark);
+            addPieceToOpeningSquare(pawn, 5, 5, 10, 10, rank, j, isDark);
         }
     }
 
-    // Place rooks in opening position
+    // Rooks
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -60,11 +60,11 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { rook = &lightRook; }
             else { rook = &darkRook; isDark = true; }
 
-            addPieceToScene(rook, 5, 5, 10, 10, rank, file, isDark);
+            addPieceToOpeningSquare(rook, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
-    // Place knights in opening position
+//  Knights
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -76,11 +76,11 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { knight = &lightKnight; }
             else { knight = &darkKnight; isDark = true; }
 
-            addPieceToScene(knight, 5, 5, 10, 10, rank, file, isDark);
+            addPieceToOpeningSquare(knight, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
-    // Place bishops in opening position
+    // Bishops
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -92,11 +92,11 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { bishop = &lightBishop; }
             else { bishop = &darkBishop; isDark = true; }
 
-            addPieceToScene(bishop, 5, 5, 10, 10, rank, file, isDark);
+            addPieceToOpeningSquare(bishop, 5, 5, 10, 10, rank, file, isDark);
         }
     }
 
-    // Place kings in opening position
+    // Kings
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -108,11 +108,11 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { king = &lightKing; }
             else { king = &darkKing; isDark = true; }
 
-            addPieceToScene(king, 5, 5, 10, 10, rank, file, isDark);
+            addPieceToOpeningSquare(king, 5, 5, 10, 10, rank, file, isDark);
           }
     }
 
-    // Place queens in opening position
+    // Queens
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -124,12 +124,12 @@ void ChessBoard::loadStartingPosition() {
             if (i == 0) { queen = &lightQueen; }
             else { queen = &darkQueen; isDark = true; }
 
-            addPieceToScene(queen, 5, 5, 10, 10, rank, file, isDark);
+            addPieceToOpeningSquare(queen, 5, 5, 10, 10, rank, file, isDark);
           }
     }
 }
 
-void ChessBoard::addPieceToScene(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark)
+void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark)
 {
     // Create and scale the sprite
     QPixmap pieceSprite;

@@ -15,6 +15,8 @@ public:
 
 private:
     QPixmap icon;
+
+    bool isSelected;
 };
 
 #endif // CHESSPIECE_H
