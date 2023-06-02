@@ -8,9 +8,10 @@
 #include "chesspiece.h"
 
 class ChessBoard;
+class Logic;
 
-class ChessSquare : public QGraphicsRectItem
-{
+class ChessSquare : public QGraphicsRectItem {
+
 public:
     ChessSquare(int posX, int posY, int width, int height);
 
@@ -21,10 +22,12 @@ private:
     int rank;
     int file;
 
+    void rightClick(ChessSquare *square);
+    void leftClick(ChessSquare *square);
+
     void highlightSquareRed(ChessSquare *square);
+    void highlightSquareYellow(ChessSquare *square);
     void setBaseColor(int rank, int file);
-    void preMove(ChessSquare *square);
-    bool isValidMove(ChessSquare *square, ChessPiece piece);
 };
 
 #endif // CHESSSQUARE_H
