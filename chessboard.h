@@ -16,12 +16,6 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 
-// Functions in the ChessBoard class
-//--------------------------------------
-// ChessBoard(QWidget *parent)     - Configures the QGraphicsScene and QGraphicsView where the game takes place
-// void createChessBoard()               - Generates the gridLayout and Labels which act as the board
-// void loadStartingPosition()           - Generates the correct rank and file positions for all the pieces, then calls addPieceToOpeningSquare()
-
 class ChessBoard : public QWidget {
     Q_OBJECT
 
