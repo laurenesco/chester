@@ -1,3 +1,7 @@
+// Class responsible for managing the chessboard
+//
+// Children classes -> ChessSquare
+
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
