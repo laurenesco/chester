@@ -1,5 +1,6 @@
 #include "chesspiece.h"
 
+// Constructor
 ChessPiece::ChessPiece()
 {
 
