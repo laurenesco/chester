@@ -3,9 +3,8 @@
 #include <string.h>
 #include <tensorflow/c/c_api.h>
 
-int main () {
+int main() {
 
-    printf ("Hello World");
-
-    return 0;
+  printf("Hello from TensorFlow C library version %s\n", TF_Version());
+  return 0;
 }
