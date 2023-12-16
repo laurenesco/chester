@@ -1,6 +1,6 @@
 [IN EARLY DEVELOPMENT]  
   
-A chess game created using QtCreator written in C++, with a machine learned engine written in C.  
+A chess game created using QtCreator written in C++, with a machine learning engine written in Python using TensorFlow.  
   
 Current classes:  
 &ensp;&ensp;MainWindow    - Manages the main window of the application      
