@@ -1,6 +1,10 @@
 #include <Python.h>
+#include <iostream>
+#include <filesystem>
 
 int main() {
+
+    Py_SetProgramName(L"/home/lauren/chester/ml");
     Py_Initialize();
 
     PyObject *pName = PyUnicode_FromString("my_script");
