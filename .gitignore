@@ -1,1 +1,6 @@
 *.ini
+/Desktop/chester/virtualenv/env/lib*
+/Desktop/chester/virtualenv/env/bin*
+/Desktop/chester/virtualenv/env/include*
+/Desktop/chester/virtualenv/env/lib64
+/Desktop/chester/virtualenv/env/pyenv.cfg
