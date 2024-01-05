@@ -9,7 +9,7 @@ install clang: https://www.tensorflow.org/install/source
                https://stackoverflow.com/questions/48674104/clang-error-while-loading-shared-libraries-libtinfo-so-5-cannot-open-shared-o
 build tensorflow from source: https://www.tensorflow.org/install/source
 	note: also requires pip install patchelf
-	note: also requires python 3.11, meaning tensorflow work will need to be done in virtual environment on ubuntu
+	note: also requires python 3.11, meaning tensorflow work will need to be done in virtual environment on ubuntu: https://askubuntu.com/questions/1452777/upgrade-python-without-breaking-major-applications
 
 
 --------- configuring c++/python api
