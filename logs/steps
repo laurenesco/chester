@@ -1,3 +1,4 @@
+------ configuring tensorflow
 update apt
 install and configure git
 install and configure vim
@@ -8,13 +9,17 @@ install clang: https://www.tensorflow.org/install/source
                https://stackoverflow.com/questions/48674104/clang-error-while-loading-shared-libraries-libtinfo-so-5-cannot-open-shared-o
 build tensorflow from source: https://www.tensorflow.org/install/source
 	note: also requires pip install patchelf
-	note: also requires python 3.11
-	
-	
-	
-	
-	
-	
-	
+	note: also requires python 3.11, meaning tensorflow work will need to be done in virtual environment on ubuntu
+
+
+--------- configuring c++/python api
+make sure that python script is moved into wherever python is looking for modules. can check this using
+	import site
+	print(site.getsitepackages())
+
+
+
+
+
 https://github.com/tensorflow/tensorflow/issues/61707
 
