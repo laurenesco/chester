@@ -20,7 +20,8 @@ SOURCES += \
     chesssquare.cpp \
     logic.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    startscreen.cpp
 
 HEADERS += \
     PieceClasses/bishop.h \
@@ -33,10 +34,12 @@ HEADERS += \
     chesspiece.h \
     chesssquare.h \
     logic.h \
-    mainwindow.h
+    mainwindow.h \
+    startscreen.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    startscreen.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
