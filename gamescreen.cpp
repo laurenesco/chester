@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "gamescreen.h"
+#include "ui_gamescreen.h"
 #include "chessboard.h"
 
 MainWindow::MainWindow(QWidget *parent)

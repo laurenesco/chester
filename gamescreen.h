@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GAMESCREEN_H
+#define GAMESCREEN_H
 
 #include <QMainWindow>
 
@@ -18,4 +18,4 @@ public:
 private:
     Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif // GAMESCREEN_H

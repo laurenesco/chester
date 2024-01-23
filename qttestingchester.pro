@@ -15,12 +15,13 @@ SOURCES += \
     PieceClasses/pawn.cpp \
     PieceClasses/queen.cpp \
     PieceClasses/rook.cpp \
+    Styling/colorrepository.cpp \
     chessboard.cpp \
     chesspiece.cpp \
     chesssquare.cpp \
+    gamescreen.cpp \
     logic.cpp \
     main.cpp \
-    mainwindow.cpp \
     startscreen.cpp
 
 HEADERS += \
@@ -30,18 +31,22 @@ HEADERS += \
     PieceClasses/pawn.h \
     PieceClasses/queen.h \
     PieceClasses/rook.h \
+    Styling/colorrepository.h \
     chessboard.h \
     chesspiece.h \
     chesssquare.h \
+    gamescreen.h \
     logic.h \
-    mainwindow.h \
     startscreen.h
 
 FORMS += \
-    mainwindow.ui \
+    gamescreen.ui \
     startscreen.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    Styling/style.qss

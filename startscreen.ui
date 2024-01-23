@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>799</width>
-    <height>605</height>
+    <width>1500</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -91,31 +91,32 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <item>
               <widget class="QPushButton" name="btn_play">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton
-{
-   background-color: grey;
-}
-QPushButton:pressed
-{
-  background-color: rgb(224, 0, 0);     
-}
-QPushButton:hover:!pressed
-{
-  background-color: rgb(224, 255, 0);
-}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Play</string>
@@ -173,13 +174,19 @@ QPushButton:hover:!pressed
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <item>
               <widget class="QPushButton" name="btn_settings">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
@@ -244,13 +251,19 @@ QPushButton:hover:!pressed
               <number>11</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <item>
               <widget class="QPushButton" name="btn_help">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
@@ -297,7 +310,7 @@ QPushButton:hover:!pressed
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>799</width>
+     <width>1500</width>
      <height>25</height>
     </rect>
    </property>
