@@ -9,39 +9,39 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ChessClasses/chessboard.cpp \
+    ChessClasses/chesspiece.cpp \
+    ChessClasses/chesssquare.cpp \
     PieceClasses/bishop.cpp \
     PieceClasses/king.cpp \
     PieceClasses/knight.cpp \
     PieceClasses/pawn.cpp \
     PieceClasses/queen.cpp \
     PieceClasses/rook.cpp \
+    Screens/boardscreen.cpp \
+    Screens/startscreen.cpp \
     Styling/colorrepository.cpp \
-    chessboard.cpp \
-    chesspiece.cpp \
-    chesssquare.cpp \
-    gamescreen.cpp \
     logic.cpp \
     main.cpp \
-    startscreen.cpp
 
 HEADERS += \
+    ChessClasses/chessboard.h \
+    ChessClasses/chesspiece.h \
+    ChessClasses/chesssquare.h \
     PieceClasses/bishop.h \
     PieceClasses/king.h \
     PieceClasses/knight.h \
     PieceClasses/pawn.h \
     PieceClasses/queen.h \
     PieceClasses/rook.h \
+    Screens/boardscreen.h \
+    Screens/startscreen.h \
     Styling/colorrepository.h \
-    chessboard.h \
-    chesspiece.h \
-    chesssquare.h \
-    gamescreen.h \
     logic.h \
-    startscreen.h
 
 FORMS += \
-    gamescreen.ui \
-    startscreen.ui
+    Screens/boardscreen.ui \
+    Screens/startscreen.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

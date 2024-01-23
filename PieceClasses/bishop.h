@@ -1,7 +1,7 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#include "chesspiece.h"
+#include "ChessClasses/chesspiece.h"
 #include <QPixmap>
 
 class Bishop : public ChessPiece {

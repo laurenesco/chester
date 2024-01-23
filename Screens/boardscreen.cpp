@@ -1,14 +1,15 @@
-#include "gamescreen.h"
-#include "ui_gamescreen.h"
-#include "chessboard.h"
+#include "boardscreen.h"
+#include "ChessClasses/chessboard.h"
+#include "ui_boardscreen.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+BoardScreen::BoardScreen(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::BoardScreen)
 {
     // Setup the mainwindow
     ui->setupUi(this);
-    setWindowTitle("Chester");
+    setWindowTitle("chesster");
+    setGeometry(200, 85, 1500, 900);
 
     // Set colors
     ui->centralwidget->setStyleSheet("background-color: #25292b");
@@ -22,8 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
     chessboard->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
-MainWindow::~MainWindow()
+//void BoardScreen::reopen_main_window()
+//{
+//    emit reopen_main_window();
+//}
+
+BoardScreen::~BoardScreen()
 {
+    this->reopen_main_window();
     delete ui;
 }
-

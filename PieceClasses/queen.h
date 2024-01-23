@@ -1,7 +1,7 @@
 #ifndef QUEEN_H
 #define QUEEN_H
 
-#include "chesspiece.h"
+#include "ChessClasses/chesspiece.h"
 
 class Queen : public ChessPiece {
 

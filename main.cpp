@@ -1,5 +1,4 @@
-#include "gamescreen.h"
-#include "startscreen.h"
+#include "Screens/startscreen.h"
 
 #include <QApplication>
 #include <QFile>

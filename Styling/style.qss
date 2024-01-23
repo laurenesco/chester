@@ -1,16 +1,39 @@
+/* Color Palette 1 */
+/* #3F3B6C */
+/* #624F82 */
+/* #9F73AB */
+/* #A3C7D6 */
+
+/* Color Palette 2 */
+/* #2C3639 */
+/* #3F4E4F */
+/* #A27B5C */
+/* #DCD7C9 */
+
+/* #*/
+/* #*/
+/* #*/
+/* #*/
+
 QMainWindow {
-    background-color: #25292b
+    background-color: #2C3639
 }
 
 QPushButton {
-    background-color: grey;
-    border-radius: 5px;
+    /* background-color: qlineargradient(x1:.5, y1:0, x2:.5, y2:1,
+    stop:0 #A27B5C, stop: 0.6 #3F4E4F, stop:.8 #3F4E4F); */
+
+    background-color: qradialgradient(cx:.5, cy:.5, radius: .9,
+    fx:0.5, fy:0, stop:0 #3F4E4F, stop:.9 #2C3639);
+
+    /* background-color: #3F4E4F; */
+    border-radius: 10px;
 }
 
 QPushButton:pressed {
-    background-color: white;
+    background-color: #DCD7C9;
 }
 
 QPushButton:hover:!pressed {
-    background-color: #f5f4f5;
+    background-color: #A27B5C;
 }
