@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QObject>
+#include "boardscreen.h"
+#include "helpscreen.h"
+#include "settingsscreen.h"
 
 namespace Ui {
 class StartScreen;
@@ -18,7 +22,9 @@ public:
 
 private slots:
     void on_btn_play_clicked(); // Open the board screen
-    void on_child_closed(); // Reopen the main window when a child window is closed
+    void on_childScreenClosed(); // Reopen main window
+    void on_btn_help_clicked(); // Open help screen
+    void on_btn_settings_clicked(); // Open settings screen
 
 private:
     Ui::StartScreen *ui;

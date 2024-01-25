@@ -19,6 +19,8 @@ SOURCES += \
     PieceClasses/queen.cpp \
     PieceClasses/rook.cpp \
     Screens/boardscreen.cpp \
+    Screens/helpscreen.cpp \
+    Screens/settingsscreen.cpp \
     Screens/startscreen.cpp \
     Styling/colorrepository.cpp \
     logic.cpp \
@@ -35,12 +37,16 @@ HEADERS += \
     PieceClasses/queen.h \
     PieceClasses/rook.h \
     Screens/boardscreen.h \
+    Screens/helpscreen.h \
+    Screens/settingsscreen.h \
     Screens/startscreen.h \
     Styling/colorrepository.h \
     logic.h \
 
 FORMS += \
     Screens/boardscreen.ui \
+    Screens/helpscreen.ui \
+    Screens/settingsscreen.ui \
     Screens/startscreen.ui \
 
 # Default rules for deployment.

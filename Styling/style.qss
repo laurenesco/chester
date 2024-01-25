@@ -19,6 +19,10 @@ QMainWindow {
     background-color: #2C3639
 }
 
+QFrame {
+background-color: #2C3639
+}
+
 QPushButton {
     /* background-color: qlineargradient(x1:.5, y1:0, x2:.5, y2:1,
     stop:0 #A27B5C, stop: 0.6 #3F4E4F, stop:.8 #3F4E4F); */

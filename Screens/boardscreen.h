@@ -16,10 +16,14 @@ public:
     ~BoardScreen();
 
 signals:
-    void reopen_main_window(); // Send signal the window is closing
+    void boardScreenClosed();
+
+private slots:
+    void on_btn_closeWindow_clicked();
 
 private:
     Ui::BoardScreen *ui;
+    QWidget *parentForm;;
 };
 
 #endif // BOARDSCREEN_H
