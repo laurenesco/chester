@@ -1,3 +1,11 @@
+//
+// Program Name:              settingsscreen.cpp
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Driver file for the SettingsScreen class. See header file for details.
+//
+
 #include "settingsscreen.h"
 #include "ui_settingsscreen.h"
 
@@ -45,6 +53,7 @@ SettingsScreen::SettingsScreen(QWidget *parent) :
         qDebug() << "Game ID:" << questionId << "Winner:" << question;
     }
 
+    query.clear();
     dbConfig.closeDatabase();
 }
 

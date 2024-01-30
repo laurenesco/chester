@@ -1,3 +1,11 @@
+/*
+/* Program Name:              style.qss
+/* Date Last Modified:        01/30/2024
+/* Last Modified By:            Lauren Escobedo
+/*
+/* Program Description:     QStyleSheet file responsible for global styling throughout the application
+/*
+
 /* Color Palette 1 */
 /* #3F3B6C */
 /* #624F82 */

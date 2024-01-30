@@ -1,3 +1,11 @@
+//
+// Program Name:              chessboard.h
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Header file for the ChessBoard class. Responsible for:
+//
+
 // Class responsible for managing the chessboard
 //
 // Children classes -> ChessSquare

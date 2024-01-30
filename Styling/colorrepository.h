@@ -1,3 +1,11 @@
+//
+// Program Name:              logic.h
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Header file for the logic class. Responsible for:
+//
+
 #ifndef COLORREPOSITORY_H
 #define COLORREPOSITORY_H
 

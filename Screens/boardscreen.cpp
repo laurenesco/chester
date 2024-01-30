@@ -1,3 +1,11 @@
+//
+// Program Name:              boardscreen.cpp
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Driver file for the BoardScreen class. See header file for details.
+//
+
 #include "ui_boardscreen.h"
 #include "boardscreen.h"
 #include "ChessClasses/chessboard.h"

@@ -1,4 +1,10 @@
 {
+  "file_header": {
+    "program_name": "config.json",
+    "date_last_modified": "01/30/2024",
+    "last_modified_by": "Lauren Escobedo",
+    "program_description": "This file contains various configuration information used throughout the application"
+  },
   "database": {
     "host": "localhost",
     "port": 5432,

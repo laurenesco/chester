@@ -1,3 +1,12 @@
+//
+// Program Name:              boardscreen.h
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Header file for the BoardScreen class. This class is responsible for:
+//                                              - Generating the main landing page, or "start screen" of the application
+//
+
 #ifndef BOARDSCREEN_H
 #define BOARDSCREEN_H
 

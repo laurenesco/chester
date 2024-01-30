@@ -1,3 +1,20 @@
+//
+// Program Name:              startscreen.h
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Header file for the StartScreen class. This class is responsible for:
+//                                              - Generating the main landing page, or "start screen" of the application
+//
+
+/*
+- signals and slots
+- global config file
+- json holding config params
+- ml update
+- headers
+*/
+
 #ifndef STARTSCREEN_H
 #define STARTSCREEN_H
 

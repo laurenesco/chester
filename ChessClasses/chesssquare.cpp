@@ -1,3 +1,11 @@
+//
+// Program Name:              chesssquare.cpp
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Driver file for the ChessSquare class. See header file for details.
+//
+
 #include "chesssquare.h"
 
 ChessSquare::ChessSquare(int posX, int posY, int width, int height)

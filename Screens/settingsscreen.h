@@ -1,3 +1,16 @@
+//
+// Program Name:              settingsscreen.h
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Header file for the SettingsScreen class. This class is responsible for:
+//                                              - Generating the settings page of the application
+//                                              - Managing the following settings:
+//                                                      - Color scheme
+//                                                      - Difficulty
+//                                                      - Player Color
+//
+
 #ifndef SETTINGSSCREEN_H
 #define SETTINGSSCREEN_H
 

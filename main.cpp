@@ -1,3 +1,11 @@
+//
+// Program Name:              main.cpp
+// Date Last Modified:        01/30/2024
+// Last Modified By:            Lauren Escobedo
+//
+// Program Description:     Driver file for the chesster application.
+//
+
 #include "Screens/startscreen.h"
 
 #include <QApplication>
