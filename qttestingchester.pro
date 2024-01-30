@@ -1,4 +1,18 @@
-QT       += core gui
+# C:\Qt\5.15.0\mingw81_64\bin\qmake.exe
+
+QT       += core gui \
+                  sql \
+
+# Include Path
+INCLUDEPATH += "C:/pgsql/include"
+
+# Library Paths
+LIBS += -L"C:/pgsql/lib" \
+             -L"C:/Qt/5.15.0/mingw81_64/plugins/sqldrivers" \
+             -L"C:/Qt/5.15.0/Src/qtbase/src/plugins/sqldrivers/psql"
+
+# Link specific libraries
+LIBS += -lqsqlpsql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,6 +37,7 @@ SOURCES += \
     Screens/settingsscreen.cpp \
     Screens/startscreen.cpp \
     Styling/colorrepository.cpp \
+    env/config.cpp \
     logic.cpp \
     main.cpp \
 
@@ -41,6 +56,7 @@ HEADERS += \
     Screens/settingsscreen.h \
     Screens/startscreen.h \
     Styling/colorrepository.h \
+    env/config.h \
     logic.h \
 
 FORMS += \
@@ -55,4 +71,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    Styling/style.qss
+    Styling/style.qss \
+    env/config.json

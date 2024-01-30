@@ -1,6 +1,7 @@
 #ifndef SETTINGSSCREEN_H
 #define SETTINGSSCREEN_H
 
+#include "env/config.h"
 #include <QMainWindow>
 
 namespace Ui {
