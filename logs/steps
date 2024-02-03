@@ -24,3 +24,17 @@ https://www.chess.com/games
 
 https://github.com/tensorflow/tensorflow/issues/61707
 
+
+----------------- pytorch
+install using pip no problems
+
+Name: torch
+Version: 2.1.2+cpu
+Summary: Tensors and Dynamic neural networks in Python with strong GPU acceleration
+Home-page: https://pytorch.org/
+Author: PyTorch Team
+Author-email: packages@pytorch.org
+License: BSD-3
+Location: c:\users\laesc\appdata\local\programs\python\python310\lib\site-packages
+Requires: filelock, fsspec, jinja2, networkx, sympy, typing-extensions
+Required-by: torchaudio, torchvision

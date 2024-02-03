@@ -42,6 +42,12 @@ QPushButton {
     border-radius: 10px;
 }
 
+/* Setting style to objects of a specific name */
+QFrame[objectName="frame_light"] {
+    background-color: lightblue;
+    border: 2px solid darkblue;
+}
+
 QPushButton:pressed {
     background-color: #DCD7C9;
 }
