@@ -29,10 +29,10 @@ public:
     explicit SettingsScreen(QWidget *parent = nullptr);
     ~SettingsScreen();
 
-signals:
+Q_SIGNALS:
     void settingsScreenClosed();
 
-private slots:
+private Q_SLOTS:
     void on_btn_closeWindow_clicked();
 
 private:

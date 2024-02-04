@@ -40,7 +40,7 @@ BoardScreen::~BoardScreen()
 
 void BoardScreen::on_btn_closeWindow_clicked()
 {
-    emit boardScreenClosed();
+    Q_EMIT boardScreenClosed();
     this->close();
 }
 

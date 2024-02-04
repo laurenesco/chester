@@ -7,15 +7,24 @@ intall pip
 install bazel: https://stackoverflow.com/questions/65656165/how-do-you-install-bazel-using-bazelisk
 install clang: https://www.tensorflow.org/install/source
                https://stackoverflow.com/questions/48674104/clang-error-while-loading-shared-libraries-libtinfo-so-5-cannot-open-shared-o
+clang download version clang+llvm-16.0.0-x86_64*linux-gnu-ubuntu-18.04.tar.xz
 build tensorflow from source: https://www.tensorflow.org/install/source
 	note: also requires pip install patchelf
 	note: also requires python 3.11, meaning tensorflow work will need to be done in virtual environment on ubuntu: https://askubuntu.com/questions/1452777/upgrade-python-without-breaking-major-applications
 
+To run any tensorflow program, you must be using a specific version of python. To activate the virtual environment from ~/chester
+source virtualenv/env/bin/activate
+The virtual environment has already been configured - steps to do so lost :(
 
 --------- configuring c++/python api
 make sure that python script is moved into wherever python is looking for modules. can check this using
 	import site
 	print(site.getsitepackages())
+cp .\my_script.py C:\\Users\\laesc\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages
+
+WINDOWS:
+see testing.cpp file for compiler flags, see https://stackoverflow.com/questions/15078060/embedding-python-in-qt-5
+for qt configurion issues
 
 
 ---------------- data

@@ -24,10 +24,10 @@ public:
     explicit BoardScreen(QWidget *parent = nullptr);
     ~BoardScreen();
 
-signals:
+Q_SIGNALS:
     void boardScreenClosed();
 
-private slots:
+private Q_SLOTS:
     void on_btn_closeWindow_clicked();
 
 private:

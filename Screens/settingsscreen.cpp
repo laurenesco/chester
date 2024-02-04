@@ -64,6 +64,6 @@ SettingsScreen::~SettingsScreen()
 
 void SettingsScreen::on_btn_closeWindow_clicked()
 {
-    emit settingsScreenClosed();
+    Q_EMIT settingsScreenClosed();
     this->close();
 }

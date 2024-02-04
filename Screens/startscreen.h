@@ -37,7 +37,7 @@ public:
     explicit StartScreen(QWidget *parent = nullptr);
     ~StartScreen();
 
-private slots:
+private Q_SLOTS:
     void on_btn_play_clicked(); // Open the board screen
     void on_childScreenClosed(); // Reopen main window
     void on_btn_help_clicked(); // Open help screen

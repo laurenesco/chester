@@ -27,10 +27,10 @@ public:
     explicit HelpScreen(QWidget *parent = nullptr);
     ~HelpScreen();
 
-signals:
+Q_SIGNALS:
     void helpScreenClosed();
 
-private slots:
+private Q_SLOTS:
     void on_btn_closeWindow_clicked();
 
 private:
