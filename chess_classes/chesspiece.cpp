@@ -15,7 +15,7 @@ ChessPiece::ChessPiece()
 }
 
 QPixmap ChessPiece::getIcon() {
-    return this->getIcon();
+    return icon;
 }
 
 QPixmap ChessPiece::getLightIcon()
@@ -37,5 +37,20 @@ QPixmap ChessPiece::getLightIcon()
 QPixmap ChessPiece::getDarkIcon()
 {
     return this->getIcon();
+}
+
+void ChessPiece::selectPiece()
+{
+
+}
+
+int ChessPiece::getPossibleMoves()
+{
+
+}
+
+QString ChessPiece::getName()
+{
+    return name;
 }
 

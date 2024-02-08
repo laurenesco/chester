@@ -9,7 +9,7 @@
 #ifndef QUEEN_H
 #define QUEEN_H
 
-#include "ChessClasses/chesspiece.h"
+#include "chess_classes/chesspiece.h"
 
 class Queen : public ChessPiece {
 
@@ -17,9 +17,7 @@ public:
     Queen();
 
 private:
-    QPixmap icon;
-
-    QPixmap getIcon();
+    QString name = "Queen";
 };
 
 #endif // QUEEN_H

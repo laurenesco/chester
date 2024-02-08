@@ -11,6 +11,7 @@
 
 #include <QPixmap>
 #include <QPainter>
+#include <QString>
 
 class ChessPiece
 {
@@ -20,11 +21,16 @@ public:
     virtual QPixmap getIcon();
     virtual QPixmap getLightIcon();
     virtual QPixmap getDarkIcon();
+    virtual void selectPiece();
+    virtual int getPossibleMoves(); // Will be pure virutal function
+    virtual QString getName();
+
+protected:
+    QPixmap icon;
+    bool isSelected;
 
 private:
-    QPixmap icon;
-
-    bool isSelected;
+    QString name;
 };
 
 #endif // CHESSPIECE_H

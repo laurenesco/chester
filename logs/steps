@@ -47,3 +47,7 @@ License: BSD-3
 Location: c:\users\laesc\appdata\local\programs\python\python310\lib\site-packages
 Requires: filelock, fsspec, jinja2, networkx, sympy, typing-extensions
 Required-by: torchaudio, torchvision
+
+
+------------------------- sprite creator 
+https://www.piskelapp.com/p/create/sprite

@@ -31,16 +31,17 @@ void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         leftClick(this);
     }
 
-    QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
+    // QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
 // On right click
 void ChessSquare::rightClick(ChessSquare *self)
 {
+    qDebug() << "Piece on square: " << this->occupyingPiece->getName();
     highlightSquareRed(self);
 }
 
-// On left click [parameter is self]
+// On left click
 void ChessSquare::leftClick(ChessSquare *self)
 {
     highlightSquareYellow(self);
@@ -48,7 +49,7 @@ void ChessSquare::leftClick(ChessSquare *self)
 }
 
 void ChessSquare::highlightPossibleMoves(ChessSquare *self) {
-
+    return;
 }
 
 void ChessSquare::highlightSquareRed(ChessSquare *self) {
@@ -65,4 +66,16 @@ void ChessSquare::highlightSquareYellow(ChessSquare *self) {
     } else {
         setBaseColor(rank, file);
     }
+}
+
+/* ------------- Get and set methods -------------- */
+
+ChessPiece *ChessSquare::getOccupyingPiece() const
+{
+    return occupyingPiece;
+}
+
+void ChessSquare::setOccupyingPiece(ChessPiece *newOccupyingPiece)
+{
+    occupyingPiece = newOccupyingPiece;
 }

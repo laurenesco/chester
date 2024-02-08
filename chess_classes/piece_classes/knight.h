@@ -9,7 +9,7 @@
 #ifndef KNIGHT_H
 #define KNIGHT_H
 
-#include "ChessClasses/chesspiece.h"
+#include "chess_classes/chesspiece.h"
 
 class Knight : public ChessPiece {
 
@@ -17,9 +17,7 @@ public:
     Knight();
 
 private:
-    QPixmap icon;
-
-    QPixmap getIcon();
+    QString name = "Knight";
 };
 
 #endif // KNIGHT_H

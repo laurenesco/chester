@@ -25,6 +25,16 @@ StartScreen::StartScreen(QWidget *parent) :
     img = img.scaled(img.size()*.9, Qt::KeepAspectRatio);
     ui->lbl_logo->setPixmap(img);
 
+    // Load gifs
+    QMovie *movie = new QMovie("C:/Users/laesc/OneDrive/Desktop/chester/icons/knight.gif");
+    ui->lbl_gif->setMovie(movie);
+    ui->lbl_gif->setScaledContents(true);
+    movie->start();
+    QMovie *movieMirrored = new QMovie("C:/Users/laesc/OneDrive/Desktop/chester/icons/knight_mirrored.gif");
+    ui->lbl_gif_mirrored->setMovie(movieMirrored);
+    ui->lbl_gif_mirrored->setScaledContents(true);
+    movieMirrored->start();
+
     this->show();
 }
 

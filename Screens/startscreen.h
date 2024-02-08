@@ -20,6 +20,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QMovie>
 #include <QObject>
 #include "boardscreen.h"
 #include "helpscreen.h"

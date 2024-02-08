@@ -64,7 +64,7 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 0 : 7;
             bool isDark = false;
 
-            ChessPiece *rook;
+            ChessPiece *rook = new Rook();
 
             if (i == 0) { rook = &lightRook; }
             else { rook = &darkRook; isDark = true; }
@@ -144,7 +144,7 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     QPixmap pieceSprite;
     if (isDark) { pieceSprite = piece->getDarkIcon(); }
     else { pieceSprite = piece->getLightIcon(); }
-    QGraphicsRectItem *squares = chessSquares[rank][file];
+    ChessSquare *squares = chessSquares[rank][file];
     QPixmap scaledPiece = pieceSprite.scaled(tileSize-shrinkX, tileSize-shrinkY, Qt::KeepAspectRatio);
     QGraphicsPixmapItem *finalSprite = new QGraphicsPixmapItem(scaledPiece);
 
@@ -153,4 +153,6 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     chessScene->addItem(finalSprite);
 
     // Add to associated ChessSquare object
+    ChessSquare *square = chessSquares[rank][file];
+    square->setOccupyingPiece(piece);
 }

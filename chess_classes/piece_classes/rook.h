@@ -9,7 +9,7 @@
 #ifndef ROOK_H
 #define ROOK_H
 
-#include "ChessClasses/chesspiece.h"
+#include "chess_classes/chesspiece.h"
 
 class Rook : public ChessPiece {
 
@@ -17,9 +17,7 @@ public:
     Rook();
 
 private:
-    QPixmap icon;
-
-    QPixmap getIcon();
+    QString name = "Rook";
 };
 
 #endif // ROOK_H

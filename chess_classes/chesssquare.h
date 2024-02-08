@@ -13,6 +13,8 @@
 #include <QBrush>
 #include <QGraphicsSceneMouseEvent>
 
+#include <QDebug>
+
 #include "chesspiece.h"
 
 class ChessBoard;
@@ -23,13 +25,16 @@ class ChessSquare : public QGraphicsRectItem {
 public:
     ChessSquare(int posX, int posY, int width, int height);
 
+    ChessPiece *getOccupyingPiece() const;
+    void setOccupyingPiece(ChessPiece *newOccupyingPiece);
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
     int rank;
     int file;
-    ChessPiece occupyingPiece;
+    ChessPiece *occupyingPiece;
 
     void rightClick(ChessSquare *self);
     void leftClick(ChessSquare *self);

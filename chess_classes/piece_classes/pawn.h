@@ -9,7 +9,7 @@
 #ifndef PAWN_H
 #define PAWN_H
 
-#include "ChessClasses/chesspiece.h"
+#include "chess_classes/chesspiece.h"
 
 class Pawn : public ChessPiece {
 
@@ -17,9 +17,7 @@ public:
     Pawn();
 
 private:
-    QPixmap icon;
-
-    QPixmap getIcon();
+    QString name = "Pawn";
 };
 
 #endif // PAWN_H

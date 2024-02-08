@@ -9,8 +9,7 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#include "ChessClasses/chesspiece.h"
-#include <QPixmap>
+#include "chess_classes/chesspiece.h"
 
 class Bishop : public ChessPiece {
 
@@ -18,9 +17,7 @@ public:
     Bishop();
 
 private:
-    QPixmap icon;
-
-    QPixmap getIcon();
+    QString name = "Bishop";
 };
 
 #endif // BISHOP_H

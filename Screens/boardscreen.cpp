@@ -8,7 +8,7 @@
 
 #include "ui_boardscreen.h"
 #include "boardscreen.h"
-#include "ChessClasses/chessboard.h"
+#include "chess_classes/chessboard.h"
 
 BoardScreen::BoardScreen(QWidget *parent) :
     QMainWindow(parent),

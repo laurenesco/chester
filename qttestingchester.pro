@@ -32,51 +32,51 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ChessClasses/chessboard.cpp \
-    ChessClasses/chessmove.cpp \
-    ChessClasses/chesspiece.cpp \
-    ChessClasses/chesssquare.cpp \
-    PieceClasses/bishop.cpp \
-    PieceClasses/king.cpp \
-    PieceClasses/knight.cpp \
-    PieceClasses/pawn.cpp \
-    PieceClasses/queen.cpp \
-    PieceClasses/rook.cpp \
-    Screens/boardscreen.cpp \
-    Screens/helpscreen.cpp \
-    Screens/settingsscreen.cpp \
-    Screens/startscreen.cpp \
-    Styling/colorrepository.cpp \
+    screens/boardscreen.cpp \
+    screens/helpscreen.cpp \
+    screens/settingsscreen.cpp \
+    screens/startscreen.cpp \
+    styling/colorrepository.cpp \
+    chess_classes/chessboard.cpp \
+    chess_classes/chessmove.cpp \
+    chess_classes/chesspiece.cpp \
+    chess_classes/chesssquare.cpp \
+    chess_classes/piece_classes/bishop.cpp \
+    chess_classes/piece_classes/king.cpp \
+    chess_classes/piece_classes/knight.cpp \
+    chess_classes/piece_classes/pawn.cpp \
+    chess_classes/piece_classes/queen.cpp \
+    chess_classes/piece_classes/rook.cpp \
     engineinterface.cpp \
     env/config.cpp \
     logic.cpp \
     main.cpp \
 
 HEADERS += \
-    ChessClasses/chessboard.h \
-    ChessClasses/chessmove.h \
-    ChessClasses/chesspiece.h \
-    ChessClasses/chesssquare.h \
-    PieceClasses/bishop.h \
-    PieceClasses/king.h \
-    PieceClasses/knight.h \
-    PieceClasses/pawn.h \
-    PieceClasses/queen.h \
-    PieceClasses/rook.h \
-    Screens/boardscreen.h \
-    Screens/helpscreen.h \
-    Screens/settingsscreen.h \
-    Screens/startscreen.h \
-    Styling/colorrepository.h \
+    screens/boardscreen.h \
+    screens/helpscreen.h \
+    screens/settingsscreen.h \
+    screens/startscreen.h \
+    styling/colorrepository.h \
+    chess_classes/chessboard.h \
+    chess_classes/chessmove.h \
+    chess_classes/chesspiece.h \
+    chess_classes/chesssquare.h \
+    chess_classes/piece_classes/bishop.h \
+    chess_classes/piece_classes/king.h \
+    chess_classes/piece_classes/knight.h \
+    chess_classes/piece_classes/pawn.h \
+    chess_classes/piece_classes/queen.h \
+    chess_classes/piece_classes/rook.h \
     engineinterface.h \
     env/config.h \
     logic.h \
 
 FORMS += \
-    Screens/boardscreen.ui \
-    Screens/helpscreen.ui \
-    Screens/settingsscreen.ui \
-    Screens/startscreen.ui \
+    screens/boardscreen.ui \
+    screens/helpscreen.ui \
+    screens/settingsscreen.ui \
+    screens/startscreen.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -84,5 +84,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    Styling/style.qss \
-    env/config.json
+    styling/style.qss \
+    env/config.json \
+    styling/fonts/joystixmonospace.otf

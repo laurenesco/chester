@@ -9,8 +9,8 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
-#include "ChessClasses/chesspiece.h"
-#include "ChessClasses/chesssquare.h"
+#include "chess_classes/chesspiece.h"
+#include "chess_classes/chesssquare.h"
 
 class Logic {
 

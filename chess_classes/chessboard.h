@@ -9,12 +9,12 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "PieceClasses//bishop.h"
-#include "PieceClasses//rook.h"
-#include "PieceClasses//pawn.h"
-#include "PieceClasses//king.h"
-#include "PieceClasses//queen.h"
-#include "PieceClasses//knight.h"
+#include "piece_classes//bishop.h"
+#include "piece_classes//rook.h"
+#include "piece_classes//pawn.h"
+#include "piece_classes//king.h"
+#include "piece_classes//queen.h"
+#include "piece_classes//knight.h"
 #include "chesssquare.h"
 
 #include <QWidget>
@@ -33,7 +33,7 @@ public:
 private:
     QGraphicsScene* chessScene;
     QGraphicsView* chessView;
-    QGraphicsRectItem* chessSquares[8][8];
+    ChessSquare* chessSquares[8][8];
     QPixmap pieceSprite;
 
     // Light pieces
