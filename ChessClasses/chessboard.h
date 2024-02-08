@@ -6,10 +6,6 @@
 // Program Description:     Header file for the ChessBoard class. Responsible for:
 //
 
-// Class responsible for managing the chessboard
-//
-// Children classes -> ChessSquare
-
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
@@ -33,9 +29,6 @@ class ChessBoard : public QWidget {
 
 public:
     explicit ChessBoard(QWidget* parent = nullptr);
-
-    bool preMove = false;
-    bool postMove = false;
 
 private:
     QGraphicsScene* chessScene;
@@ -61,8 +54,8 @@ private:
 
     int tileSize = 620/8;
 
-    void createChessBoard();
     void loadStartingPosition();
+    void createChessBoard();
     void addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
 };

@@ -33,6 +33,7 @@ CONFIG += c++17
 
 SOURCES += \
     ChessClasses/chessboard.cpp \
+    ChessClasses/chessmove.cpp \
     ChessClasses/chesspiece.cpp \
     ChessClasses/chesssquare.cpp \
     PieceClasses/bishop.cpp \
@@ -46,12 +47,14 @@ SOURCES += \
     Screens/settingsscreen.cpp \
     Screens/startscreen.cpp \
     Styling/colorrepository.cpp \
+    engineinterface.cpp \
     env/config.cpp \
     logic.cpp \
     main.cpp \
 
 HEADERS += \
     ChessClasses/chessboard.h \
+    ChessClasses/chessmove.h \
     ChessClasses/chesspiece.h \
     ChessClasses/chesssquare.h \
     PieceClasses/bishop.h \
@@ -65,6 +68,7 @@ HEADERS += \
     Screens/settingsscreen.h \
     Screens/startscreen.h \
     Styling/colorrepository.h \
+    engineinterface.h \
     env/config.h \
     logic.h \
 

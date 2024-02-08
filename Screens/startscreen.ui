@@ -6,25 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>900</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,4,6">
-    <item>
-     <widget class="QFrame" name="frm_main_upper">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-     </widget>
-    </item>
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1">
     <item>
      <widget class="QFrame" name="frm_main_logo">
       <property name="frameShape">
@@ -33,14 +23,29 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QLabel" name="lbl_logo">
          <property name="text">
           <string/>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
          </property>
         </widget>
        </item>
@@ -55,7 +60,17 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,2,2,5">
+      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,2,2,2,2">
+       <item>
+        <widget class="QFrame" name="frame_10">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QFrame" name="frm_start">
          <property name="frameShape">
@@ -64,7 +79,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,3,2">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,2,2">
           <property name="topMargin">
            <number>0</number>
           </property>
@@ -112,6 +127,7 @@
                </property>
                <property name="font">
                 <font>
+                 <family>8514oem</family>
                  <pointsize>12</pointsize>
                 </font>
                </property>
@@ -147,7 +163,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,3,2">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,2,2">
           <property name="topMargin">
            <number>0</number>
           </property>
@@ -189,7 +205,8 @@
                </property>
                <property name="font">
                 <font>
-                 <pointsize>12</pointsize>
+                 <family>8514oem</family>
+                 <pointsize>50</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -221,7 +238,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,3,2">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,2,2">
           <property name="topMargin">
            <number>0</number>
           </property>
@@ -266,7 +283,8 @@
                </property>
                <property name="font">
                 <font>
-                 <pointsize>12</pointsize>
+                 <family>8514oem</family>
+                 <pointsize>30</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -279,6 +297,11 @@
           </item>
           <item>
            <widget class="QFrame" name="frame_7">
+            <property name="font">
+             <font>
+              <family>8514oem</family>
+             </font>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -310,7 +333,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1500</width>
+     <width>1920</width>
      <height>25</height>
     </rect>
    </property>

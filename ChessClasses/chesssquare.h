@@ -29,12 +29,14 @@ protected:
 private:
     int rank;
     int file;
+    ChessPiece occupyingPiece;
 
-    void rightClick(ChessSquare *square);
-    void leftClick(ChessSquare *square);
+    void rightClick(ChessSquare *self);
+    void leftClick(ChessSquare *self);
 
-    void highlightSquareRed(ChessSquare *square);
-    void highlightSquareYellow(ChessSquare *square);
+    void highlightSquareRed(ChessSquare *self);
+    void highlightSquareYellow(ChessSquare *self);
+    void highlightPossibleMoves(ChessSquare *self);
     void setBaseColor(int rank, int file);
 };
 

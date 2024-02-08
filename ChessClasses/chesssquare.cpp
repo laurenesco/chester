@@ -34,27 +34,34 @@ void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
-void ChessSquare::rightClick(ChessSquare *square)
+// On right click
+void ChessSquare::rightClick(ChessSquare *self)
 {
-    highlightSquareRed(square);
+    highlightSquareRed(self);
 }
 
-void ChessSquare::leftClick(ChessSquare *square)
+// On left click [parameter is self]
+void ChessSquare::leftClick(ChessSquare *self)
 {
-    highlightSquareYellow(square);
+    highlightSquareYellow(self);
+    highlightPossibleMoves(self);
 }
 
-void ChessSquare::highlightSquareRed(ChessSquare *square) {
-    if (!(square->brush().color() == QColor(129, 65, 65))) {
-        square->setBrush(QColor(129, 65, 65));
+void ChessSquare::highlightPossibleMoves(ChessSquare *self) {
+
+}
+
+void ChessSquare::highlightSquareRed(ChessSquare *self) {
+    if (!(self->brush().color() == QColor(129, 65, 65))) {
+        self->setBrush(QColor(129, 65, 65));
     } else {
         setBaseColor(rank, file);
     }
 }
 
-void ChessSquare::highlightSquareYellow(ChessSquare *square) {
-    if (!(square->brush().color() == QColor(252, 223, 116))) {
-        square->setBrush(QColor(252, 223, 116));
+void ChessSquare::highlightSquareYellow(ChessSquare *self) {
+    if (!(self->brush().color() == QColor(252, 223, 116))) {
+        self->setBrush(QColor(252, 223, 116));
     } else {
         setBaseColor(rank, file);
     }

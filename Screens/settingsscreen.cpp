@@ -23,6 +23,7 @@ if (!query.exec()) {
 }
 */
 
+// Constructor
 SettingsScreen::SettingsScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsScreen)
@@ -30,8 +31,8 @@ SettingsScreen::SettingsScreen(QWidget *parent) :
     // Setup the mainwindow
     ui->setupUi(this);
     setWindowTitle("chesster - Settings");
-    setGeometry(200, 85, 1500, 900);
 
+    // Set up the database connection
     Config dbConfig;
     dbConfig.configDatabase();
     dbConfig.openDatabase();
@@ -39,8 +40,6 @@ SettingsScreen::SettingsScreen(QWidget *parent) :
     // Execute a query to select all attributes from the table "questions"
     QString queryString = "SELECT game_id, game_winner_color FROM metadata_game";
     QSqlQuery query;
-
-    // Execute a query to select all attributes from the table "questions"
     query.prepare(queryString);
     if (!query.exec()) {
         qWarning() << "Error: Unable to execute query:" << query.lastError().text();
@@ -57,11 +56,13 @@ SettingsScreen::SettingsScreen(QWidget *parent) :
     dbConfig.closeDatabase();
 }
 
+// Deconstructor
 SettingsScreen::~SettingsScreen()
 {
     delete ui;
 }
 
+// On pressing Close button, emit closing signal and close this form
 void SettingsScreen::on_btn_closeWindow_clicked()
 {
     Q_EMIT settingsScreenClosed();

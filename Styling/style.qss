@@ -18,28 +18,34 @@
 /* #A27B5C */
 /* #DCD7C9 */
 
-/* #*/
-/* #*/
-/* #*/
-/* #*/
+/* #7E8287 gray */
+/* #9DA39A ash gray */
+/* #54494B wenge, darkish purple */
+/* #B98389 old rose */
+
+/* fonts: ocr, system, terminal, bitcount, 8514 oem */
 
 QMainWindow {
-    background-color: #2C3639
+    background-color: #000000
 }
 
 QFrame {
-background-color: #2C3639
+background-color: #000000
 }
 
 QPushButton {
     /* background-color: qlineargradient(x1:.5, y1:0, x2:.5, y2:1,
-    stop:0 #A27B5C, stop: 0.6 #3F4E4F, stop:.8 #3F4E4F); */
+    stop:0 #7E8287, stop: 0.6 #7E8287, stop:.8 #7E8287); */
 
-    background-color: qradialgradient(cx:.5, cy:.5, radius: .9,
-    fx:0.5, fy:0, stop:0 #3F4E4F, stop:.9 #2C3639);
+    /*background-color: qradialgradient(cx:.5, cy:.5, radius: .9,
+    fx:0.5, fy:0, stop:0 #7E8287, stop:.9 #54494B);*/
 
-    /* background-color: #3F4E4F; */
+    background-color: #000000;
+
     border-radius: 10px;
+    font-family: Joystix Monospace;
+    font-size: 22px;
+    color: white;
 }
 
 /* Setting style to objects of a specific name */
@@ -48,10 +54,15 @@ QFrame[objectName="frame_light"] {
     border: 2px solid darkblue;
 }
 
+QLabel[objectName="lbl_testPython"] {
+    color: white;
+}
+
 QPushButton:pressed {
-    background-color: #DCD7C9;
+    background-color: #9DA39A;
 }
 
 QPushButton:hover:!pressed {
-    background-color: #A27B5C;
+    /*background-color: #B98389;*/
+    color: gray;
 }

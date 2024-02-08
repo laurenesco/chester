@@ -35,6 +35,7 @@ void ChessBoard::createChessBoard() {
             square->setPen(Qt::NoPen);
             chessScene->addItem(square);
 
+             // Set each entry in the array to a ChessSquare
             chessSquares[rank][file] = square;
         }
     }
@@ -147,7 +148,9 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     QPixmap scaledPiece = pieceSprite.scaled(tileSize-shrinkX, tileSize-shrinkY, Qt::KeepAspectRatio);
     QGraphicsPixmapItem *finalSprite = new QGraphicsPixmapItem(scaledPiece);
 
-    // Position and add to scene!
+    // Position and add to scene
     finalSprite->setPos(squares->rect().topLeft() + QPointF(offsetX, offsetY));
     chessScene->addItem(finalSprite);
+
+    // Add to associated ChessSquare object
 }
