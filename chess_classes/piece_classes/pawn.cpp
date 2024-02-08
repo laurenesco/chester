@@ -11,4 +11,5 @@
 Pawn::Pawn()
 {
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
+    m_name = "Pawn";
 }

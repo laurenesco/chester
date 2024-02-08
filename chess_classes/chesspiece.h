@@ -28,9 +28,9 @@ public:
 protected:
     QPixmap icon;
     bool isSelected;
+    QString m_name;
 
 private:
-    QString name;
 };
 
 #endif // CHESSPIECE_H

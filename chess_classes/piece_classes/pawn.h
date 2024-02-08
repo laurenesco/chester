@@ -15,9 +15,6 @@ class Pawn : public ChessPiece {
 
 public:
     Pawn();
-
-private:
-    QString name = "Pawn";
 };
 
 #endif // PAWN_H

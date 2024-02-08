@@ -37,20 +37,20 @@ private:
     QPixmap pieceSprite;
 
     // Light pieces
-    Pawn lightPawn[8];
-    Rook lightRook;
-    Bishop lightBishop;
-    Knight lightKnight;
-    King lightKing;
-    Queen lightQueen;
+    Pawn *lightPawn[8];
+    Rook *lightRook;
+    Bishop *lightBishop;
+    Knight *lightKnight;
+    King *lightKing;
+    Queen *lightQueen;
 
-    // Dark piece
-    Pawn darkPawn[8];
-    Rook darkRook;
-    Bishop darkBishop;
-    Knight darkKnight;
-    King darkKing;
-    Queen darkQueen;
+    // Dark pieces
+    Pawn *darkPawn[8];
+    Rook *darkRook;
+    Bishop *darkBishop;
+    Knight *darkKnight;
+    King *darkKing;
+    Queen *darkQueen;
 
     int tileSize = 620/8;
 

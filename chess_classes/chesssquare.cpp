@@ -24,45 +24,50 @@ void ChessSquare::setBaseColor(int rank, int file) {
     }
 }
 
-void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
     if (event->button() == Qt::RightButton) {           // Right mouse click event
-        rightClick(this);
+        leftClick();
     } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
-        leftClick(this);
+        rightClick();
     }
 
-    // QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
+    QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
 // On right click
-void ChessSquare::rightClick(ChessSquare *self)
+void ChessSquare::rightClick()
 {
-    qDebug() << "Piece on square: " << this->occupyingPiece->getName();
-    highlightSquareRed(self);
+    if (occupyingPiece == nullptr) {
+        qDebug() << "No piece on square";
+    } else {
+        qDebug() << "Piece on square: " << occupyingPiece->getName();
+    }
+    highlightSquareRed();
 }
 
 // On left click
-void ChessSquare::leftClick(ChessSquare *self)
+void ChessSquare::leftClick()
 {
-    highlightSquareYellow(self);
-    highlightPossibleMoves(self);
+    highlightSquareYellow();
+    highlightPossibleMoves();
 }
 
-void ChessSquare::highlightPossibleMoves(ChessSquare *self) {
+void ChessSquare::highlightPossibleMoves() {
     return;
 }
 
-void ChessSquare::highlightSquareRed(ChessSquare *self) {
-    if (!(self->brush().color() == QColor(129, 65, 65))) {
-        self->setBrush(QColor(129, 65, 65));
+void ChessSquare::highlightSquareRed() {
+    if (!(this->brush().color() == QColor(129, 65, 65))) {
+        this->setBrush(QColor(129, 65, 65));
     } else {
         setBaseColor(rank, file);
     }
 }
 
-void ChessSquare::highlightSquareYellow(ChessSquare *self) {
-    if (!(self->brush().color() == QColor(252, 223, 116))) {
-        self->setBrush(QColor(252, 223, 116));
+void ChessSquare::highlightSquareYellow() {
+    if (!(this->brush().color() == QColor(252, 223, 116))) {
+        this->setBrush(QColor(252, 223, 116));
     } else {
         setBaseColor(rank, file);
     }

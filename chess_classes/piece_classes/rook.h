@@ -15,9 +15,6 @@ class Rook : public ChessPiece {
 
 public:
     Rook();
-
-private:
-    QString name = "Rook";
 };
 
 #endif // ROOK_H

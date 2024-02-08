@@ -51,6 +51,6 @@ int ChessPiece::getPossibleMoves()
 
 QString ChessPiece::getName()
 {
-    return name;
+    return m_name;
 }
 

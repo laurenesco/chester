@@ -11,4 +11,5 @@
 Queen::Queen()
 {
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//queen1.png");
+    m_name = "Queen";
 }

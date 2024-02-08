@@ -36,12 +36,12 @@ private:
     int file;
     ChessPiece *occupyingPiece;
 
-    void rightClick(ChessSquare *self);
-    void leftClick(ChessSquare *self);
+    void rightClick();
+    void leftClick();
 
-    void highlightSquareRed(ChessSquare *self);
-    void highlightSquareYellow(ChessSquare *self);
-    void highlightPossibleMoves(ChessSquare *self);
+    void highlightSquareRed();
+    void highlightSquareYellow();
+    void highlightPossibleMoves();
     void setBaseColor(int rank, int file);
 };
 

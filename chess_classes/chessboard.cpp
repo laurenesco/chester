@@ -48,10 +48,10 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 1 : 6;
             bool isDark = false;
 
-            ChessPiece *pawn;
+            Pawn *pawn = new Pawn();
 
-            if (i == 0) { pawn = &lightPawn[j]; }
-            else { pawn = &darkPawn[j]; isDark = true; }
+            if (i == 0) { lightPawn[j] = pawn; }
+            else { darkPawn[j] = pawn; isDark = true; }
 
             addPieceToOpeningSquare(pawn, 5, 5, 10, 10, rank, j, isDark);
         }
@@ -64,10 +64,10 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 0 : 7;
             bool isDark = false;
 
-            ChessPiece *rook = new Rook();
+            Rook *rook = new Rook();
 
-            if (i == 0) { rook = &lightRook; }
-            else { rook = &darkRook; isDark = true; }
+            if (i == 0) { lightRook = rook; }
+            else { darkRook = rook; isDark = true; }
 
             addPieceToOpeningSquare(rook, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -80,10 +80,10 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 1 : 6;
             bool isDark = false;
 
-            ChessPiece *knight;
+            Knight *knight = new Knight();
 
-            if (i == 0) { knight = &lightKnight; }
-            else { knight = &darkKnight; isDark = true; }
+            if (i == 0) { lightKnight = knight; }
+            else { darkKnight = knight; isDark = true; }
 
             addPieceToOpeningSquare(knight, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -96,10 +96,10 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 2 : 5;
             bool isDark = false;
 
-            ChessPiece *bishop;
+            Bishop *bishop = new Bishop();
 
-            if (i == 0) { bishop = &lightBishop; }
-            else { bishop = &darkBishop; isDark = true; }
+            if (i == 0) { lightBishop = bishop; }
+            else { darkBishop = bishop; isDark = true; }
 
             addPieceToOpeningSquare(bishop, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -112,10 +112,10 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 4 : 4;
             bool isDark = false;
 
-            ChessPiece *king;
+            King *king = new King();
 
-            if (i == 0) { king = &lightKing; }
-            else { king = &darkKing; isDark = true; }
+            if (i == 0) { lightKing = king; }
+            else { darkKing = king; isDark = true; }
 
             addPieceToOpeningSquare(king, 5, 5, 10, 10, rank, file, isDark);
           }
@@ -128,10 +128,10 @@ void ChessBoard::loadStartingPosition() {
             int file = (j == 0) ? 3 : 3;
             bool isDark = false;
 
-            ChessPiece *queen;
+            Queen *queen = new Queen();
 
-            if (i == 0) { queen = &lightQueen; }
-            else { queen = &darkQueen; isDark = true; }
+            if (i == 0) { lightQueen = queen; }
+            else { darkQueen = queen; isDark = true; }
 
             addPieceToOpeningSquare(queen, 5, 5, 10, 10, rank, file, isDark);
           }

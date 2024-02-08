@@ -11,4 +11,5 @@
 Knight::Knight()
 {
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//knight1.png");
+    m_name = "Knight";
 }

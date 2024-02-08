@@ -15,9 +15,6 @@ class Bishop : public ChessPiece {
 
 public:
     Bishop();
-
-private:
-    QString name = "Bishop";
 };
 
 #endif // BISHOP_H
