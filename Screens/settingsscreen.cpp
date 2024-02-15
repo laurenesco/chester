@@ -9,20 +9,6 @@
 #include "settingsscreen.h"
 #include "ui_settingsscreen.h"
 
-// Example query:
-/*
-QString insertQuery = "INSERT INTO your_table_name (column1, column2) VALUES (?, ?)";
-QSqlQuery query;
-query.prepare(insertQuery);
-query.addBindValue(value1);
-query.addBindValue(value2);
-
-if (!query.exec()) {
-    qDebug() << "Error executing insert query:" << query.lastError().text();
-    return 1;
-}
-*/
-
 // Constructor
 SettingsScreen::SettingsScreen(QWidget *parent) :
     QMainWindow(parent),
@@ -68,3 +54,17 @@ void SettingsScreen::on_btn_closeWindow_clicked()
     Q_EMIT settingsScreenClosed();
     this->close();
 }
+
+// Example query:
+/*
+QString insertQuery = "INSERT INTO your_table_name (column1, column2) VALUES (?, ?)";
+QSqlQuery query;
+query.prepare(insertQuery);
+query.addBindValue(value1);
+query.addBindValue(value2);
+
+if (!query.exec()) {
+    qDebug() << "Error executing insert query:" << query.lastError().text();
+    return 1;
+}
+*/

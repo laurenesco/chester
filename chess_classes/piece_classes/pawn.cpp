@@ -1,5 +1,5 @@
 //
-// Program Name:              pawn.cpp
+// Program Name:             pawn.cpp
 // Date Last Modified:        01/30/2024
 // Last Modified By:            Lauren Escobedo
 //
@@ -10,6 +10,7 @@
 
 Pawn::Pawn()
 {
-    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
+    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
     m_name = "Pawn";
+    m_movesVector = {-1, 1, 0, 1, 1, 1};
 }

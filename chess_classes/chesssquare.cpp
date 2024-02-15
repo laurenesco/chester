@@ -27,35 +27,57 @@ void ChessSquare::setBaseColor(int rank, int file) {
 void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {           // Right mouse click event
-        leftClick();
-    } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
         rightClick();
+    } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
+        leftClick();
     }
 
     QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
+}
+
+// On left "main" click
+void ChessSquare::leftClick()
+{
+    if (occupyingPiece == nullptr) {
+        qDebug() << "Left click - No piece on square";
+    } else {
+        qDebug() << "Left click - Piece on square: " << occupyingPiece->getName();
+        // highlightPossibleMoves();
+        Q_EMIT squareClicked(rank, file);
+    }
+    highlightSquareYellow();
 }
 
 // On right click
 void ChessSquare::rightClick()
 {
     if (occupyingPiece == nullptr) {
-        qDebug() << "No piece on square";
+        qDebug() << "RIght click - No piece on square";
     } else {
-        qDebug() << "Piece on square: " << occupyingPiece->getName();
+        qDebug() << "Right click - Piece on square: " << occupyingPiece->getName();
     }
     highlightSquareRed();
 }
 
-// On left click
-void ChessSquare::leftClick()
-{
-    highlightSquareYellow();
-    highlightPossibleMoves();
-}
+// Highlight possible moves for the selected piece
+//void ChessSquare::highlightPossibleMoves() {
+//    std::vector<int> coords = occupyingPiece->getMovesVector();
 
-void ChessSquare::highlightPossibleMoves() {
-    return;
-}
+//    qDebug() << "Rank: " << rank << " File: " << file;
+
+//    for (int i = 0; i < (int) coords.size()/2; i ++)
+//    {
+//        int x = coords[i];
+//        int y = coords[i+1];
+
+//        int newX = rank + x;
+//        int newY = rank + y;
+
+//        // ChessSquare *possibleSquare = parentBoard->getSquare(newX, newY);
+//    }
+
+//    return;
+//}
 
 void ChessSquare::highlightSquareRed() {
     if (!(this->brush().color() == QColor(129, 65, 65))) {
@@ -83,4 +105,18 @@ ChessPiece *ChessSquare::getOccupyingPiece() const
 void ChessSquare::setOccupyingPiece(ChessPiece *newOccupyingPiece)
 {
     occupyingPiece = newOccupyingPiece;
+}
+
+void ChessSquare::setRank(int rank)
+{
+    if (rank >= 0 && rank < 8) {
+        this->rank = rank;
+    }
+}
+
+void ChessSquare::setFile(int file)
+{
+    if (file >= 0 && file < 8) {
+        this->file = file;
+    }
 }

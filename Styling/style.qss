@@ -59,7 +59,8 @@ QLabel[objectName="lbl_testPython"] {
 }
 
 QPushButton:pressed {
-    background-color: #9DA39A;
+    /* background-color: #9DA39A; */
+    color: black;
 }
 
 QPushButton:hover:!pressed {

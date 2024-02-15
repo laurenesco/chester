@@ -29,11 +29,11 @@ class ChessBoard : public QWidget {
 
 public:
     explicit ChessBoard(QWidget* parent = nullptr);
+    ChessSquare* boardSquares[8][8];
 
 private:
     QGraphicsScene* chessScene;
     QGraphicsView* chessView;
-    ChessSquare* chessSquares[8][8];
     QPixmap pieceSprite;
 
     // Light pieces
@@ -58,6 +58,11 @@ private:
     void createChessBoard();
     void addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
+
+    ChessSquare* getSquare(int rank, int file);
+
+private Q_SLOTS:
+        void highlightPossibleSquares(int rank, int file);
 };
 
 #endif // CHESSBOARD_H

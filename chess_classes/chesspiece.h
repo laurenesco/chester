@@ -22,13 +22,14 @@ public:
     virtual QPixmap getLightIcon();
     virtual QPixmap getDarkIcon();
     virtual void selectPiece();
-    virtual int getPossibleMoves(); // Will be pure virutal function
+    virtual std:: vector<int> getMovesVector();
     virtual QString getName();
 
 protected:
-    QPixmap icon;
-    bool isSelected;
+    QPixmap m_icon;
+    bool m_isSelected;
     QString m_name;
+    std:: vector<int> m_movesVector;
 
 private:
 };

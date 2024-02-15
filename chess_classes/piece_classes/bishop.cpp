@@ -10,6 +10,6 @@
 
 Bishop::Bishop()
 {
-    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
+    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
     m_name = "Bishop";
 }

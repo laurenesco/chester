@@ -17,21 +17,21 @@
    <widget class="QPushButton" name="btn_closeWindow">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>280</y>
-      <width>83</width>
+      <x>50</x>
+      <y>50</y>
+      <width>75</width>
       <height>29</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>back</string>
     </property>
    </widget>
    <widget class="QLabel" name="lbl_testPython">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>69</y>
+      <x>90</x>
+      <y>370</y>
       <width>1171</width>
       <height>151</height>
      </rect>

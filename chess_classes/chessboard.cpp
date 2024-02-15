@@ -7,6 +7,7 @@
 //
 
 #include "chessboard.h"
+#include "logic.h"
 #include "qboxlayout.h"
 
 ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
@@ -28,6 +29,7 @@ ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
     loadStartingPosition();
 }
 
+// The 64 chess board ChessSquare objects created here
 void ChessBoard::createChessBoard() {
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
@@ -36,7 +38,12 @@ void ChessBoard::createChessBoard() {
             chessScene->addItem(square);
 
              // Set each entry in the array to a ChessSquare
-            chessSquares[rank][file] = square;
+            boardSquares[rank][file] = square;
+            square->setRank(rank);
+            square->setFile(file);
+
+            // connect(boardSquares[rank][file], &ChessSquare::squareClicked, this, &ChessBoard::onSquareClicked);
+            connect(square, &ChessSquare::squareClicked, this, &ChessBoard::highlightPossibleSquares);
         }
     }
 }
@@ -144,7 +151,7 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     QPixmap pieceSprite;
     if (isDark) { pieceSprite = piece->getDarkIcon(); }
     else { pieceSprite = piece->getLightIcon(); }
-    ChessSquare *squares = chessSquares[rank][file];
+    ChessSquare *squares = boardSquares[rank][file];
     QPixmap scaledPiece = pieceSprite.scaled(tileSize-shrinkX, tileSize-shrinkY, Qt::KeepAspectRatio);
     QGraphicsPixmapItem *finalSprite = new QGraphicsPixmapItem(scaledPiece);
 
@@ -153,6 +160,35 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     chessScene->addItem(finalSprite);
 
     // Add to associated ChessSquare object
-    ChessSquare *square = chessSquares[rank][file];
+    ChessSquare *square = boardSquares[rank][file];
     square->setOccupyingPiece(piece);
+}
+
+ChessSquare* ChessBoard::getSquare(int rank, int file)
+{
+    return boardSquares[rank][file];
+}
+
+ void ChessBoard::highlightPossibleSquares(int rank, int file) {
+     ChessPiece *selectedPiece = boardSquares[rank][file]->getOccupyingPiece();
+        std::vector<int> coords = selectedPiece->getMovesVector();
+
+       qDebug() << "Rank: " << rank << " File: " << file;
+
+        for (int i = 0; i < (int) coords.size(); i+=2)
+        {
+            int x = coords[i];
+            int y = coords[i+1];
+            // qDebug() << "coords[i]: " << x << "coords[i+1] " << y;
+
+            int newFile = file + x;          // Change in x axis (subtract for opponent pieces)
+            int newRank = rank - y;     // Change in y axis (subtract for players pieces)
+
+            qDebug() << "new rank: " << newRank << "new file:" << newFile;
+
+            ChessSquare *possibleSquare = this->getSquare(newRank, newFile);
+            possibleSquare->highlightSquareYellow();
+         }
+
+        return;
 }

@@ -10,6 +10,6 @@
 
 King::King()
 {
-    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
+    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
     m_name = "King";
 }

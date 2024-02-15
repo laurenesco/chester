@@ -15,7 +15,7 @@ ChessPiece::ChessPiece()
 }
 
 QPixmap ChessPiece::getIcon() {
-    return icon;
+    return m_icon;
 }
 
 QPixmap ChessPiece::getLightIcon()
@@ -44,9 +44,9 @@ void ChessPiece::selectPiece()
 
 }
 
-int ChessPiece::getPossibleMoves()
+std::vector<int> ChessPiece::getMovesVector()
 {
-
+    return m_movesVector;
 }
 
 QString ChessPiece::getName()

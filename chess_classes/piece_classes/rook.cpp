@@ -10,6 +10,6 @@
 
 Rook::Rook()
 {
-    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
+    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
     m_name = "Rook";
 }

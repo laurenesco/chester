@@ -38,14 +38,18 @@ for epoch in range(100):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+    print(f"Epoch: {epoch + 1}")
 
 # Make predictions on new data
 new_data = torch.tensor([[1.5, -0.5], [-2.0, 1.0]])
 predictions = model(new_data)
 
 # Format predictions with labels and percentages
+print("\n")
 print("Predictions for New Data:")
 print("-" * 25)
 for i, prediction in enumerate(predictions):
     print(f"Sample {i+1}:")
     print(f"  Probability of Sum of Features > 0: {prediction.item()*100:.2f}%")
+
+print("\n")
