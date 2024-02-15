@@ -31,8 +31,7 @@ void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
     } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
         leftClick();
     }
-
-    QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
+    // QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
 // On left "main" click
@@ -42,44 +41,22 @@ void ChessSquare::leftClick()
         qDebug() << "Left click - No piece on square";
     } else {
         qDebug() << "Left click - Piece on square: " << occupyingPiece->getName();
-        // highlightPossibleMoves();
-        Q_EMIT squareClicked(rank, file);
+        Q_EMIT squareLeftClicked(rank, file);
     }
-    highlightSquareYellow();
 }
 
 // On right click
 void ChessSquare::rightClick()
 {
     if (occupyingPiece == nullptr) {
-        qDebug() << "RIght click - No piece on square";
+        qDebug() << "Right click - No piece on square";
     } else {
         qDebug() << "Right click - Piece on square: " << occupyingPiece->getName();
+        Q_EMIT squareRightClicked(rank, file);
     }
-    highlightSquareRed();
 }
 
-// Highlight possible moves for the selected piece
-//void ChessSquare::highlightPossibleMoves() {
-//    std::vector<int> coords = occupyingPiece->getMovesVector();
-
-//    qDebug() << "Rank: " << rank << " File: " << file;
-
-//    for (int i = 0; i < (int) coords.size()/2; i ++)
-//    {
-//        int x = coords[i];
-//        int y = coords[i+1];
-
-//        int newX = rank + x;
-//        int newY = rank + y;
-
-//        // ChessSquare *possibleSquare = parentBoard->getSquare(newX, newY);
-//    }
-
-//    return;
-//}
-
-void ChessSquare::highlightSquareRed() {
+void ChessSquare::toggleSquareRed() {
     if (!(this->brush().color() == QColor(129, 65, 65))) {
         this->setBrush(QColor(129, 65, 65));
     } else {
@@ -87,12 +64,17 @@ void ChessSquare::highlightSquareRed() {
     }
 }
 
-void ChessSquare::highlightSquareYellow() {
+void ChessSquare::toggleSquareYellow() {
     if (!(this->brush().color() == QColor(252, 223, 116))) {
         this->setBrush(QColor(252, 223, 116));
     } else {
         setBaseColor(rank, file);
     }
+}
+
+void ChessSquare::resetColor()
+{
+    setBaseColor(rank, file);
 }
 
 /* ------------- Get and set methods -------------- */

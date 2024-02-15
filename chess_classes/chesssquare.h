@@ -15,10 +15,7 @@
 
 #include <QDebug>
 
-// #include "chessboard.h"
 #include "chesspiece.h"
-
-class ChessBoard;
 
 class ChessSquare : public QObject, public QGraphicsRectItem {
     Q_OBJECT
@@ -31,11 +28,13 @@ public:
     void setOccupyingPiece(ChessPiece *newOccupyingPiece);
     void setRank(int rank);
     void setFile(int file);
-    void highlightSquareRed();
-    void highlightSquareYellow();
+    void toggleSquareRed();
+    void toggleSquareYellow();
+    void resetColor();
 
 Q_SIGNALS:
-    void squareClicked(int rank, int file);
+    void squareLeftClicked(int rank, int file);
+    void squareRightClicked(int rank, int file);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -48,7 +47,6 @@ private:
     void rightClick();
     void leftClick();
 
-   //  void highlightPossibleMoves();
     void setBaseColor(int rank, int file);
 };
 

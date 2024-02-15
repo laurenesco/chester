@@ -53,6 +53,8 @@ private:
     Queen *darkQueen;
 
     int tileSize = 620/8;
+    std:: vector<ChessSquare*> highlightedSquares;
+    ChessSquare *selectedSquare;
 
     void loadStartingPosition();
     void createChessBoard();
@@ -60,6 +62,7 @@ private:
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
 
     ChessSquare* getSquare(int rank, int file);
+    void resetHighlightedSquares();
 
 private Q_SLOTS:
         void highlightPossibleSquares(int rank, int file);
