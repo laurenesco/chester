@@ -29,6 +29,9 @@ public:
     void setRank(int rank);
     void setFile(int file);
     void setIsOccupied(int value);
+
+    int getRank();
+    int getFile();
     int getIsOccupied();
 
     void toggleSquareRed();

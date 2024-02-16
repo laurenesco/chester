@@ -20,7 +20,6 @@ public:
     Logic();
 
 private:
-    bool isValidMove(ChessSquare *square, ChessPiece piece);
 };
 
 #endif // LOGIC_H

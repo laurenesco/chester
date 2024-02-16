@@ -29,12 +29,16 @@ class ChessBoard : public QWidget {
 
 public:
     explicit ChessBoard(QWidget* parent = nullptr);
-    ChessSquare* boardSquares[8][8];
 
 private:
+    // Chess squares comprising board
+    ChessSquare* boardSquares[8][8];
+    int tileSize = 620/8;
+    std:: vector<ChessSquare*> highlightedSquares;
+    ChessSquare *selectedSquare;
+
     QGraphicsScene* chessScene;
     QGraphicsView* chessView;
-    QPixmap pieceSprite;
 
     // Light pieces
     Pawn *lightPawn[8];
@@ -52,10 +56,6 @@ private:
     King *darkKing;
     Queen *darkQueen;
 
-    int tileSize = 620/8;
-    std:: vector<ChessSquare*> highlightedSquares;
-    ChessSquare *selectedSquare;
-
     void loadStartingPosition();
     void createChessBoard();
     void addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
@@ -63,9 +63,10 @@ private:
 
     ChessSquare* getSquare(int rank, int file);
     void resetHighlightedSquares();
+    void highlightPossibleSquares(ChessSquare *square);
 
 private Q_SLOTS:
-        void highlightPossibleSquares(int rank, int file);
+    void squareClicked(int rank, int file);
 };
 
 #endif // CHESSBOARD_H

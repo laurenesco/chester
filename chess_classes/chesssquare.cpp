@@ -110,6 +110,16 @@ void ChessSquare::setIsOccupied(int value)
     return;
 }
 
+int ChessSquare::getRank()
+{
+    return rank;
+}
+
+int ChessSquare::getFile()
+{
+    return file;
+}
+
 int ChessSquare::getIsOccupied()
 {
     return isOccupied;

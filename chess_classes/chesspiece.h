@@ -12,6 +12,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QString>
+#include <QDebug>
 
 class ChessPiece
 {
@@ -22,19 +23,19 @@ public:
     virtual QPixmap getLightIcon();
     virtual QPixmap getDarkIcon();
     virtual QString getName();
-    virtual int getColor();
+    virtual bool getColor();
     virtual std:: vector<int> getMovesVector();
+    virtual bool getIsSelected();
 
-    virtual void setColor(int value);
-
-    virtual void selectPiece();
+    virtual void setIsSelected(bool);
+    virtual void setColor(bool);
 
 protected:
     QPixmap icon;
     bool isSelected;
     QString name;
     std:: vector<int> movesVector;
-    int isWhite;
+    bool isWhite;
 
 private:
 };

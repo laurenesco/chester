@@ -42,7 +42,7 @@ void ChessBoard::createChessBoard() {
             square->setRank(rank);
             square->setFile(file);
 
-            connect(square, &ChessSquare::squareLeftClicked, this, &ChessBoard::highlightPossibleSquares);
+            connect(square, &ChessSquare::squareLeftClicked, this, &ChessBoard::squareClicked);
             // connect(square, &ChessSquare::squareRightClicked, this, &ChessBoard::highlightPossibleSquares);
             // add this on right click     highlightSquareRed();
         }
@@ -209,21 +209,11 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
     return boardSquares[rank][file];
 }
 
-// This function runs if the user left clicks on a square with a piece occupying it
- void ChessBoard::highlightPossibleSquares(int rank, int file) {
-     resetHighlightedSquares();
-     ChessSquare *square = this->getSquare(rank, file);
+// Highlight all potential moves based on the piece selected
+ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
 
-     // If the square is not already selected
-     if (selectedSquare != square) {
-         if (selectedSquare != nullptr) { selectedSquare->resetColor(); }
-         selectedSquare = square;
-         square->toggleSquareYellow();
-
-        ChessPiece *selectedPiece = boardSquares[rank][file]->getOccupyingPiece();
+        ChessPiece *selectedPiece = square->getOccupyingPiece();
         std::vector<int> coords = selectedPiece->getMovesVector();
-
-        qDebug() << "Rank: " << rank << " File: " << file;
 
         // Highlight potential moves yellow
         for (int i = 0; i < (int) coords.size(); i+=2)
@@ -231,16 +221,15 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
             int newRank, newFile;
             int x = coords[i];
             int y = coords[i+1];
-            // qDebug() << "coords[i]: " << x << "coords[i+1] " << y;
 
             if (selectedPiece->getColor()) {
                 // Light pieces [Currently opponent side]
-                newFile = file - x;          // Change in x-axis
-                newRank = rank + y;     // Change in y-axis
+                newFile = square->getFile() - x;          // Change in x-axis
+                newRank = square->getRank() + y;     // Change in y-axis
             } else {
                 // Dark pieces [Currently player side]
-                newFile = file + x;          // Change in x-axis
-                newRank = rank - y;     // Change in y-axis
+                newFile = square->getFile() + x;          // Change in x-axis
+                newRank = square->getRank() - y;     // Change in y-axis
             }
 
             qDebug() << "new rank: " << newRank << "new file:" << newFile;
@@ -248,23 +237,15 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
             // Only highlight the square if it is on the board
             if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
                 // Do not highlight squares with friendly pieces
-                // if (square->getIsOccupied() && !(selectedPiece->getColor() == 1 && boardSquares[newRank][newFile]->getOccupyingPiece()->getColor() == 1)) {
-                    ChessSquare *possibleMove = this->getSquare(newRank, newFile);
-                    possibleMove->toggleSquareYellow();
-                    highlightedSquares.push_back(possibleMove);
-                    if (possibleMove->getIsOccupied()) {
-                        qDebug() << "Rank: " << newRank << " File: " << newFile << " " << "IsOccupied";
-                        qDebug() << "Piece color: " << selectedPiece->getColor() << " & target square piece color: " << possibleMove->getOccupyingPiece()->getColor();
-                    }
-                // }
+                ChessSquare *possibleMove = this->getSquare(newRank, newFile);
+                possibleMove->toggleSquareYellow();
+                highlightedSquares.push_back(possibleMove);
+                if (possibleMove->getIsOccupied()) {
+                    qDebug() << "Rank: " << newRank << " File: " << newFile << " " << "IsOccupied";
+                    qDebug() << "Piece color: " << selectedPiece->getColor() << " & target square piece color: " << possibleMove->getOccupyingPiece()->getColor();
+                }
             }
          }
-     } else {
-         // If square was already actively selected
-         square->resetColor();
-         selectedSquare = nullptr;
-     }
-
     return;
 }
 
@@ -274,4 +255,32 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
          highlightedSquares.pop_back();
          square->resetColor();
      }
+     return;
+ }
+
+ // This function runs if the user left clicks on a square
+ void ChessBoard::squareClicked(int rank, int file)
+ {
+     if (boardSquares[rank][file] != nullptr) {
+         qDebug() << "User has somehow clicked on a square that does not exist";
+     } else {
+         qDebug() << "Rank: " << rank << " File: " << file;
+
+         resetHighlightedSquares();
+         ChessSquare *square = this->getSquare(rank, file);
+
+         // If the square is not already selected
+         if (selectedSquare != square) {
+             if (selectedSquare != nullptr) {
+                 selectedSquare->resetColor();
+             }
+             selectedSquare = square;
+             square->toggleSquareYellow();
+             highlightPossibleSquares(square);
+        } else { // Else if the square was already actively selected
+            square->resetColor();
+            selectedSquare = nullptr;
+        }
+     }
+    return;
  }

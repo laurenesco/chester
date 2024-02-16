@@ -23,7 +23,7 @@ QPixmap ChessPiece::getLightIcon()
     QPixmap originalDarkIcon = this->getIcon();
     QPixmap lightIcon = originalDarkIcon.scaled(originalDarkIcon.size());
     QPainter painter(&lightIcon);
-    QColor color(22, 38, 48);
+    QColor color(255, 255, 255);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(lightIcon.rect(), color);
@@ -39,14 +39,20 @@ QPixmap ChessPiece::getDarkIcon()
     return this->getIcon();
 }
 
-void ChessPiece::selectPiece()
-{
-
-}
-
 std::vector<int> ChessPiece::getMovesVector()
 {
     return movesVector;
+}
+
+bool ChessPiece::getIsSelected()
+{
+    return isSelected;
+}
+
+void ChessPiece::setIsSelected(bool value)
+{
+    isSelected = value;
+    return;
 }
 
 QString ChessPiece::getName()
@@ -54,12 +60,12 @@ QString ChessPiece::getName()
     return name;
 }
 
-int ChessPiece::getColor()
+bool ChessPiece::getColor()
 {
     return isWhite;
 }
 
-void ChessPiece::setColor(int value)
+void ChessPiece::setColor(bool value)
 {
     isWhite = value;
     return;

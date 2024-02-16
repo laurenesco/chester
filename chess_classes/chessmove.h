@@ -30,7 +30,6 @@ private:
     ChessPiece *pieceMoved;
     ChessPiece *pieceCaptured;
 
-    QString processMove();
     QString sanityCheck();
     int saveMove();
 };

@@ -15,7 +15,4 @@ ChessMove::ChessMove(ChessSquare *sSquare, ChessSquare *eSquare)
 //      - castling rights are updated
 //      - any consecutive repeat moves are notated
 //      - stalemates are caught
-QString ChessMove::processMove()
-{
 
-}
