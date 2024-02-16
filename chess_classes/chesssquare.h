@@ -28,6 +28,9 @@ public:
     void setOccupyingPiece(ChessPiece *newOccupyingPiece);
     void setRank(int rank);
     void setFile(int file);
+    void setIsOccupied(int value);
+    int getIsOccupied();
+
     void toggleSquareRed();
     void toggleSquareYellow();
     void resetColor();
@@ -42,6 +45,7 @@ protected:
 private:
     int rank;
     int file;
+    int isOccupied;
     ChessPiece *occupyingPiece = nullptr;
 
     void rightClick();

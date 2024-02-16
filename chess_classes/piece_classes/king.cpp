@@ -10,6 +10,16 @@
 
 King::King()
 {
-    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
-    m_name = "King";
+    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
+    name = "King";
+    movesVector = {
+        -1, 1,
+        0, 1,
+        1, 1,
+        1, 0,
+        1, -1,
+        0, -1,
+        -1, -1,
+        -1, 0
+    };
 }

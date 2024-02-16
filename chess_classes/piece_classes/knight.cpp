@@ -10,6 +10,15 @@
 
 Knight::Knight()
 {
-    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//knight1.png");
-    m_name = "Knight";
+    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//knight1.png");
+    name = "Knight";
+    movesVector = {
+        -2, 1,
+        -1, 2,
+        1, 2,
+        2, 1,
+        2, -1,
+        1, -2,
+        -1, -2,
+        -2, -1};
 }

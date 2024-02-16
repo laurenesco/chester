@@ -10,6 +10,36 @@
 
 Bishop::Bishop()
 {
-    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
-    m_name = "Bishop";
+    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
+    name = "Bishop";
+    movesVector = {
+        1, -1,
+        2, -2,
+        3, -3,
+        4, -4,
+        5, -5,
+        6, -6,
+        7, -7,
+        1, 1,
+        2, 2,
+        3, 3,
+        4, 4,
+        5, 5,
+        6, 6,
+        7, 7,
+        -1, 1,
+        -2, 2,
+        -3, 3,
+        -4, 4,
+        -5, 5,
+        -6, 6,
+        -7, 7,
+        -1, -1,
+        -2, -2,
+        -3, -3,
+        -4, -4,
+        -5, -5,
+        -6, -6,
+        -7, -7
+    };
 }

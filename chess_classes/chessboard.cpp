@@ -49,6 +49,7 @@ void ChessBoard::createChessBoard() {
     }
 }
 
+// Creates all the ChessPiece objects
 void ChessBoard::loadStartingPosition() {
     // Pawns
     for (int i = 0; i < 2; i ++) {
@@ -58,8 +59,14 @@ void ChessBoard::loadStartingPosition() {
 
             Pawn *pawn = new Pawn();
 
-            if (i == 0) { lightPawn[j] = pawn; }
-            else { darkPawn[j] = pawn; isDark = true; }
+            if (i == 0) {
+                lightPawn[j] = pawn;
+                pawn->setColor(1);
+            } else {
+                darkPawn[j] = pawn;
+                isDark = true;
+                pawn->setColor(0);
+            }
 
             addPieceToOpeningSquare(pawn, 5, 5, 10, 10, rank, j, isDark);
         }
@@ -74,8 +81,14 @@ void ChessBoard::loadStartingPosition() {
 
             Rook *rook = new Rook();
 
-            if (i == 0) { lightRook = rook; }
-            else { darkRook = rook; isDark = true; }
+            if (i == 0) {
+                lightRook = rook;
+                rook->setColor(1);
+            } else {
+                darkRook = rook;
+                isDark = true;
+                rook->setColor(0);
+            }
 
             addPieceToOpeningSquare(rook, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -90,8 +103,14 @@ void ChessBoard::loadStartingPosition() {
 
             Knight *knight = new Knight();
 
-            if (i == 0) { lightKnight = knight; }
-            else { darkKnight = knight; isDark = true; }
+            if (i == 0) {
+                lightKnight = knight;
+                knight->setColor(1);
+            } else {
+                darkKnight = knight;
+                isDark = true;
+                knight->setColor(0);
+            }
 
             addPieceToOpeningSquare(knight, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -106,8 +125,14 @@ void ChessBoard::loadStartingPosition() {
 
             Bishop *bishop = new Bishop();
 
-            if (i == 0) { lightBishop = bishop; }
-            else { darkBishop = bishop; isDark = true; }
+            if (i == 0) {
+                lightBishop = bishop;
+                bishop->setColor(1);
+            } else {
+                darkBishop = bishop;
+                isDark = true;
+                bishop->setColor(0);
+            }
 
             addPieceToOpeningSquare(bishop, 5, 5, 10, 10, rank, file, isDark);
         }
@@ -122,8 +147,14 @@ void ChessBoard::loadStartingPosition() {
 
             King *king = new King();
 
-            if (i == 0) { lightKing = king; }
-            else { darkKing = king; isDark = true; }
+            if (i == 0) {
+                lightKing = king;
+                king->setColor(1);
+            } else {
+                darkKing = king;
+                isDark = true;
+                king->setColor(0);
+            }
 
             addPieceToOpeningSquare(king, 5, 5, 10, 10, rank, file, isDark);
           }
@@ -138,8 +169,15 @@ void ChessBoard::loadStartingPosition() {
 
             Queen *queen = new Queen();
 
-            if (i == 0) { lightQueen = queen; }
-            else { darkQueen = queen; isDark = true; }
+            if (i == 0) {
+                lightQueen = queen;
+                queen->setColor(1);
+            }
+            else {
+                darkQueen = queen;
+                isDark = true;
+                queen->setColor(0);
+            }
 
             addPieceToOpeningSquare(queen, 5, 5, 10, 10, rank, file, isDark);
           }
@@ -163,6 +201,7 @@ void ChessBoard::addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int off
     // Add to associated ChessSquare object
     ChessSquare *square = boardSquares[rank][file];
     square->setOccupyingPiece(piece);
+    square->setIsOccupied(1);
 }
 
 ChessSquare* ChessBoard::getSquare(int rank, int file)
@@ -184,25 +223,44 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
         ChessPiece *selectedPiece = boardSquares[rank][file]->getOccupyingPiece();
         std::vector<int> coords = selectedPiece->getMovesVector();
 
-        // qDebug() << "Rank: " << rank << " File: " << file;
+        qDebug() << "Rank: " << rank << " File: " << file;
 
         // Highlight potential moves yellow
         for (int i = 0; i < (int) coords.size(); i+=2)
         {
+            int newRank, newFile;
             int x = coords[i];
             int y = coords[i+1];
             // qDebug() << "coords[i]: " << x << "coords[i+1] " << y;
 
-            int newFile = file + x;          // Change in x axis (subtract for opponent pieces)
-            int newRank = rank - y;     // Change in y axis (subtract for players pieces)
+            if (selectedPiece->getColor()) {
+                // Light pieces [Currently opponent side]
+                newFile = file - x;          // Change in x-axis
+                newRank = rank + y;     // Change in y-axis
+            } else {
+                // Dark pieces [Currently player side]
+                newFile = file + x;          // Change in x-axis
+                newRank = rank - y;     // Change in y-axis
+            }
 
-            // qDebug() << "new rank: " << newRank << "new file:" << newFile;
+            qDebug() << "new rank: " << newRank << "new file:" << newFile;
 
-            ChessSquare *possibleMove = this->getSquare(newRank, newFile);
-            possibleMove->toggleSquareYellow();
-            highlightedSquares.push_back(possibleMove);
+            // Only highlight the square if it is on the board
+            if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
+                // Do not highlight squares with friendly pieces
+                // if (square->getIsOccupied() && !(selectedPiece->getColor() == 1 && boardSquares[newRank][newFile]->getOccupyingPiece()->getColor() == 1)) {
+                    ChessSquare *possibleMove = this->getSquare(newRank, newFile);
+                    possibleMove->toggleSquareYellow();
+                    highlightedSquares.push_back(possibleMove);
+                    if (possibleMove->getIsOccupied()) {
+                        qDebug() << "Rank: " << newRank << " File: " << newFile << " " << "IsOccupied";
+                        qDebug() << "Piece color: " << selectedPiece->getColor() << " & target square piece color: " << possibleMove->getOccupyingPiece()->getColor();
+                    }
+                // }
+            }
          }
      } else {
+         // If square was already actively selected
          square->resetColor();
          selectedSquare = nullptr;
      }

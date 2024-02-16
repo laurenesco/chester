@@ -14,6 +14,7 @@ ChessSquare::ChessSquare(int posX, int posY, int width, int height)
     this->rank = posX;
     this->file = posY;
     setBaseColor(posX, posY);
+    this->isOccupied = 0;
 }
 
 void ChessSquare::setBaseColor(int rank, int file) {
@@ -101,4 +102,15 @@ void ChessSquare::setFile(int file)
     if (file >= 0 && file < 8) {
         this->file = file;
     }
+}
+
+void ChessSquare::setIsOccupied(int value)
+{
+    isOccupied = value;
+    return;
+}
+
+int ChessSquare::getIsOccupied()
+{
+    return isOccupied;
 }

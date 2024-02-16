@@ -10,6 +10,36 @@
 
 Rook::Rook()
 {
-    m_icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
-    m_name = "Rook";
+    icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
+    name = "Rook";
+    movesVector = {
+    0, -1,
+    0, -2,
+    0, -3,
+    0, -4,
+    0, -5,
+    0, -6,
+    0, -7,
+    0, 1,
+    0, 2,
+    0, 3,
+    0, 4,
+    0, 5,
+    0, 6,
+    0, 7,
+    1, 0,
+    2, 0,
+    3, 0,
+    4, 0,
+    5, 0,
+    6, 0,
+    7, 0,
+    -1, 0,
+    -2, 0,
+    -3, 0,
+    -4, 0,
+    -5, 0,
+    -6, 0,
+    -7, 0,
+};
 }
