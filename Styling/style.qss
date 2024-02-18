@@ -67,3 +67,8 @@ QPushButton:hover:!pressed {
     /*background-color: #B98389;*/
     color: gray;
 }
+
+QMessageBox {
+    background-color: #FFFFFF; /* Set the background color to white */
+    color: #000000; /* Set the text color to black */
+}

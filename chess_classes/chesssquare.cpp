@@ -23,6 +23,7 @@ void ChessSquare::setBaseColor(int rank, int file) {
     } else {
         this->setBrush(QColor(235, 231, 221));
     }
+    return;
 }
 
 void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -32,29 +33,28 @@ void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
     } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
         leftClick();
     }
+    return;
     // QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
 // On left "main" click
 void ChessSquare::leftClick()
 {
-    if (occupyingPiece == nullptr) {
-        qDebug() << "Left click - No piece on square";
-    } else {
-        qDebug() << "Left click - Piece on square: " << occupyingPiece->getName();
-        Q_EMIT squareLeftClicked(rank, file);
-    }
+    Q_EMIT squareLeftClicked(rank, file);
+    return;
 }
 
 // On right click
 void ChessSquare::rightClick()
 {
     if (occupyingPiece == nullptr) {
-        qDebug() << "Right click - No piece on square";
+        // qDebug() << "Right click - No piece on square";
+        Q_EMIT squareRightClicked(rank, file);
     } else {
-        qDebug() << "Right click - Piece on square: " << occupyingPiece->getName();
+        // qDebug() << "Right click - Piece on square: " << occupyingPiece->getName();
         Q_EMIT squareRightClicked(rank, file);
     }
+    return;
 }
 
 void ChessSquare::toggleSquareRed() {
@@ -63,6 +63,7 @@ void ChessSquare::toggleSquareRed() {
     } else {
         setBaseColor(rank, file);
     }
+    return;
 }
 
 void ChessSquare::toggleSquareYellow() {
@@ -71,11 +72,13 @@ void ChessSquare::toggleSquareYellow() {
     } else {
         setBaseColor(rank, file);
     }
+    return;
 }
 
 void ChessSquare::resetColor()
 {
     setBaseColor(rank, file);
+    return;
 }
 
 /* ------------- Get and set methods -------------- */
@@ -88,6 +91,7 @@ ChessPiece *ChessSquare::getOccupyingPiece() const
 void ChessSquare::setOccupyingPiece(ChessPiece *newOccupyingPiece)
 {
     occupyingPiece = newOccupyingPiece;
+    return;
 }
 
 void ChessSquare::setRank(int rank)
@@ -95,6 +99,7 @@ void ChessSquare::setRank(int rank)
     if (rank >= 0 && rank < 8) {
         this->rank = rank;
     }
+    return;
 }
 
 void ChessSquare::setFile(int file)
@@ -102,6 +107,7 @@ void ChessSquare::setFile(int file)
     if (file >= 0 && file < 8) {
         this->file = file;
     }
+    return;
 }
 
 void ChessSquare::setIsOccupied(int value)

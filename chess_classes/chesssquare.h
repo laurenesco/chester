@@ -32,7 +32,7 @@ public:
 
     int getRank();
     int getFile();
-    int getIsOccupied();
+    int getIsOccupied(); // 1 signifies occupied
 
     void toggleSquareRed();
     void toggleSquareYellow();

@@ -23,16 +23,16 @@ public:
     virtual QPixmap getLightIcon();
     virtual QPixmap getDarkIcon();
     virtual QString getName();
-    virtual bool getColor();
+    virtual bool getWhite();
     virtual std:: vector<int> getMovesVector();
     virtual bool getIsSelected();
 
     virtual void setIsSelected(bool);
-    virtual void setColor(bool);
+    virtual void setWhite(bool);
 
 protected:
     QPixmap icon;
-    bool isSelected;
+    bool pieceSelected;
     QString name;
     std:: vector<int> movesVector;
     bool isWhite;

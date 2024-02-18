@@ -23,6 +23,7 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QPixmap>
+#include <QMessageBox>
 
 class ChessBoard : public QWidget {
     Q_OBJECT
@@ -35,6 +36,7 @@ private:
     ChessSquare* boardSquares[8][8];
     int tileSize = 620/8;
     std:: vector<ChessSquare*> highlightedSquares;
+    std::vector<ChessSquare*> possibleMoveSquares;
     ChessSquare *selectedSquare;
 
     QGraphicsScene* chessScene;
@@ -63,10 +65,13 @@ private:
 
     ChessSquare* getSquare(int rank, int file);
     void resetHighlightedSquares();
+    void resetPossibleMoveSquares();
+    bool squareInPossibleMoves(ChessSquare *square);
+    void movePiece(ChessSquare *square);
     void highlightPossibleSquares(ChessSquare *square);
 
 private Q_SLOTS:
-    void squareClicked(int rank, int file);
+    void squareLeftClicked(int rank, int file);
 };
 
 #endif // CHESSBOARD_H

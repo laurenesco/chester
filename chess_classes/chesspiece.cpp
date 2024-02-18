@@ -46,12 +46,12 @@ std::vector<int> ChessPiece::getMovesVector()
 
 bool ChessPiece::getIsSelected()
 {
-    return isSelected;
+    return pieceSelected;
 }
 
 void ChessPiece::setIsSelected(bool value)
 {
-    isSelected = value;
+    pieceSelected = value;
     return;
 }
 
@@ -60,12 +60,12 @@ QString ChessPiece::getName()
     return name;
 }
 
-bool ChessPiece::getColor()
+bool ChessPiece::getWhite()
 {
     return isWhite;
 }
 
-void ChessPiece::setColor(bool value)
+void ChessPiece::setWhite(bool value)
 {
     isWhite = value;
     return;
