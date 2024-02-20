@@ -37,7 +37,7 @@ private:
     int tileSize = 620/8;
     std:: vector<ChessSquare*> highlightedSquares;
     std::vector<ChessSquare*> possibleMoveSquares;
-    ChessSquare *selectedSquare;
+    ChessSquare *selectedSquare = nullptr;
 
     QGraphicsScene* chessScene;
     QGraphicsView* chessView;
@@ -58,9 +58,12 @@ private:
     King *darkKing;
     Queen *darkQueen;
 
+    bool movePending = false;
+
     void loadStartingPosition();
     void createChessBoard();
-    void addPieceToOpeningSquare(ChessPiece *piece, int offsetX, int offsetY, int shrinkX, int shrinkY, int rank, int file, bool isDark);
+    void addPieceToSquare(ChessPiece *piece, int rank, int file, int color);
+    void removePieceFromSquare(ChessSquare *square);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
 
     ChessSquare* getSquare(int rank, int file);
@@ -70,6 +73,11 @@ private:
     void movePiece(ChessSquare *square);
     void highlightPossibleSquares(ChessSquare *square);
 
+    void selectPiece(ChessPiece *selectedPiece, ChessSquare *square);
+    void deselectPiece(ChessPiece *selectedPiece, ChessSquare *square);
+    void selectSquare(ChessSquare *squareClicked);
+    void deselectSquare(ChessSquare *squareClicked);
+    void printMoveDebug(QString header);
 private Q_SLOTS:
     void squareLeftClicked(int rank, int file);
 };

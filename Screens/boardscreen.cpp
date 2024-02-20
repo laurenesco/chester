@@ -32,6 +32,7 @@ BoardScreen::BoardScreen(QWidget *parent) :
     // Creating and adding the chessboard to the window
     ChessBoard *chessboard = new ChessBoard(ui->frmBoard);
     chessboard->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
 }
 
 BoardScreen::~BoardScreen()
