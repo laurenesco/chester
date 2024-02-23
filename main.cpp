@@ -6,6 +6,16 @@
 // Program Description:     Driver file for the chesster application.
 //
 
+// TODO
+//- add pawn capture grid
+//- add en passant flag
+//- add castling rights
+//- add capture logic
+//- fine tune ai output
+//- implement settings page
+//- implement help page
+//- move font declaration into styling namespace
+
 #include "screens/startscreen.h"
 
 #include <QApplication>
@@ -17,16 +27,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Load font family TODO move to styling namespace
     // Load custom font from an OTF file
-    int fontId = QFontDatabase::addApplicationFont("C:/Users/laesc/OneDrive/Desktop/chester/styling/fonts/joystixmonospace.otf");
-    if (fontId != -1) {
-        QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-        if (!fontFamilies.isEmpty()) {
-            QString fontFamily = fontFamilies.at(0);
-            // Use fontFamily in your widget styling
-        }
-    }
+    QFontDatabase::addApplicationFont("C:/Users/laesc/OneDrive/Desktop/chester/styling/fonts/joystixmonospace.otf");
 
     // Set stylesheet
     QFile file("C:/Users/laesc/OneDrive/Desktop/chester/styling/style.qss");

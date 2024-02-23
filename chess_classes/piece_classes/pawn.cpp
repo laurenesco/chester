@@ -13,7 +13,6 @@ Pawn::Pawn()
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
     name = "Pawn";
     movesVector = {
-        -1, 1,
-        0, 1,
-        1, 1};
+        0, 1
+    };
 }

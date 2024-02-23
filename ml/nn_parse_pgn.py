@@ -12,9 +12,6 @@ def encode_move_to_uci(move):
     return move.uci()
 
 def process_pgn_files(training_directory):
-    X_data = []
-    y_data = []
-
     # Iterate over each file in the directory
     for filename in os.listdir(training_directory):
         if filename.endswith(".pgn"):  # Check if the file is a PGN file
@@ -36,16 +33,14 @@ def process_pgn_files(training_directory):
                     for move in game.mainline_moves():
                         # Encode the board representation to UCI format
                         encoded_board = encode_board_to_uci(board)
-                        # Append the encoded board to the data list
-                        X_data.append(encoded_board)
                         # Encode the move to UCI format
                         encoded_move = encode_move_to_uci(move)
-                        # Append the encoded move to the labels list
-                        y_data.append(encoded_move)
                         # Make the move on the board for the next iteration
-                        board.push(move)  
-                        
-    return X_data, y_data                           
+                        board.push(move)
+                        # Yield the encoded board and move
+                        print (encoded_board)
+                        yield encoded_board, encoded_move
 
-# process_pgn_files(training_directory)
 
+# for encoded_board, encoded_move in process_pgn_files(training_directory):
+#     print(encoded_board)

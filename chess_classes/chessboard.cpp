@@ -56,20 +56,18 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 8; j++) {
             int rank = (i == 0) ? 1 : 6;
-            int color;
 
             Pawn *pawn = new Pawn();
 
             if (i == 0) {
                 lightPawn[j] = pawn;
                 pawn->setWhite(true);
-                color = 1;
             } else {
                 darkPawn[j] = pawn;
                 pawn->setWhite(false);
-                color = 2;
             }
 
+            int color = pawn->getWhite() == true ? 1 : 2;
             addPieceToSquare(pawn, rank, j, color);
         }
     }
@@ -79,20 +77,18 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 0 : 7;
-            int color;
 
             Rook *rook = new Rook();
 
             if (i == 0) {
                 lightRook = rook;
                 rook->setWhite(true);
-                color = 1;
             } else {
                 darkRook = rook;
-                color = 0;
                 rook->setWhite(false);
             }
 
+            int color = rook->getWhite() == true ? 1 : 2;
             addPieceToSquare(rook, rank, file, color);
         }
     }
@@ -102,20 +98,18 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 1 : 6;
-            int color;
 
             Knight *knight = new Knight();
 
             if (i == 0) {
                 lightKnight = knight;
                 knight->setWhite(true);
-                color = 1;
             } else {
                 darkKnight = knight;
                 knight->setWhite(false);
-                color = 2;
             }
 
+            int color = knight->getWhite() == true ? 1 : 2;
             addPieceToSquare(knight, rank, file, color);
         }
     }
@@ -125,20 +119,18 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 2 : 5;
-            int color;
 
             Bishop *bishop = new Bishop();
 
             if (i == 0) {
                 lightBishop = bishop;
                 bishop->setWhite(true);
-                color = 1;
             } else {
                 darkBishop = bishop;
                 bishop->setWhite(false);
-                color = 2;
             }
 
+            int color = bishop->getWhite() == true ? 1 : 2;
             addPieceToSquare(bishop, rank, file, color);
         }
     }
@@ -148,20 +140,18 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 4 : 4;
-            int color;
 
             King *king = new King();
 
             if (i == 0) {
                 lightKing = king;
                 king->setWhite(true);
-                color = 1;
             } else {
                 darkKing = king;
                 king->setWhite(false);
-                color = 2;
             }
 
+            int color = king->getWhite() == true ? 1 : 2;
             addPieceToSquare(king, rank, file, color);
         }
     }
@@ -171,21 +161,19 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 3 : 3;
-            int color;
 
             Queen *queen = new Queen();
 
             if (i == 0) {
                 lightQueen = queen;
                 queen->setWhite(true);
-                color = 1;
             }
             else {
                 darkQueen = queen;
                 queen->setWhite(false);
-                color = 2;
             }
 
+            int color = queen->getWhite() == true ? 1 : 2;
             addPieceToSquare(queen, rank, file, color);
         }
     }
@@ -228,6 +216,7 @@ void ChessBoard::removePieceFromSquare(ChessSquare *square)
         ChessPiece *piece = square->getOccupyingPiece();
         QGraphicsPixmapItem *sprite = piece->getSprite();
         if (sprite) {
+            qDebug() << "Removing sprite from square.";
             chessScene->removeItem(sprite);
         } else {
             qDebug() << "Sprite pointer is null.";
@@ -280,9 +269,10 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
         // Reset lineStopped when a new direction is started (marked by 0, 0 coords)
         if (x == 0 && y == 0) {
             lineStopped = false;
+            continue;
         }
 
-        if (!lineStopped) {
+        if (lineStopped == false) {
             if (selectedPiece->getWhite()) {
                 // Light pieces [Currently opponent side]
                 newFile = square->getFile() - x;          // Change in x-axis
@@ -293,14 +283,10 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
                 newRank = square->getRank() - y;     // Change in y-axis
             }
 
-
             // Only move forward if coordinate is on the board
             if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
-qDebug() << "New rank:"<< newRank << "New file" << newFile;
                 ChessSquare *possibleMove = this->getSquare(newRank, newFile);
-                qDebug() << "Chess square created";
                 bool squareOccupied = possibleMove->getOccupyingPiece() == nullptr ? false : true;
-                qDebug() << "Chess square is occupied:" << squareOccupied;
                 if (squareOccupied == true) { qDebug()<< "Square occupied by:" << possibleMove->getOccupyingPiece()->getName(); }
 
                 if (squareOccupied == false) {
@@ -309,28 +295,25 @@ qDebug() << "New rank:"<< newRank << "New file" << newFile;
                     highlightedSquares.push_back(possibleMove);
                     possibleMoveSquares.push_back(possibleMove);
                     movePending = true;
-                    qDebug() << "Successfully added non occupied square.";
                 } else if (selectedPiece->getWhite() == true && possibleMove->getOccupyingPiece()->getWhite() == false) {
-                    // If selected piece is white and target piece is black, it is potential move
+                    // If selected piece is white and target piece is black, it is potential move but blocks the line
                     possibleMove->toggleSquareYellow();
                     highlightedSquares.push_back(possibleMove);
                     possibleMoveSquares.push_back(possibleMove);
                     movePending = true;
-                    qDebug() << "Successfully added square where selected piece is white and target piece is black.";
-                } else if (selectedPiece->getWhite() == false && possibleMove->getOccupyingPiece()->getWhite() == true) {
-                    // If selected piece is black and target piece is white, it is potential move
-                    possibleMove->toggleSquareYellow();
-                    highlightedSquares.push_back(possibleMove);
-                    possibleMoveSquares.push_back(possibleMove);
-                    movePending = true;
-                    qDebug() << "Succesfully added square where selected piece is black and target piece is white.";
-                } else {
-                    // If square is occupied by friendly, that is roadblock
                     lineStopped = true;
-                    qDebug() << "Did not add piece as it had friendly occupying.";
+                } else if (selectedPiece->getWhite() == false && possibleMove->getOccupyingPiece()->getWhite() == true) {
+                    // If selected piece is black and target piece is white, it is potential move but blocks the line
+                    possibleMove->toggleSquareYellow();
+                    highlightedSquares.push_back(possibleMove);
+                    possibleMoveSquares.push_back(possibleMove);
+                    movePending = true;
+                    lineStopped = true;
+                } else {
+                    // If square is occupied by friendly, that is blocks the line
+                    lineStopped = true;
                 }
             }
-                qDebug() << "- - - - - - - - - - - - - - - - - - -";
         }
     }
     return;
@@ -342,6 +325,7 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
     ChessPiece *pieceToMove = selectedSquare->getOccupyingPiece(); // Get piece from old square
     removePieceFromSquare(selectedSquare); // Remove sprite from old square
     deselectPiece(pieceToMove, squareClicked); // Add sprite to new square and deselect piece
+    chessScene->update();
 
     // Reset all move variables
     resetPossibleMoveSquares();
@@ -405,7 +389,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                 }
             } else {
                 selectSquare(squareClicked);
-                qDebug() << "No move pending and no sqaure already selected.";
+                qDebug() << "No move pending and no square already selected.";
             }
         }
     }
