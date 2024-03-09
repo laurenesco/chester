@@ -137,7 +137,7 @@ void ChessBoard::loadStartingPosition() {
 
     // Kings
     for (int i = 0; i < 2; i ++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 4 : 4;
 
@@ -158,7 +158,7 @@ void ChessBoard::loadStartingPosition() {
 
     // Queens
     for (int i = 0; i < 2; i ++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 3 : 3;
 
@@ -175,6 +175,7 @@ void ChessBoard::loadStartingPosition() {
 
             int color = queen->getWhite() == true ? 1 : 2;
             addPieceToSquare(queen, rank, file, color);
+            qDebug() << "Adding a queen" << rank << file;
         }
     }
 }
@@ -321,8 +322,9 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
 
 /* Deselect piece, empty out highlight and move vectors, reset base square color */
 void ChessBoard::movePiece(ChessSquare *squareClicked)
-{
-    ChessPiece *pieceToMove = selectedSquare->getOccupyingPiece(); // Get piece from old square
+{    
+    ChessPiece *pieceToMove = selectedSquare->getOccupyingPiece(); // Get piece from old square 
+
     removePieceFromSquare(selectedSquare); // Remove sprite from old square
     deselectPiece(pieceToMove, squareClicked); // Add sprite to new square and deselect piece
     chessScene->update();
@@ -339,7 +341,11 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
 /* This function runs if the user left clicks on a square */
 void ChessBoard::squareLeftClicked(int rank, int file)
 {
-    if (selectedSquare != nullptr) { qDebug() << "Existing selected square on click:" << selectedSquare->getRank() << selectedSquare->getFile() << "."; } else { qDebug() << "No selected square on click."; }
+    // if (selectedSquare != nullptr) { qDebug() << "Existing selected square on click:" << selectedSquare->getRank() << selectedSquare->getFile() << "."; } else { qDebug() << "No selected square on click."; }
+
+//    ChessMove *move = new ChessMove();
+//    move->initiateMove();
+//    move->executeMove();
 
     // Check that click was legal
     if (boardSquares[rank][file] == nullptr) {

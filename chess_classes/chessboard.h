@@ -16,6 +16,7 @@
 #include "piece_classes//queen.h"
 #include "piece_classes//knight.h"
 #include "chesssquare.h"
+#include "chessmove.h"
 
 #include <QWidget>
 #include <QGraphicsRectItem>

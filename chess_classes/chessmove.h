@@ -21,7 +21,7 @@
 class ChessMove
 {
 public:
-    ChessMove(ChessSquare *sSquare, ChessSquare *eSquare);
+    ChessMove();
 
 private:
     QString algebraicNotation;

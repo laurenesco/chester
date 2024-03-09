@@ -14,7 +14,11 @@
 //- fine tune ai output
 //- implement settings page
 //- implement help page
+//- add pawn promotion logic
 //- move font declaration into styling namespace
+//- record game data as intended
+
+// - april 5 poster done
 
 #include "screens/startscreen.h"
 

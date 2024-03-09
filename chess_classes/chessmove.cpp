@@ -1,9 +1,6 @@
 #include "chessmove.h"
 
-ChessMove::ChessMove(ChessSquare *sSquare, ChessSquare *eSquare)
-{
-    this->startSquare = sSquare;
-    this->endSquare = eSquare;
+ChessMove::ChessMove(){
 }
 
 // This function is reponsible for ensuring that...
