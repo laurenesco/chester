@@ -17,6 +17,7 @@
 //- add pawn promotion logic
 //- move font declaration into styling namespace
 //- record game data as intended
+//- move tileSize to config file - create configuration class
 
 // - april 5 poster done
 
