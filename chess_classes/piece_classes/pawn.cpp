@@ -16,3 +16,22 @@ Pawn::Pawn()
         0, 1
     };
 }
+
+bool Pawn::getFirstMove() const
+{
+    return firstMove;
+}
+
+void Pawn::setFirstMove(bool newFirstMove)
+{
+    firstMove = newFirstMove;
+}
+
+std::vector<int> Pawn::getMovesVector()
+{
+    if (firstMove == true) {
+        return { 0, 1, 0, 2 };
+    } else {
+        return movesVector;
+    }
+}

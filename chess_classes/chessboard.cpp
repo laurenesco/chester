@@ -335,6 +335,14 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
     selectedSquare->resetColor();
     selectedSquare = nullptr;
     movePending = false;
+
+    if (pieceToMove->getName() == "Pawn") {
+        Pawn* pawn = dynamic_cast<Pawn*>(pieceToMove);
+        if (pawn->getFirstMove() == true) {
+            pawn->setFirstMove(false);
+        }
+    }
+
     return;
 }
 
