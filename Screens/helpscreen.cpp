@@ -10,6 +10,9 @@
 #include "ui_helpscreen.h"
 #include "engineinterface.h"
 
+#include <QBoxLayout>
+#include <QTextEdit>
+
 HelpScreen::HelpScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::HelpScreen)
@@ -22,8 +25,7 @@ HelpScreen::HelpScreen(QWidget *parent) :
     // Test python connection
     EngineInterface engine;
     QString output = engine.runTest();
-    ui->lbl_testPython->setText(output);
-
+    // ui->lbl_testPython->setText(output);
 }
 
 HelpScreen::~HelpScreen()

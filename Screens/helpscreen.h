@@ -35,6 +35,7 @@ private Q_SLOTS:
 
 private:
     Ui::HelpScreen *ui;
+    void loadRules();
 };
 
 #endif // HELPSCREEN_H
