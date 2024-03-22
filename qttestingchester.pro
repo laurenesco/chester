@@ -32,6 +32,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    pythoninterface.cpp \
     screens/boardscreen.cpp \
     screens/helpscreen.cpp \
     screens/settingsscreen.cpp \
@@ -53,6 +54,7 @@ SOURCES += \
     main.cpp \
 
 HEADERS += \
+    pythoninterface.h \
     screens/boardscreen.h \
     screens/helpscreen.h \
     screens/settingsscreen.h \
