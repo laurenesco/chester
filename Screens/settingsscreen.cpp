@@ -18,28 +18,7 @@ SettingsScreen::SettingsScreen(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("chesster - Settings");
 
-    // Set up the database connection
-    Config dbConfig;
-    dbConfig.configDatabase();
-    dbConfig.openDatabase();
-
-    // Execute a query to select all attributes from the table "questions"
-    QString queryString = "SELECT game_id, game_winner_color FROM metadata_game";
-    QSqlQuery query;
-    query.prepare(queryString);
-    if (!query.exec()) {
-        qWarning() << "Error: Unable to execute query:" << query.lastError().text();
-    }
-
-    // Output results to the terminal
-    while (query.next()) {
-        int questionId = query.value(0).toInt();
-        QString question = query.value(1).toString();
-        qDebug() << "Game ID:" << questionId << "Winner:" << question;
-    }
-
-    query.clear();
-    dbConfig.closeDatabase();
+    fillComboBoxes();
 }
 
 // Deconstructor
@@ -48,12 +27,51 @@ SettingsScreen::~SettingsScreen()
     delete ui;
 }
 
+void SettingsScreen::fillComboBoxes()
+{
+    // Difficulty combobox
+    QStringList list = {"Easy", "Medium", "Hard"};
+    ui->cmb_difficulty->addItems(list);
+
+    // Player color
+    list = {"White", "Black"};
+    ui->cmb_color->addItems(list);
+
+    // Assisted mode
+    list = {"On", "Off"};
+    ui->cmb_assist->addItems(list);
+}
+
 // On pressing Close button, emit closing signal and close this form
 void SettingsScreen::on_btn_closeWindow_clicked()
 {
     Q_EMIT settingsScreenClosed();
     this->close();
 }
+
+// sql code:
+// Set up the database connection
+//Config dbConfig;
+//dbConfig.configDatabase();
+//dbConfig.openDatabase();
+
+//// Execute a query to select all attributes from the table "questions"
+//QString queryString = "SELECT game_id, game_winner_color FROM metadata_game";
+//QSqlQuery query;
+//query.prepare(queryString);
+//if (!query.exec()) {
+//    qWarning() << "Error: Unable to execute query:" << query.lastError().text();
+//}
+
+//// Output results to the terminal
+//while (query.next()) {
+//    int questionId = query.value(0).toInt();
+//    QString question = query.value(1).toString();
+//    qDebug() << "Game ID:" << questionId << "Winner:" << question;
+//}
+
+//query.clear();
+//dbConfig.closeDatabase();
 
 // Example query:
 /*

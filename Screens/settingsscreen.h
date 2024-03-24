@@ -29,6 +29,8 @@ public:
     explicit SettingsScreen(QWidget *parent = nullptr);
     ~SettingsScreen();
 
+    void fillComboBoxes();
+
 Q_SIGNALS:
     void settingsScreenClosed();
 

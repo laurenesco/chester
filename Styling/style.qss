@@ -33,6 +33,27 @@ QFrame {
 background-color: #000000
 }
 
+QComboBox {
+    border: 2px solid white;
+    background: black;
+    color: white;
+    font-family: Joystix Monospace;
+}
+
+QComboBox::drop-down {
+    border: 2px solid white;
+    background: black;
+    color: white;
+    font-family: Joystix Monospace;
+}
+
+QComboBox::down-arrow {
+     background: black;
+     color: white;
+     border: 0px;
+ }
+
+
 QPushButton {
     /* background-color: qlineargradient(x1:.5, y1:0, x2:.5, y2:1,
     stop:0 #7E8287, stop: 0.6 #7E8287, stop:.8 #7E8287); */
@@ -59,6 +80,14 @@ QTextEdit {
 QFrame[objectName="frame_light"] {
     background-color: lightblue;
     border: 2px solid darkblue;
+}
+
+QLabel[objectName="lbl_color1"] {
+    background: black;
+}
+
+QLabel[objectName="lbl_color2"] {
+    background: black;
 }
 
 QLabel[objectName="lbl_testPython"] {
