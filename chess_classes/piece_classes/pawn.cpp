@@ -17,19 +17,18 @@ Pawn::Pawn()
     };
 }
 
-bool Pawn::getFirstMove() const
+int Pawn::getMoveCounter()
 {
-    return firstMove;
+    return moveCounter;
 }
 
-void Pawn::setFirstMove(bool newFirstMove)
-{
-    firstMove = newFirstMove;
+void Pawn::incrementMoveCounter() {
+    moveCounter ++;
 }
 
 std::vector<int> Pawn::getMovesVector()
 {
-    if (firstMove == true) {
+    if (moveCounter == 0) {
         return { 0, 1, 0, 2 };
     } else {
         return movesVector;

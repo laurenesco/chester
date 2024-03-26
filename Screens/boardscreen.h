@@ -10,6 +10,7 @@
 #ifndef BOARDSCREEN_H
 #define BOARDSCREEN_H
 
+#include "env/config.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -21,7 +22,7 @@ class BoardScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit BoardScreen(QWidget *parent = nullptr);
+    explicit BoardScreen(Config *config, QWidget *parent = nullptr);
     ~BoardScreen();
 
 Q_SIGNALS:
@@ -32,7 +33,8 @@ private Q_SLOTS:
 
 private:
     Ui::BoardScreen *ui;
-    QWidget *parentForm;;
+    QWidget *parentForm;
+    Config *config;
 };
 
 #endif // BOARDSCREEN_H

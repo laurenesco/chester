@@ -39,27 +39,20 @@ private:
     std:: vector<ChessSquare*> highlightedSquares;
     std::vector<ChessSquare*> possibleMoveSquares;
     ChessSquare *selectedSquare = nullptr;
-
     QGraphicsScene* chessScene;
     QGraphicsView* chessView;
-
-    // Light pieces
-    Pawn *lightPawn[8];
-    Rook *lightRook;
-    Bishop *lightBishop;
-    Knight *lightKnight;
-    King *lightKing;
-    Queen *lightQueen;
-
-    // Dark pieces
-    Pawn *darkPawn[8];
-    Rook *darkRook;
-    Bishop *darkBishop;
-    Knight *darkKnight;
-    King *darkKing;
-    Queen *darkQueen;
-
+    bool whiteToPlay = true;
     bool movePending = false;
+    QString lastMove;
+    ChessPiece *lastMovedPiece = nullptr;
+
+    // Castling relevant pieces
+    King *whiteKing = nullptr;
+    King *blackKing = nullptr;
+    Rook *whiteQueensideRook = nullptr;
+    Rook *whiteKingsideRook = nullptr;
+    Rook *blackQueensideRook = nullptr;
+    Rook *blackKingsideRook = nullptr;
 
     void loadStartingPosition();
     void createChessBoard();
@@ -79,6 +72,9 @@ private:
     void selectSquare(ChessSquare *squareClicked);
     void deselectSquare(ChessSquare *squareClicked);
     void printMoveDebug(QString header);
+    QString moveToAlgebraic(ChessPiece *piece, ChessSquare *square);
+
+    QString boardToUCI();
 private Q_SLOTS:
     void squareLeftClicked(int rank, int file);
 };

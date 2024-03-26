@@ -35,7 +35,7 @@ class StartScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit StartScreen(QWidget *parent = nullptr);
+    explicit StartScreen(Config *config, QWidget *parent = nullptr);
     ~StartScreen();
 
 private Q_SLOTS:
@@ -46,6 +46,7 @@ private Q_SLOTS:
 
 private:
     Ui::StartScreen *ui;
+    Config *config;
 };
 
 #endif // STARTSCREEN_H

@@ -11,7 +11,7 @@
 #include "chess_classes/chessboard.h"
 #include "chess_classes/chesssquare.h"
 
-BoardScreen::BoardScreen(QWidget *parent) :
+BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::BoardScreen)
 {
@@ -19,6 +19,7 @@ BoardScreen::BoardScreen(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("chesster");
     setGeometry(200, 85, 1500, 900);
+    this->config = config;
 
     /*
     // Set styling

@@ -15,6 +15,7 @@ class King : public ChessPiece {
 
 public:
     King();
+    bool moved;
 };
 
 #endif // KING_H

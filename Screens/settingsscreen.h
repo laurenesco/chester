@@ -26,7 +26,7 @@ class SettingsScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit SettingsScreen(QWidget *parent = nullptr);
+    explicit SettingsScreen(Config *config, QWidget *parent = nullptr);
     ~SettingsScreen();
 
     void fillComboBoxes();
@@ -39,6 +39,7 @@ private Q_SLOTS:
 
 private:
     Ui::SettingsScreen *ui;
+    Config *config;
 };
 
 #endif // SETTINGSSCREEN_H

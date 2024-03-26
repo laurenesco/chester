@@ -55,6 +55,49 @@ QPixmap ChessPiece::getSelectedIcon()
     return lightIcon;
 }
 
+QString ChessPiece::getFEN()
+{
+    if (this->name == "Pawn") {
+        if (this -> color == 1) {
+            return "P";
+        } else {
+            return "p";
+        }
+    } else if (this->name == "Rook") {
+        if (this -> color == 1) {
+            return "R";
+        } else {
+            return "r";
+        }
+    } else if (this->name == "Knight") {
+        if (this -> color == 1) {
+            return "N";
+        } else {
+            return "n";
+        }
+    } else if (this->name == "Bishop") {
+        if (this -> color == 1) {
+            return "B";
+        } else {
+            return "b";
+        }
+    } else if (this->name == "Queen") {
+        if (this -> color == 1) {
+            return "Q";
+        } else {
+            return "q";
+        }
+    } else if (this->name == "King") {
+        if (this -> color == 1) {
+            return "K";
+        } else {
+            return "k";
+        }
+    } else {
+        return "FEN ERROR";
+    }
+}
+
 std::vector<int> ChessPiece::getMovesVector()
 {
     return movesVector;

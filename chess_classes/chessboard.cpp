@@ -6,6 +6,8 @@
 // Program Description:     Driver file for the ChessBoard class. See header file for details.
 //
 
+#include <regex>
+
 #include "chessboard.h"
 #include "logic.h"
 #include "qboxlayout.h"
@@ -60,10 +62,8 @@ void ChessBoard::loadStartingPosition() {
             Pawn *pawn = new Pawn();
 
             if (i == 0) {
-                lightPawn[j] = pawn;
                 pawn->setWhite(true);
             } else {
-                darkPawn[j] = pawn;
                 pawn->setWhite(false);
             }
 
@@ -81,10 +81,10 @@ void ChessBoard::loadStartingPosition() {
             Rook *rook = new Rook();
 
             if (i == 0) {
-                lightRook = rook;
+                // lightRook = rook;
                 rook->setWhite(true);
             } else {
-                darkRook = rook;
+                // darkRook = rook;
                 rook->setWhite(false);
             }
 
@@ -102,10 +102,8 @@ void ChessBoard::loadStartingPosition() {
             Knight *knight = new Knight();
 
             if (i == 0) {
-                lightKnight = knight;
                 knight->setWhite(true);
             } else {
-                darkKnight = knight;
                 knight->setWhite(false);
             }
 
@@ -123,10 +121,8 @@ void ChessBoard::loadStartingPosition() {
             Bishop *bishop = new Bishop();
 
             if (i == 0) {
-                lightBishop = bishop;
                 bishop->setWhite(true);
             } else {
-                darkBishop = bishop;
                 bishop->setWhite(false);
             }
 
@@ -144,10 +140,10 @@ void ChessBoard::loadStartingPosition() {
             King *king = new King();
 
             if (i == 0) {
-                lightKing = king;
+                whiteKing = king;
                 king->setWhite(true);
             } else {
-                darkKing = king;
+                blackKing = king;
                 king->setWhite(false);
             }
 
@@ -165,11 +161,9 @@ void ChessBoard::loadStartingPosition() {
             Queen *queen = new Queen();
 
             if (i == 0) {
-                lightQueen = queen;
                 queen->setWhite(true);
             }
             else {
-                darkQueen = queen;
                 queen->setWhite(false);
             }
 
@@ -338,11 +332,12 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
 
     if (pieceToMove->getName() == "Pawn") {
         Pawn* pawn = dynamic_cast<Pawn*>(pieceToMove);
-        if (pawn->getFirstMove() == true) {
-            pawn->setFirstMove(false);
-        }
+        pawn->incrementMoveCounter();
     }
 
+    lastMove = moveToAlgebraic(pieceToMove, squareClicked);
+    whiteToPlay = whiteToPlay == true ? false : true;
+    lastMovedPiece = pieceToMove;
     return;
 }
 
@@ -350,10 +345,11 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
 void ChessBoard::squareLeftClicked(int rank, int file)
 {
     // if (selectedSquare != nullptr) { qDebug() << "Existing selected square on click:" << selectedSquare->getRank() << selectedSquare->getFile() << "."; } else { qDebug() << "No selected square on click."; }
-
+//    ChessSquare *clickedSquare = this->getSquare(rank, file);
 //    ChessMove *move = new ChessMove();
-//    move->initiateMove();
-//    move->executeMove();
+
+//    movePending = move->initiateMove(clickedSquare, chessScene, boardSquares, movePending, possibleMoveSquares, highlightedSquares, selectedSquare);
+    // move->executeMove();
 
     // Check that click was legal
     if (boardSquares[rank][file] == nullptr) {
@@ -366,6 +362,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
             if (squareInPossibleMoves(squareClicked)) {
                 qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
+                boardToUCI();
             } else {
                 qDebug() << "Move pending but not moving piece.";
                 movePending = false;
@@ -474,3 +471,122 @@ void ChessBoard::printMoveDebug(QString header) {
 
     return;
 }
+
+QString ChessBoard::moveToAlgebraic(ChessPiece *piece, ChessSquare *square)
+{
+    QString algebraic;
+
+    if (piece->getName() == "Pawn") {
+
+    } else if (piece->getName() == "Rook") {
+        algebraic = algebraic + "R";
+    } else if (piece->getName() == "Knight") {
+        algebraic = algebraic + "N";
+    } else if (piece->getName() == "Bishop") {
+        algebraic = algebraic + "B";
+    } else if (piece->getName() == "Queen") {
+        algebraic = algebraic + "Q";
+    } else if (piece->getName() == "King") {
+        algebraic = algebraic + "K";
+    } else {
+        qDebug() << "Error getting piece type in moveToAlgebraic()";
+    }
+
+    char c = 97 + square->getRank();
+    algebraic = algebraic + c;
+    c = square->getFile();
+    algebraic = algebraic + QString::fromStdString(std::to_string(square->getFile()));
+
+    qDebug() << algebraic;
+
+    return algebraic;
+}
+
+QString ChessBoard::boardToUCI()
+{
+    QString uci;
+
+    for (int i = 0; i < 8; i++) {
+        // New rank
+        int emptySquares = 0;
+
+        for (int j = 0; j < 8; j++) {
+            // For each file on that rank
+            // If that square has a piece
+            if (boardSquares[i][j]->getOccupyingPiece() != nullptr) {
+                // Decide whether to precede with ".", number, or nothing
+                if (emptySquares == 1) {
+                    uci = uci + ".";
+                } else if (emptySquares > 1) {
+                    uci = uci + QString::fromStdString(std::to_string(emptySquares));
+                }
+                uci = uci + boardSquares[i][j]->getOccupyingPiece()->getFEN();
+                emptySquares = 0;
+            } else {
+                emptySquares ++;
+            }
+        }
+
+        // Need to account for trailing empty squares
+        if (emptySquares == 1) {
+            uci = uci + ".";
+        } else if (emptySquares > 1) {
+            uci = uci + QString::fromStdString(std::to_string(emptySquares));
+        }
+
+        // End rank
+        uci = uci + "/";
+    }
+
+    // Denote whose turn it is
+    uci = uci + " ";
+    uci = whiteToPlay ? uci + "w" : uci + "b";
+
+    // Denote castling rights
+    uci = uci + " ";
+    if (whiteKing->moved == false) {
+        if (whiteKingsideRook != nullptr && whiteKingsideRook->moved == false) {
+            uci = uci + "K";
+        } else if (whiteKingsideRook != nullptr && whiteQueensideRook->moved == false) {
+            uci = uci + "Q";
+        }
+    } else if (blackKing -> moved == false) {
+        if (blackKingsideRook != nullptr && blackKingsideRook->moved == false) {
+            uci = uci + "k";
+        } else if (blackKingsideRook != nullptr && blackQueensideRook->moved == false) {
+            uci = uci + "q";
+        }
+    } else {
+        uci = uci + "-";
+    }
+
+    // Denote en passant
+    if (lastMovedPiece->getName() == "Pawn") {
+        // If a pawn moved last
+        Pawn* pawn = dynamic_cast<Pawn*>(lastMovedPiece);
+        std::string s = lastMove.toStdString();
+
+        // If it was the pawns first move
+        if (pawn->getMoveCounter() == 1) {
+            std::string rankString = s.substr(-1, 1);
+            int vulnerableRank;
+            std::stringstream(rankString) >> vulnerableRank;
+
+            // If it was a two-space move
+            if (vulnerableRank == 4 || vulnerableRank == 5) {
+                int attackingRank = vulnerableRank == 4 ? 5 : 4;
+                int file1 = static_cast<int>(s.substr(-2, 1)[0]) - 96;
+                int file2 = static_cast<int>(s.substr(-2, 1)[0]) - 98;
+                qDebug() << "file1:" << file1 << "file2:" << file2;
+            }
+        }
+
+    }
+
+    // Denote halfmove and fullmove
+
+
+    qDebug() << "UCI:" << uci;
+    return uci;
+}
+

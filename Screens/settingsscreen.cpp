@@ -10,13 +10,14 @@
 #include "ui_settingsscreen.h"
 
 // Constructor
-SettingsScreen::SettingsScreen(QWidget *parent) :
+SettingsScreen::SettingsScreen(Config *config, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsScreen)
 {
     // Setup the mainwindow
     ui->setupUi(this);
     setWindowTitle("chesster - Settings");
+    this->config = config;
 
     fillComboBoxes();
 }

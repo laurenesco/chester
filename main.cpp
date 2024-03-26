@@ -41,9 +41,12 @@ int main(int argc, char *argv[])
     QString styleSheet = QLatin1String(file.readAll());
     qApp->setStyleSheet(styleSheet);
 
-    StartScreen s;
-    s.setWindowState(Qt::WindowMaximized);
-    s.show();
+    // Create configuration object
+    Config *config = new Config();
+
+    StartScreen *s = new StartScreen(config);
+    s->setWindowState(Qt::WindowMaximized);
+    s->show();
 
     return a.exec();
 }

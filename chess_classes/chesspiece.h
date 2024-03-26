@@ -29,6 +29,7 @@ public:
     virtual bool getIsSelected();
     virtual QGraphicsPixmapItem* getSprite();
     QPixmap getSelectedIcon();
+    QString getFEN();
 
     virtual void setIsSelected(bool status);
     virtual void setSprite(QGraphicsPixmapItem *sprite);

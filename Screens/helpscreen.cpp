@@ -13,7 +13,7 @@
 #include <QBoxLayout>
 #include <QTextEdit>
 
-HelpScreen::HelpScreen(QWidget *parent) :
+HelpScreen::HelpScreen(Config *config, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::HelpScreen)
 {
@@ -21,6 +21,7 @@ HelpScreen::HelpScreen(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("chesster - Help");
     setGeometry(200, 85, 1500, 900);
+    this->config = config;
 
     // Test python connection
     EngineInterface engine;

@@ -16,12 +16,12 @@ class Pawn : public ChessPiece {
 public:
     Pawn();
 
-    bool getFirstMove() const;
-    void setFirstMove(bool newFirstMove);
+    int getMoveCounter();
+    void incrementMoveCounter();
     std:: vector<int> getMovesVector();
 
 private:
-    bool firstMove = true;
+    int moveCounter = 0;
 };
 
 #endif // PAWN_H

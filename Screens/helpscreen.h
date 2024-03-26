@@ -13,6 +13,7 @@
 #ifndef HELPSCREEN_H
 #define HELPSCREEN_H
 
+#include "env/config.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -24,7 +25,7 @@ class HelpScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit HelpScreen(QWidget *parent = nullptr);
+    explicit HelpScreen(Config *config, QWidget *parent = nullptr);
     ~HelpScreen();
 
 Q_SIGNALS:
@@ -36,6 +37,7 @@ private Q_SLOTS:
 private:
     Ui::HelpScreen *ui;
     void loadRules();
+    Config *config;
 };
 
 #endif // HELPSCREEN_H
