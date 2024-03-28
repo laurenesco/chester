@@ -169,7 +169,7 @@ void ChessBoard::loadStartingPosition() {
 
             int color = queen->getWhite() == true ? 1 : 2;
             addPieceToSquare(queen, rank, file, color);
-            qDebug() << "Adding a queen" << rank << file;
+            // qDebug() << "Adding a queen" << rank << file;
         }
     }
 }
@@ -205,18 +205,75 @@ void ChessBoard::addPieceToSquare(ChessPiece *piece, int rank, int file, int col
 void ChessBoard::removePieceFromSquare(ChessSquare *square)
 {
     if (square->getOccupyingPiece() == nullptr) {
-        qDebug() << "Attempting to remove nullptr from square -- aborting.";
+        // qDebug() << "Attempting to remove nullptr from square -- aborting.";
         return;
     } else {
         ChessPiece *piece = square->getOccupyingPiece();
         QGraphicsPixmapItem *sprite = piece->getSprite();
         if (sprite) {
-            qDebug() << "Removing sprite from square.";
+            // qDebug() << "Removing sprite from square.";
             chessScene->removeItem(sprite);
         } else {
-            qDebug() << "Sprite pointer is null.";
+            // qDebug() << "Sprite pointer is null.";
         }
         square->setOccupyingPiece(nullptr);
+    }
+    return;
+}
+
+void ChessBoard::checkEnPassant()
+{
+    enPassantSquare = nullptr;
+
+    // Denote en passant
+    if (lastMovedPiece->getName() == "Pawn") {
+        // If a pawn moved last
+        Pawn* pawn = dynamic_cast<Pawn*>(lastMovedPiece);
+        std::string s = lastMove.toStdString();
+
+        // If it was the pawns first move
+        if (pawn->getMoveCounter() == 1) {
+            std::string rankString = s.substr(s.size()-1, 1);
+            int vulnerableRank;
+            std::stringstream(rankString) >> vulnerableRank;
+
+            // If it was a two-space move
+            if (vulnerableRank == 4 || vulnerableRank == 5) {
+                int rightAttackFile = static_cast<int>(s.substr(s.size()-2, 1)[0]) - 96;
+                int leftAttackFile = static_cast<int>(s.substr(s.size()-2, 1)[0]) - 98;
+
+                // If the left attack file is on the board and occupied by an opposing pawn
+                if (leftAttackFile >= 0) {
+                    if (boardSquares[vulnerableRank][leftAttackFile]->getOccupyingPiece() != nullptr) {
+                        if (boardSquares[vulnerableRank][leftAttackFile]->getOccupyingPiece()->getName() == "Pawn") {
+                            if (boardSquares[vulnerableRank][leftAttackFile]->getOccupyingPiece()->getWhite() != pawn->getWhite()) {
+                                // Target rank depends on piece color
+                                if (pawn->getWhite() == true) {
+                                    enPassantSquare = boardSquares[vulnerableRank - 1][leftAttackFile + 1];
+                                } else {
+                                    enPassantSquare = boardSquares[vulnerableRank + 1][leftAttackFile + 1];
+                                }
+                            }
+                        }
+                    }
+                }
+                // If the right attack file is on the board and occupied by an opposing pawn
+                if (rightAttackFile <= 7) {
+                    if (boardSquares[vulnerableRank][rightAttackFile]->getOccupyingPiece() != nullptr) {
+                        if (boardSquares[vulnerableRank][rightAttackFile]->getOccupyingPiece()->getName() == "Pawn") {
+                            if (boardSquares[vulnerableRank][leftAttackFile]->getOccupyingPiece()->getWhite() != pawn->getWhite()) {
+                                // Target rank depends on piece color
+                                if (pawn->getWhite() == true) {
+                                    enPassantSquare = boardSquares[vulnerableRank - 1][rightAttackFile - 1];
+                                } else {
+                                    enPassantSquare = boardSquares[vulnerableRank + 1][rightAttackFile - 1];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     return;
 }
@@ -282,7 +339,7 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
             if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
                 ChessSquare *possibleMove = this->getSquare(newRank, newFile);
                 bool squareOccupied = possibleMove->getOccupyingPiece() == nullptr ? false : true;
-                if (squareOccupied == true) { qDebug()<< "Square occupied by:" << possibleMove->getOccupyingPiece()->getName(); }
+                // if (squareOccupied == true) { qDebug()<< "Square occupied by:" << possibleMove->getOccupyingPiece()->getName(); }
 
                 if (squareOccupied == false) {
                     // If square is not occupied, it is a potential move
@@ -335,9 +392,16 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
         pawn->incrementMoveCounter();
     }
 
+    if (pieceToMove->getWhite() == true) {
+        halfMoveCounter ++;
+    } else {
+        fullMoveCounter ++;
+    }
+
     lastMove = moveToAlgebraic(pieceToMove, squareClicked);
     whiteToPlay = whiteToPlay == true ? false : true;
     lastMovedPiece = pieceToMove;
+    checkEnPassant();
     return;
 }
 
@@ -360,11 +424,11 @@ void ChessBoard::squareLeftClicked(int rank, int file)
         // If move currently pending
         if (movePending) {
             if (squareInPossibleMoves(squareClicked)) {
-                qDebug() << "Move pending and moving piece.";
+                // qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
                 boardToUCI();
             } else {
-                qDebug() << "Move pending but not moving piece.";
+                // qDebug() << "Move pending but not moving piece.";
                 movePending = false;
                 deselectPiece(selectedSquare->getOccupyingPiece(), selectedSquare);
                 resetPossibleMoveSquares();
@@ -378,7 +442,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                 }
             }
         } else {
-            qDebug() << "No move pending";
+            // qDebug() << "No move pending";
             // Reset data from previous click
             resetPossibleMoveSquares();
             resetHighlightedSquares();
@@ -390,17 +454,17 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                         deselectPiece(selectedSquare->getOccupyingPiece(), selectedSquare);
                     }
                     selectSquare(squareClicked);
-                    qDebug() << "No move pending and square not already selected.";
+                    // qDebug() << "No move pending and square not already selected.";
                 } else { // Else if the square was already actively selected (deselect square)
                     deselectSquare(squareClicked);
                     if (squareClicked->getOccupyingPiece() != nullptr) {
                         deselectPiece(squareClicked->getOccupyingPiece(), squareClicked);
                     }
-                    qDebug() << "No move pending and square was already selected.";
+                    // qDebug() << "No move pending and square was already selected.";
                 }
             } else {
                 selectSquare(squareClicked);
-                qDebug() << "No move pending and no square already selected.";
+                // qDebug() << "No move pending and no square already selected.";
             }
         }
     }
@@ -474,30 +538,30 @@ void ChessBoard::printMoveDebug(QString header) {
 
 QString ChessBoard::moveToAlgebraic(ChessPiece *piece, ChessSquare *square)
 {
-    QString algebraic;
+    QString p;
 
     if (piece->getName() == "Pawn") {
-
+        // pawns dont get letter appended
     } else if (piece->getName() == "Rook") {
-        algebraic = algebraic + "R";
+        p = p + "R";
     } else if (piece->getName() == "Knight") {
-        algebraic = algebraic + "N";
+        p = p + "N";
     } else if (piece->getName() == "Bishop") {
-        algebraic = algebraic + "B";
+        p = p + "B";
     } else if (piece->getName() == "Queen") {
-        algebraic = algebraic + "Q";
+        p = p + "Q";
     } else if (piece->getName() == "King") {
-        algebraic = algebraic + "K";
+        p = p + "K";
     } else {
         qDebug() << "Error getting piece type in moveToAlgebraic()";
     }
 
-    char c = 97 + square->getRank();
-    algebraic = algebraic + c;
-    c = square->getFile();
-    algebraic = algebraic + QString::fromStdString(std::to_string(square->getFile()));
+    char file = 96 + square->getFile() + 1;
+    int rank = 8 - square->getRank();
 
-    qDebug() << algebraic;
+    QString algebraic = p + file + QString::fromStdString(std::to_string(rank));
+
+    qDebug() << "Move made:" << algebraic;
 
     return algebraic;
 }
@@ -560,31 +624,20 @@ QString ChessBoard::boardToUCI()
         uci = uci + "-";
     }
 
-    // Denote en passant
-    if (lastMovedPiece->getName() == "Pawn") {
-        // If a pawn moved last
-        Pawn* pawn = dynamic_cast<Pawn*>(lastMovedPiece);
-        std::string s = lastMove.toStdString();
-
-        // If it was the pawns first move
-        if (pawn->getMoveCounter() == 1) {
-            std::string rankString = s.substr(-1, 1);
-            int vulnerableRank;
-            std::stringstream(rankString) >> vulnerableRank;
-
-            // If it was a two-space move
-            if (vulnerableRank == 4 || vulnerableRank == 5) {
-                int attackingRank = vulnerableRank == 4 ? 5 : 4;
-                int file1 = static_cast<int>(s.substr(-2, 1)[0]) - 96;
-                int file2 = static_cast<int>(s.substr(-2, 1)[0]) - 98;
-                qDebug() << "file1:" << file1 << "file2:" << file2;
-            }
-        }
-
+    // Denote en passant status
+    uci = uci + " ";
+    if (enPassantSquare != nullptr) {
+        ChessPiece *pawn = new ChessPiece();
+        uci = uci + this->moveToAlgebraic(pawn, enPassantSquare);
+    } else {
+        uci = uci + "-";
     }
 
     // Denote halfmove and fullmove
-
+   uci = uci + " ";
+   uci = uci + QString::fromStdString(std::to_string(halfMoveCounter));
+   uci = uci + " ";
+   uci = uci + QString::fromStdString(std::to_string(fullMoveCounter));
 
     qDebug() << "UCI:" << uci;
     return uci;

@@ -45,6 +45,10 @@ private:
     bool movePending = false;
     QString lastMove;
     ChessPiece *lastMovedPiece = nullptr;
+    ChessSquare *enPassantSquare = nullptr;
+    int halfMoveCounter;
+    int fullMoveCounter;
+    int fiftyMoveCounter;
 
     // Castling relevant pieces
     King *whiteKing = nullptr;
@@ -59,6 +63,7 @@ private:
     void addPieceToSquare(ChessPiece *piece, int rank, int file, int color);
     void removePieceFromSquare(ChessSquare *square);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
+    void checkEnPassant();
 
     ChessSquare* getSquare(int rank, int file);
     void resetHighlightedSquares();
