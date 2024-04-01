@@ -53,3 +53,44 @@ QString PythonInterface::getEvaluation(QString UCI)
     Py_Finalize();
     return "Error";
 }
+
+QString PythonInterface::getNextMove(QString UCI)
+{
+    PyObject *pName = PyUnicode_FromString("get_next_move");
+    PyObject *pModule = PyImport_Import(pName);
+    Py_DECREF(pName);
+
+    if (pModule != NULL) {
+        PyObject *pFunc = PyObject_GetAttrString(pModule, "get_next_best_move");
+
+        if (pFunc && PyCallable_Check(pFunc)) {
+            std::string uci = UCI.toStdString();
+            const char* cstr = uci.c_str();
+            PyObject* pArgs = PyUnicode_DecodeUTF8(cstr, uci.size(), "strict");
+            PyObject* pValue = PyObject_CallObject(pFunc, PyTuple_Pack(1, pArgs));
+            Py_DECREF(pArgs);
+
+            if (pValue != NULL) {
+                QString result = PyUnicode_AsUTF8(pValue);
+                Py_DECREF(pValue);
+                return result;
+            } else {
+                PyErr_Print();
+                fprintf(stderr, "Call failed");
+                return "Error: Function call failed";
+            }
+        } else {
+            PyErr_Print();
+            fprintf(stderr, "Cannot find function.");
+            return "Error: Cannot find function";
+        }
+        Py_XDECREF(pFunc);
+        Py_DECREF(pModule);
+    } else {
+        PyErr_Print();
+        fprintf(stderr, "Failed to load module.");
+        return "Error: Failed to load module";
+    }
+    Py_Finalize();
+    return "Error";
+}

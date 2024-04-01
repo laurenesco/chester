@@ -94,6 +94,11 @@ QLabel[objectName="lbl_testPython"] {
     color: white;
 }
 
+QLabel[objectName="lbl_moveDisplay"] {
+border-radius: 10px;
+background-color: #212529;
+}
+
 QLabel {
     color: white;
     font-family: Joystix Monospace;

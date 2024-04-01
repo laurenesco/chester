@@ -36,7 +36,7 @@ private:
     // Chess squares comprising board
     ChessSquare* boardSquares[8][8];
     int tileSize = 620/8;
-    std:: vector<ChessSquare*> highlightedSquares;
+    std::vector<ChessSquare*> highlightedSquares;
     std::vector<ChessSquare*> possibleMoveSquares;
     ChessSquare *selectedSquare = nullptr;
     QGraphicsScene* chessScene;
@@ -46,9 +46,9 @@ private:
     QString lastMove;
     ChessPiece *lastMovedPiece = nullptr;
     ChessSquare *enPassantSquare = nullptr;
-    int halfMoveCounter;
-    int fullMoveCounter;
-    int fiftyMoveCounter;
+    int halfMoveCounter = 0;
+    int fullMoveCounter = 0;
+    int fiftyMoveCounter = 0;
 
     // Castling relevant pieces
     King *whiteKing = nullptr;
@@ -64,6 +64,8 @@ private:
     void removePieceFromSquare(ChessSquare *square);
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
     void checkEnPassant();
+    QString getCastlingRights();
+    std::vector<ChessSquare *> getNextMove(QString UCI);
 
     ChessSquare* getSquare(int rank, int file);
     void resetHighlightedSquares();
@@ -80,6 +82,10 @@ private:
     QString moveToAlgebraic(ChessPiece *piece, ChessSquare *square);
 
     QString boardToUCI();
+
+Q_SIGNALS:
+    void moveCompleted(QString algebraic);
+
 private Q_SLOTS:
     void squareLeftClicked(int rank, int file);
 };

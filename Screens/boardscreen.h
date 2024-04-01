@@ -24,12 +24,15 @@ class BoardScreen : public QMainWindow
 public:
     explicit BoardScreen(Config *config, QWidget *parent = nullptr);
     ~BoardScreen();
+    void setMovesLabel(QString updatedString);
+    QString getMovesLabel();
 
 Q_SIGNALS:
     void boardScreenClosed();
 
 private Q_SLOTS:
     void on_btn_closeWindow_clicked();
+    void moveCompleted(QString algebraic);
 
 private:
     Ui::BoardScreen *ui;

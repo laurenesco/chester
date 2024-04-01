@@ -6,6 +6,7 @@
 // Program Description:     Driver file for the BoardScreen class. See header file for details.
 //
 
+#include <QLabel>
 #include "ui_boardscreen.h"
 #include "boardscreen.h"
 #include "chess_classes/chessboard.h"
@@ -34,6 +35,10 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     ChessBoard *chessboard = new ChessBoard(ui->frmBoard);
     chessboard->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // Configuring the moves frame
+    ui->lbl_moveDisplay->setWordWrap(true);  // Enable word wrap
+
+    connect(chessboard, &ChessBoard::moveCompleted, this, &BoardScreen::moveCompleted);
 }
 
 BoardScreen::~BoardScreen()
@@ -41,9 +46,28 @@ BoardScreen::~BoardScreen()
     delete ui;
 }
 
+QString BoardScreen::getMovesLabel()
+{
+    return ui->lbl_moveDisplay->text();
+}
+
+void BoardScreen::setMovesLabel(QString updatedString)
+{
+    ui->lbl_moveDisplay->setText(updatedString);
+    return;
+}
+
 void BoardScreen::on_btn_closeWindow_clicked()
 {
     Q_EMIT boardScreenClosed();
     this->close();
+}
+
+void BoardScreen::moveCompleted(QString algebraic)
+{
+    QString currentText = this->getMovesLabel();
+    currentText = currentText + ", " + algebraic;
+    this->setMovesLabel(currentText);
+    return;
 }
 

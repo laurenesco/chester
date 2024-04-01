@@ -18,9 +18,9 @@ ChessSquare::ChessSquare(int posX, int posY, int width, int height)
 
 void ChessSquare::setBaseColor(int rank, int file) {
     if ((rank + file) % 2 == 0) {
-        this->setBrush(QColor(110, 110, 102));
+        this->setBrush(QColor(52,58,64));
     } else {
-        this->setBrush(QColor(235, 231, 221));
+        this->setBrush(QColor(222,226,230));
     }
     return;
 }

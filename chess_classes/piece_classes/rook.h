@@ -15,7 +15,7 @@ class Rook : public ChessPiece {
 
 public:
     Rook();
-    bool moved;
+    bool moved = false;
 };
 
 #endif // ROOK_H

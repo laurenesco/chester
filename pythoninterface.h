@@ -8,6 +8,7 @@ class PythonInterface
 public:
     PythonInterface();
     QString getEvaluation(QString UCI);
+    QString getNextMove(QString UCI);
 };
 
 #endif // PYTHONINTERFACE_H

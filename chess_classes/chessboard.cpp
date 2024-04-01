@@ -10,6 +10,7 @@
 
 #include "chessboard.h"
 #include "logic.h"
+#include "pythoninterface.h"
 #include "qboxlayout.h"
 
 /* Constructor */
@@ -61,7 +62,7 @@ void ChessBoard::loadStartingPosition() {
 
             Pawn *pawn = new Pawn();
 
-            if (i == 0) {
+            if (rank == 6) {
                 pawn->setWhite(true);
             } else {
                 pawn->setWhite(false);
@@ -73,6 +74,7 @@ void ChessBoard::loadStartingPosition() {
     }
 
     // Rooks
+    int rookFlag = 0;
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 2; j++) {
             int rank = (i == 0) ? 0 : 7;
@@ -80,16 +82,31 @@ void ChessBoard::loadStartingPosition() {
 
             Rook *rook = new Rook();
 
-            if (i == 0) {
-                // lightRook = rook;
+            if (rank == 7) {
+                // Rank 7, white pieces
                 rook->setWhite(true);
+                if (file == 0) {
+                    // File 0, kingside
+                    whiteKingsideRook = rook;
+                } else {
+                    // File 7, queenside
+                    whiteQueensideRook = rook;
+                }
             } else {
-                // darkRook = rook;
+                // Rank 0, black pieces
                 rook->setWhite(false);
+                if (file == 0) {
+                    // File 0, kingside
+                    blackKingsideRook = rook;
+                } else {
+                    // File 7, queenside
+                    blackQueensideRook = rook;
+                }
             }
 
             int color = rook->getWhite() == true ? 1 : 2;
             addPieceToSquare(rook, rank, file, color);
+            rookFlag ++;
         }
     }
 
@@ -101,7 +118,7 @@ void ChessBoard::loadStartingPosition() {
 
             Knight *knight = new Knight();
 
-            if (i == 0) {
+            if (rank == 7) {
                 knight->setWhite(true);
             } else {
                 knight->setWhite(false);
@@ -120,7 +137,7 @@ void ChessBoard::loadStartingPosition() {
 
             Bishop *bishop = new Bishop();
 
-            if (i == 0) {
+            if (rank == 7) {
                 bishop->setWhite(true);
             } else {
                 bishop->setWhite(false);
@@ -135,11 +152,11 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
-            int file = (j == 0) ? 4 : 4;
+            int file = (j == 0) ? 3 : 3;
 
             King *king = new King();
 
-            if (i == 0) {
+            if (rank == 7) {
                 whiteKing = king;
                 king->setWhite(true);
             } else {
@@ -156,11 +173,11 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
-            int file = (j == 0) ? 3 : 3;
+            int file = (j == 0) ? 4 : 4;
 
             Queen *queen = new Queen();
 
-            if (i == 0) {
+            if (rank == 7) {
                 queen->setWhite(true);
             }
             else {
@@ -169,7 +186,6 @@ void ChessBoard::loadStartingPosition() {
 
             int color = queen->getWhite() == true ? 1 : 2;
             addPieceToSquare(queen, rank, file, color);
-            // qDebug() << "Adding a queen" << rank << file;
         }
     }
 }
@@ -278,6 +294,86 @@ void ChessBoard::checkEnPassant()
     return;
 }
 
+QString ChessBoard::getCastlingRights()
+{
+    // Can update this function with global BQCastle, BKCastle, WKCastle, WQCastle variables to skip iterating through each time
+    // once castling is lost, since it is never regained.
+    QString uci;
+    bool castling = false;
+
+    if (whiteKing->moved == false) {
+        if (whiteKingsideRook != nullptr && whiteKingsideRook->moved == false) {
+            uci = uci + "K";
+            castling = true;
+            if (boardSquares[7][1]->getOccupyingPiece() == nullptr && boardSquares[7][2]->getOccupyingPiece() == nullptr) {
+                // Logic for adding to possible squares
+            }
+        }
+        if (whiteQueensideRook != nullptr && whiteQueensideRook->moved == false) {
+            uci = uci + "Q";
+            castling = true;
+            if (boardSquares[7][4]->getOccupyingPiece() == nullptr && boardSquares[7][5]->getOccupyingPiece() == nullptr && boardSquares[7][6]->getOccupyingPiece() == nullptr) {
+                // Logic for adding to possible squares
+            }
+        }
+    }
+    if (blackKing -> moved == false) {
+        if (blackKingsideRook != nullptr && blackKingsideRook->moved == false) {
+            uci = uci + "k";
+            castling = true;
+            if (boardSquares[0][1]->getOccupyingPiece() == nullptr && boardSquares[0][2]->getOccupyingPiece() == nullptr) {
+                // Logic for adding to possible squares
+            }
+        }
+        if (blackQueensideRook != nullptr && blackQueensideRook->moved == false) {
+            uci = uci + "q";
+            castling = true;
+            if (boardSquares[0][4]->getOccupyingPiece() == nullptr && boardSquares[0][5]->getOccupyingPiece() == nullptr && boardSquares[0][6]->getOccupyingPiece() == nullptr) {
+                // Logic for adding to possible squares
+            }
+        }
+    }
+
+    if (castling == false) {
+        uci = uci + "-";
+    }
+
+    return uci;
+}
+
+std::vector<ChessSquare*> ChessBoard::getNextMove(QString UCI)
+{
+    PythonInterface *python = new PythonInterface();
+    std::string nextMove = python->getNextMove(UCI).toStdString();
+
+    std::vector<ChessSquare*> moveSquares;
+
+    std::string startFile, endFile, startRank, endRank;
+
+    startFile = nextMove.substr(1, 1);
+    endFile = nextMove.substr(3, 1);
+    startRank = nextMove.substr(2, 1);
+    endRank = nextMove.substr(4, 1);
+
+    startRank = startRank[0] - '0';
+    startFile = static_cast<int>(startFile[0]);
+    startFile = static_cast<int>(startFile[0]) - 96;
+    endFile = static_cast<int>(endFile[0]) - 96;
+
+    int startRankInt = startRank[0] - '0';
+    int endRankInt = endRank[0] - '0';
+    int startFileInt = startFile[0] - 96;
+    int endFileInt = startFile[0] - 96;
+
+    ChessSquare *startSquare = this->getSquare(startRankInt, startFileInt);
+    ChessSquare *endSquare = this->getSquare(endRankInt, endFileInt);
+
+    moveSquares.push_back(endSquare);
+    moveSquares.push_back(startSquare);
+
+    return moveSquares;
+}
+
 /* Return reference to the ChessSquare object at specified rank and file */
 ChessSquare* ChessBoard::getSquare(int rank, int file)
 {
@@ -287,6 +383,8 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
 /* Alters necessary flag and swaps piece icon */
 void ChessBoard::selectPiece(ChessPiece *selectedPiece, ChessSquare *square) {
     selectedPiece->setIsSelected(true);
+
+    // Remove and add piece to change sprite color (can probably be done better)
     removePieceFromSquare(square);
     addPieceToSquare(selectedPiece, square->getRank(), square->getFile(), 3);
 
@@ -315,6 +413,8 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
     for (int i = 0; i < (int) coords.size(); i+=2)
     {
         int newRank, newFile;
+
+        // Pull set of coordinates from vector
         int x = coords[i];
         int y = coords[i+1];
 
@@ -325,7 +425,7 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
         }
 
         if (lineStopped == false) {
-            if (selectedPiece->getWhite()) {
+            if (selectedPiece->getWhite() != true) {
                 // Light pieces [Currently opponent side]
                 newFile = square->getFile() - x;          // Change in x-axis
                 newRank = square->getRank() + y;     // Change in y-axis
@@ -387,34 +487,43 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
     selectedSquare = nullptr;
     movePending = false;
 
+    // Pawn specific (en passant)
     if (pieceToMove->getName() == "Pawn") {
         Pawn* pawn = dynamic_cast<Pawn*>(pieceToMove);
         pawn->incrementMoveCounter();
+    } else if (pieceToMove->getName() == "Rook") {
+        // Rook specific (castling)
+        Rook *rook = dynamic_cast<Rook*>(pieceToMove);
+        if (rook->moved == false) {
+            rook->moved = true;
+        }
+    } else if (pieceToMove->getName() == "King") {
+        // King specific (castling)
+        King *king = dynamic_cast<King*>(pieceToMove);
+        if (king->moved == false) {
+            king->moved = true;
+        }
     }
 
     if (pieceToMove->getWhite() == true) {
         halfMoveCounter ++;
     } else {
-        fullMoveCounter ++;
+        fullMoveCounter += 2;
     }
 
     lastMove = moveToAlgebraic(pieceToMove, squareClicked);
     whiteToPlay = whiteToPlay == true ? false : true;
     lastMovedPiece = pieceToMove;
     checkEnPassant();
+
+    Q_EMIT moveCompleted(lastMove);
+
     return;
 }
 
 /* This function runs if the user left clicks on a square */
 void ChessBoard::squareLeftClicked(int rank, int file)
 {
-    // if (selectedSquare != nullptr) { qDebug() << "Existing selected square on click:" << selectedSquare->getRank() << selectedSquare->getFile() << "."; } else { qDebug() << "No selected square on click."; }
-//    ChessSquare *clickedSquare = this->getSquare(rank, file);
-//    ChessMove *move = new ChessMove();
-
-//    movePending = move->initiateMove(clickedSquare, chessScene, boardSquares, movePending, possibleMoveSquares, highlightedSquares, selectedSquare);
-    // move->executeMove();
-
     // Check that click was legal
     if (boardSquares[rank][file] == nullptr) {
         qDebug() << "User has somehow clicked on a square that does not exist";
@@ -426,7 +535,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
             if (squareInPossibleMoves(squareClicked)) {
                 // qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
-                boardToUCI();
             } else {
                 // qDebug() << "Move pending but not moving piece.";
                 movePending = false;
@@ -469,6 +577,15 @@ void ChessBoard::squareLeftClicked(int rank, int file)
         }
     }
 
+    if (whiteToPlay == false) {
+        QString UCI = this->boardToUCI();
+        std::vector<ChessSquare*> moveSquares = this->getNextMove(UCI);
+        selectedSquare = moveSquares.front();
+        this->movePiece(moveSquares.back());
+        selectedSquare = nullptr;
+
+        whiteToPlay = true;
+    }
 
     qDebug() << "----------------------------------------------------------------";
 
@@ -561,8 +678,6 @@ QString ChessBoard::moveToAlgebraic(ChessPiece *piece, ChessSquare *square)
 
     QString algebraic = p + file + QString::fromStdString(std::to_string(rank));
 
-    qDebug() << "Move made:" << algebraic;
-
     return algebraic;
 }
 
@@ -579,9 +694,7 @@ QString ChessBoard::boardToUCI()
             // If that square has a piece
             if (boardSquares[i][j]->getOccupyingPiece() != nullptr) {
                 // Decide whether to precede with ".", number, or nothing
-                if (emptySquares == 1) {
-                    uci = uci + ".";
-                } else if (emptySquares > 1) {
+                if (emptySquares >= 1) {
                     uci = uci + QString::fromStdString(std::to_string(emptySquares));
                 }
                 uci = uci + boardSquares[i][j]->getOccupyingPiece()->getFEN();
@@ -592,14 +705,14 @@ QString ChessBoard::boardToUCI()
         }
 
         // Need to account for trailing empty squares
-        if (emptySquares == 1) {
-            uci = uci + ".";
-        } else if (emptySquares > 1) {
+        if (emptySquares >= 1) {
             uci = uci + QString::fromStdString(std::to_string(emptySquares));
         }
 
         // End rank
-        uci = uci + "/";
+        if (i < 7) {
+            uci = uci + "/";
+        }
     }
 
     // Denote whose turn it is
@@ -608,21 +721,8 @@ QString ChessBoard::boardToUCI()
 
     // Denote castling rights
     uci = uci + " ";
-    if (whiteKing->moved == false) {
-        if (whiteKingsideRook != nullptr && whiteKingsideRook->moved == false) {
-            uci = uci + "K";
-        } else if (whiteKingsideRook != nullptr && whiteQueensideRook->moved == false) {
-            uci = uci + "Q";
-        }
-    } else if (blackKing -> moved == false) {
-        if (blackKingsideRook != nullptr && blackKingsideRook->moved == false) {
-            uci = uci + "k";
-        } else if (blackKingsideRook != nullptr && blackQueensideRook->moved == false) {
-            uci = uci + "q";
-        }
-    } else {
-        uci = uci + "-";
-    }
+    uci = uci + this->getCastlingRights();
+
 
     // Denote en passant status
     uci = uci + " ";
@@ -639,7 +739,8 @@ QString ChessBoard::boardToUCI()
    uci = uci + " ";
    uci = uci + QString::fromStdString(std::to_string(fullMoveCounter));
 
-    qDebug() << "UCI:" << uci;
-    return uci;
+   qDebug() << uci;
+
+   return uci;
 }
 
