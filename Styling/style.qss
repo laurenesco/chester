@@ -99,6 +99,11 @@ border-radius: 10px;
 background-color: #212529;
 }
 
+QFrame[objectName="frm_eval"] {
+border-radius: 10px;
+background-color: #212529;
+}
+
 QLabel {
     color: white;
     font-family: Joystix Monospace;

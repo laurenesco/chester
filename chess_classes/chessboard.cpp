@@ -516,7 +516,7 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
     lastMovedPiece = pieceToMove;
     checkEnPassant();
 
-    Q_EMIT moveCompleted(lastMove);
+    Q_EMIT moveCompleted(this->lastMove);
 
     return;
 }
@@ -703,27 +703,21 @@ QString ChessBoard::boardToUCI()
                 emptySquares ++;
             }
         }
-
         // Need to account for trailing empty squares
         if (emptySquares >= 1) {
             uci = uci + QString::fromStdString(std::to_string(emptySquares));
         }
-
         // End rank
         if (i < 7) {
             uci = uci + "/";
         }
     }
-
     // Denote whose turn it is
     uci = uci + " ";
     uci = whiteToPlay ? uci + "w" : uci + "b";
-
     // Denote castling rights
     uci = uci + " ";
     uci = uci + this->getCastlingRights();
-
-
     // Denote en passant status
     uci = uci + " ";
     if (enPassantSquare != nullptr) {
@@ -732,7 +726,6 @@ QString ChessBoard::boardToUCI()
     } else {
         uci = uci + "-";
     }
-
     // Denote halfmove and fullmove
    uci = uci + " ";
    uci = uci + QString::fromStdString(std::to_string(halfMoveCounter));
