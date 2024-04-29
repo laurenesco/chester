@@ -8,7 +8,6 @@
 
 #include "helpscreen.h"
 #include "ui_helpscreen.h"
-#include "engineinterface.h"
 
 #include <QBoxLayout>
 #include <QTextEdit>
@@ -22,11 +21,6 @@ HelpScreen::HelpScreen(Config *config, QWidget *parent) :
     setWindowTitle("chesster - Help");
     setGeometry(200, 85, 1500, 900);
     this->config = config;
-
-    // Test python connection
-    EngineInterface engine;
-    QString output = engine.runTest();
-    // ui->lbl_testPython->setText(output);
 }
 
 HelpScreen::~HelpScreen()

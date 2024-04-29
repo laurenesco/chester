@@ -35,6 +35,7 @@ public:
     void toggleSquareRed();
     void toggleSquareYellow();
     void resetColor();
+    void toggleSquareCustom(QColor color);
 
 Q_SIGNALS:
     void squareLeftClicked(int rank, int file);

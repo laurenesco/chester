@@ -1,9 +1,0 @@
-update apt
-install annd configure git
-install and configure vim
-symlink python: lauren@lauren-vm:/usr/bin$ sudo ln -s python3 python
-intall pip
-install bazel: https://stackoverflow.com/questions/65656165/how-do-you-install-bazel-using-bazelisk
-install clang: https://www.tensorflow.org/install/source
-build tensorflow from source: https://www.tensorflow.org/install/source
-

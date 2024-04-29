@@ -229,8 +229,13 @@
           </item>
           <item>
            <widget class="QLabel" name="lbl_moveDisplay">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
             <property name="text">
-             <string> </string>
+             <string/>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

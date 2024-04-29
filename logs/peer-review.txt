@@ -1,0 +1,60 @@
+- bank of captured pieces
+- sleep timer on black move
+- highlight last move
+- somehow display whos turn it is
+- transparency of highlihgting color
+- make options text white
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- implement captures on my end
+- implement game over logic
+- disable moving on blacks turn
+
+
+Traceback (most recent call last):
+  File "C:\Users\laesc\AppData\Local\Programs\Python\Python310\lib\site-packages\get_next_move.py", line 8, in get_next_best_move
+    return engine.get_best_move()
+  File "C:\Users\laesc\AppData\Local\Programs\Python\Python310\lib\site-packages\stockfish\models.py", line 338, in get_best_move
+    return self._get_best_move_from_sf_popen_process()
+  File "C:\Users\laesc\AppData\Local\Programs\Python\Python310\lib\site-packages\stockfish\models.py", line 358, in _get_best_move_from_sf_popen_process
+    text = self._read_line()
+  File "C:\Users\laesc\AppData\Local\Programs\Python\Python310\lib\site-packages\stockfish\models.py", line 160, in _read_line
+    raise StockfishException("The Stockfish process has crashed")
+stockfish.models.StockfishException: The Stockfish process has crashed
+Next best move: ""
+Python function call failed
+terminate called after throwing an instance of 'std::out_of_range'
+  what():  basic_string::substr: __pos (which is 1) > this->size() (which is 0)

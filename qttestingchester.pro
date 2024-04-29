@@ -4,8 +4,8 @@ QT += core gui \
                   sql \
 
 # Compiler flags
-QMAKE_CXXFLAGS += -I C:/Users/laesc/AppData/Local/Programs/Python/Python310/include -L C:/Users/laesc/AppData/Local/Programs/Python/Python310/libs -lpython310
-QMAKE_CFLAGS += -I C:/Users/laesc/AppData/Local/Programs/Python/Python310/include -L C:/Users/laesc/AppData/Local/Programs/Python/Python310/libs -lpython310
+QMAKE_CXXFLAGS += -I C:/Users/laesc/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
+QMAKE_CFLAGS += -I C:/Users/laeso/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
 
 # Python.h config, Python.h uses the variable slots, so that cannot be reserve word for Qt anymore. Consequently,
 # these changes must be made in all code written: signals -> Q_SIGNALS, slots   -> Q_SLOTS, emit    -> Q_EMIT
@@ -21,7 +21,7 @@ LIBS += -L"C:/pgsql/lib" \
              -L"C:/Qt/5.15.0/Src/qtbase/src/plugins/sqldrivers/psql" \
              -lqsqlpsql
 
-LIBS += -LC:/Users/laesc/AppData/Local/Programs/Python/Python310/libs -lpython310
+LIBS += -LC:/Users/laesc/anaconda3/                  -lpython311
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -48,7 +48,6 @@ SOURCES += \
     chess_classes/piece_classes/pawn.cpp \
     chess_classes/piece_classes/queen.cpp \
     chess_classes/piece_classes/rook.cpp \
-    engineinterface.cpp \
     env/config.cpp \
     logic.cpp \
     main.cpp \
@@ -70,7 +69,6 @@ HEADERS += \
     chess_classes/piece_classes/pawn.h \
     chess_classes/piece_classes/queen.h \
     chess_classes/piece_classes/rook.h \
-    engineinterface.h \
     env/config.h \
     logic.h \
 

@@ -1,3 +1,24 @@
+anaconda stuff:
+
+command to create venv: conda create --name venv_chesster python=3.10
+
+#
+# To activate this environment, use
+#
+#     $ conda activate venv_chesster
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+------- venv stuff
+# Create a virtual environment
+python3 -m venv /path/to/your/virtualenv
+
+# Activate the virtual environment
+# On Windows
+\path\to\your\virtualenv\Scripts\activate.bat
+
 ------ configuring tensorflow
 update apt
 install and configure git

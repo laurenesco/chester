@@ -6,8 +6,8 @@
 // Program Description:     Header file for the HelpScreen class. This class is responsible for:
 //                                              - Generating the help page of the application
 //                                              - Displaying the following upon user request:
-//                                                      - Rules of chess
-//                                                      - Appendix
+//                                                 --- Rules of chess
+//                                                 --- Appendix
 //
 
 #ifndef HELPSCREEN_H

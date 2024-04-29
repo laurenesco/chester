@@ -47,6 +47,10 @@ QComboBox::drop-down {
     font-family: Joystix Monospace;
 }
 
+QAbstractItemView {
+    color: white;
+}
+
 QComboBox::down-arrow {
      background: black;
      color: white;

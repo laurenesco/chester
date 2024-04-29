@@ -20,7 +20,7 @@ void ChessSquare::setBaseColor(int rank, int file) {
     if ((rank + file) % 2 == 0) {
         this->setBrush(QColor(52,58,64));
     } else {
-        this->setBrush(QColor(222,226,230));
+        this->setBrush(QColor(206,212,218));
     }
     return;
 }
@@ -46,13 +46,7 @@ void ChessSquare::leftClick()
 // On right click
 void ChessSquare::rightClick()
 {
-    if (occupyingPiece == nullptr) {
-        // qDebug() << "Right click - No piece on square";
-        Q_EMIT squareRightClicked(rank, file);
-    } else {
-        // qDebug() << "Right click - Piece on square: " << occupyingPiece->getName();
-        Q_EMIT squareRightClicked(rank, file);
-    }
+    Q_EMIT squareRightClicked(rank, file);
     return;
 }
 
@@ -77,6 +71,12 @@ void ChessSquare::toggleSquareYellow() {
 void ChessSquare::resetColor()
 {
     setBaseColor(rank, file);
+    return;
+}
+
+void ChessSquare::toggleSquareCustom(QColor color)
+{
+    this->setBrush(color);
     return;
 }
 

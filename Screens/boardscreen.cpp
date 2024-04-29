@@ -11,6 +11,7 @@
 #include "boardscreen.h"
 #include "chess_classes/chessboard.h"
 #include "chess_classes/chesssquare.h"
+#include "pythoninterface.h"
 
 BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     QMainWindow(parent),
@@ -39,6 +40,10 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     ui->lbl_moveDisplay->setWordWrap(true);  // Enable word wrap
 
     connect(chessboard, &ChessBoard::moveCompleted, this, &BoardScreen::moveCompleted);
+
+//    PythonInterface *python = new PythonInterface();
+//    python->testPython(this->ui->lbl_eval);
+    // Py_SetProgramName(L"C:/Users/laesc/OneDrive/Desktop/chester/python");
 }
 
 BoardScreen::~BoardScreen()
@@ -65,6 +70,10 @@ void BoardScreen::on_btn_closeWindow_clicked()
 
 void BoardScreen::moveCompleted(QString algebraic)
 {
+    if (this->ui->lbl_moveDisplay->text().isEmpty()) {
+        this->setMovesLabel(algebraic);
+        return;
+    }
     QString currentText = this->getMovesLabel();
     currentText = currentText + ", " + algebraic;
     this->setMovesLabel(currentText);
