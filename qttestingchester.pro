@@ -4,8 +4,10 @@ QT += core gui \
                   sql \
 
 # Compiler flags
-QMAKE_CXXFLAGS += -I C:/Users/laesc/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
-QMAKE_CFLAGS += -I C:/Users/laeso/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
+# QMAKE_CXXFLAGS += -I C:/Users/laesc/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
+# QMAKE_CFLAGS += -I C:/Users/laeso/anaconda3/include -L C:/Users/laesc/anaconda3/ -lpython311
+QMAKE_CXXFLAGS += -I C:/Users/laesc/AppData/Local/Programs/Python/Python312/include -L C:/Users/laesc/AppData/Local/Programs/Python/Python312 -lpython312
+QMAKE_CFLAGS += -I C:/Users/laesc/AppData/Local/Programs/Python/Python312/include -L C:/Users/laesc/AppData/Local/Programs/Python/Python312 -lpython312
 
 # Python.h config, Python.h uses the variable slots, so that cannot be reserve word for Qt anymore. Consequently,
 # these changes must be made in all code written: signals -> Q_SIGNALS, slots   -> Q_SLOTS, emit    -> Q_EMIT
@@ -21,7 +23,8 @@ LIBS += -L"C:/pgsql/lib" \
              -L"C:/Qt/5.15.0/Src/qtbase/src/plugins/sqldrivers/psql" \
              -lqsqlpsql
 
-LIBS += -LC:/Users/laesc/anaconda3/                  -lpython311
+# LIBS += -LC:/Users/laesc/anaconda3/                  -lpython311
+LIBS += -L C:/Users/laesc/AppData/Local/Programs/Python/Python312 -lpython312
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -53,6 +56,7 @@ SOURCES += \
     main.cpp \
 
 HEADERS += \
+    evaluationbar.h \
     pythoninterface.h \
     screens/boardscreen.h \
     screens/helpscreen.h \

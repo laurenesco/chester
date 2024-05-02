@@ -16,6 +16,10 @@ class King : public ChessPiece {
 public:
     King();
     bool moved;
+    int rank;
+    int file;
+    bool check = false;
+    bool mate = false;
 };
 
 #endif // KING_H

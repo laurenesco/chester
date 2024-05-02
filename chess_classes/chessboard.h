@@ -25,6 +25,7 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 #include <QMessageBox>
+#include <ctime>
 
 class ChessBoard : public QWidget {
     Q_OBJECT
@@ -33,6 +34,11 @@ public:
     explicit ChessBoard(QWidget* parent = nullptr);
 
 private:
+    clock_t start;
+    clock_t end;
+    void start_time();
+    void end_time(QString name);
+
     // Chess squares comprising board
     ChessSquare* boardSquares[8][8];
     int tileSize = 620/8;
@@ -68,11 +74,16 @@ private:
     void onSquareClicked(QGraphicsSceneMouseEvent* event);
     void manageEnPassant();
     QString getCastlingRights();
-    std::vector<ChessSquare *> getNextMove(QString UCI);
+    void getNextMove(std::string move);
+    void getEvaluation(std::string game_eval);
+    void getStats();
+    std::vector<ChessSquare*> nextBestMoveSquares;
+    std::vector<ChessSquare*> getPossibleMoves(ChessSquare *square);
 
     ChessSquare* getSquare(int rank, int file);
     void resetHighlightedSquares();
     void resetPossibleMoveSquares();
+    void resetRedSquares();
     bool squareInPossibleMoves(ChessSquare *square);
     void movePiece(ChessSquare *square);
     void highlightPossibleSquares(ChessSquare *square);
@@ -85,14 +96,28 @@ private:
     QString moveToAlgebraic(ChessPiece *piece, ChessSquare *square);
     QString boardToUCI();
 
+    struct evaluation {
+        int value = 0; // Represents advantage if cp, or moves until mate if mate
+        int winning = 0;  // 1 - white, 2 - black
+        int status = 0;   // 1 - cp, 2 - mate
+    };
 
-    void resetRedSquares();
+    evaluation eval;
+    void moveBlack();
+    void moveWhite();
+    bool checkCheck(int rank, int file, bool isWhite, bool check);
+    bool checkmateCheck(ChessSquare *kingSquare, bool isWhite);
+    void endGame(ChessSquare *square);
+
 Q_SIGNALS:
-    void moveCompleted(QString algebraic);
+    void moveCompleted(QString algebraic, int winning, int value);
+    void switchMascot(int status);
+    void game_over();
 
 private Q_SLOTS:
     void squareLeftClicked(int rank, int file);
     void squareRightClicked(int rank, int file);
+
 };
 
 #endif // CHESSBOARD_H

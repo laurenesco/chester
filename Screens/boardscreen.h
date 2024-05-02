@@ -11,6 +11,7 @@
 #define BOARDSCREEN_H
 
 #include "env/config.h"
+#include "evaluationbar.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -29,15 +30,25 @@ public:
 
 Q_SIGNALS:
     void boardScreenClosed();
-
-private Q_SLOTS:
-    void on_btn_closeWindow_clicked();
-    void moveCompleted(QString algebraic);
+    void blackToPlay();
 
 private:
     Ui::BoardScreen *ui;
     QWidget *parentForm;
     Config *config;
+    EvaluationBar *evalBar;
+    void setMascot();
+
+    struct evaluation {
+        double value = 0; // Represents advantage if cp, or moves until mate if mate
+        int winning = 0;  // 1 - white, 2 - black
+        int status = 0;   // 1 - cp, 2 - mate
+    };
+
+private Q_SLOTS:
+    void on_btn_closeWindow_clicked();
+    void moveCompleted(QString algebraic, int winning, int evaluation); // See evaluation struct in ChessBoard.h for details on winning and evaluation
+    void switchMascot(int status);
 };
 
 #endif // BOARDSCREEN_H

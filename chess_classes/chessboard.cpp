@@ -13,6 +13,9 @@
 #include "pythoninterface.h"
 #include "qboxlayout.h"
 #include <cmath>
+#include <windows.h>
+#include <random>
+#include <QElapsedTimer>
 
 /* Constructor */
 ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
@@ -34,12 +37,26 @@ ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
     loadStartingPosition();
 }
 
+void ChessBoard::start_time()
+{
+    start = clock();
+    return;
+}
+
+void ChessBoard::end_time(QString name)
+{
+    end = clock();
+    qDebug() << name << "ran for" << double(end - start) / CLOCKS_PER_SEC;
+    return;
+}
+
 // ---------------------------------------- //
 // CHESS BOARD RELATED FUNCTIONS //
 // ---------------------------------------- //
 
-/* The 64 chess board ChessSquare objects created here */
+// The 64 chess board ChessSquare objects created here
 void ChessBoard::createChessBoard() {
+    //    qDebug() << "====== Entering createChessBoard";
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
             ChessSquare *square = new ChessSquare(file * tileSize, rank * tileSize, tileSize, tileSize);
@@ -57,7 +74,7 @@ void ChessBoard::createChessBoard() {
     }
 }
 
-/* Creates all the ChessPiece objects */
+// Creates all the ChessPiece objects
 void ChessBoard::loadStartingPosition() {
     // Pawns
     for (int i = 0; i < 2; i ++) {
@@ -156,7 +173,7 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
-            int file = (j == 0) ? 3 : 3;
+            int file = (j == 0) ? 4 : 4;
 
             King *king = new King();
 
@@ -168,6 +185,9 @@ void ChessBoard::loadStartingPosition() {
                 king->setWhite(false);
             }
 
+            king->rank = rank;
+            king->file = file;
+
             int color = king->getWhite() == true ? 1 : 2;
             addPieceToSquare(king, rank, file, color);
         }
@@ -177,7 +197,7 @@ void ChessBoard::loadStartingPosition() {
     for (int i = 0; i < 2; i ++) {
         for (int j = 0; j < 1; j++) {
             int rank = (i == 0) ? 0 : 7;
-            int file = (j == 0) ? 4 : 4;
+            int file = (j == 0) ? 3 : 3;
 
             Queen *queen = new Queen();
 
@@ -194,13 +214,10 @@ void ChessBoard::loadStartingPosition() {
     }
 }
 
-std::vector<ChessSquare*> ChessBoard::getNextMove(QString UCI)
+// Connect  to python engine and get the next best move
+void ChessBoard::getNextMove(std::string nextMove)
 {
-    PythonInterface *python = new PythonInterface();
-    std::string nextMove = python->getNextMove(UCI).toStdString();
-    qDebug() << "Next best move:" << nextMove;
-
-    std::vector<ChessSquare*> moveSquares;
+    nextBestMoveSquares.clear();
 
     std::string startFile, endFile, startRank, endRank;
 
@@ -209,31 +226,335 @@ std::vector<ChessSquare*> ChessBoard::getNextMove(QString UCI)
     endFile = nextMove.substr(2, 1);
     endRank = nextMove.substr(3, 1);
 
-//    qDebug() << startFile << startRank;
-//    qDebug() << endFile << endRank;
-
     int startRankInt = abs((startRank[0] - 48) - 8);
     int endRankInt = abs((endRank[0] - 48) - 8);
     int startFileInt = startFile[0] - 97;
     int endFileInt = endFile[0] - 97;
 
-    // qDebug() << "Start Rank:" << startRankInt << "Start File:" << startFileInt;
-    // qDebug() << "End Rank:" << endRankInt << "End File:" << endFileInt;
-
     ChessSquare *startSquare = this->getSquare(startRankInt, startFileInt);
     ChessSquare *endSquare = this->getSquare(endRankInt, endFileInt);
 
-    moveSquares.push_back(endSquare);
-    moveSquares.push_back(startSquare);
+    nextBestMoveSquares.push_back(endSquare);
+    nextBestMoveSquares.push_back(startSquare);
 
-    return moveSquares;
+    return;
+}
+
+// Connect to python engine and get current evaluation
+void ChessBoard::getEvaluation(std::string game_eval) {
+    // Process the evaluation
+    int separator = game_eval.find('?');
+
+    // Get the game state
+    eval.status = (game_eval.substr(separator + 1) == "cp") ? 1 : 2;
+
+    // Get the evaluation value
+    std::stringstream(game_eval.substr(0, separator)) >> eval.value;
+
+    // Determine who is winning
+    eval.winning = eval.value >= 0 ? 1 : 2;
+
+    // After determining who is winning, now can take abs value of value
+    eval.value = std::abs(eval.value);
+    return;
+}
+
+void ChessBoard::getStats()
+{
+    PythonInterface *python = new PythonInterface();
+    QString UCI = this->boardToUCI();
+    std::string result = python->getStats(UCI).toStdString();
+
+    // Separate the results
+    int separator = result.find('&');
+    std::string nextMove = result.substr(0, separator);
+    getNextMove(nextMove);
+
+    std::string game_eval = result.substr(separator+1);
+    getEvaluation(game_eval);
+    qDebug() << "MOVE:" << nextMove;
+    qDebug() << "GAME EVAL:" << game_eval;
+
+    return;
+}
+
+std::vector<ChessSquare *> ChessBoard::getPossibleMoves(ChessSquare *square)
+{
+    ChessPiece *selectedPiece = square->getOccupyingPiece();
+
+    std::vector<ChessSquare*> moves;
+    std::vector<int> coords = selectedPiece->getMovesVector();
+    bool lineStopped = false; // Marked true when ecountering a square with friendly piece, since you cannot move through them
+
+    // Highlight potential moves yellow
+    for (int i = 0; i < (int) coords.size(); i+=2)
+    {
+        int newRank, newFile;
+
+        // Pull set of coordinates from vector
+        int x = coords[i];
+        int y = coords[i+1];
+
+        // Reset lineStopped when a new direction is started (marked by 0, 0 coords)
+        if (x == 0 && y == 0) {
+            lineStopped = false;
+            continue;
+        }
+
+        if (lineStopped == false) {
+            if (selectedPiece->getWhite() != true) {
+                // Close side of board
+                newFile = square->getFile() - x;          // Change in x-axis
+                newRank = square->getRank() + y;     // Change in y-axis
+            } else {
+                // Far side of board
+                newFile = square->getFile() + x;          // Change in x-axis
+                newRank = square->getRank() - y;     // Change in y-axis
+            }
+
+            // Only move forward if coordinate is on the board
+            if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
+                ChessSquare *possibleMove = this->getSquare(newRank, newFile);
+                bool possibleMoveOccupied = possibleMove->getOccupyingPiece() == nullptr ? false : true;
+
+                if (possibleMoveOccupied == false) {
+                    // If square is not occupied, it is a potential move
+                    moves.push_back(possibleMove);
+                } else if (selectedPiece->getWhite() == true && possibleMove->getOccupyingPiece()->getWhite() == false) {
+                    // If selected piece is white and target piece is black, it is potential move but blocks the line
+                    moves.push_back(possibleMove);
+                    lineStopped = true;
+                } else if (selectedPiece->getWhite() == false && possibleMove->getOccupyingPiece()->getWhite() == true) {
+                    // If selected piece is black and target piece is white, it is potential move but blocks the line
+                    possibleMoveSquares.push_back(possibleMove);
+                    lineStopped = true;
+                } else {
+                    // If square is occupied by friendly, that is blocks the line
+                    lineStopped = true;
+                }
+            }
+        }
+    }
+
+    if (selectedPiece->getName() == "Pawn") {
+        // Check attack squares for pawns
+        std::vector<int> attackCoords = { -1, 1, 1, 1 };
+
+        // Highlight potential moves yellow
+        for (int i = 0; i < (int) attackCoords.size(); i+=2)
+        {
+            int newRank, newFile;
+
+            // Pull set of coordinates from vector
+            int x = coords[i];
+            int y = coords[i+1];
+
+            if (selectedPiece->getWhite() != true) {
+                // Close side of board
+                newFile = square->getFile() - x;          // Change in x-axis
+                newRank = square->getRank() + y;     // Change in y-axis
+            } else {
+                // Far side of board
+                newFile = square->getFile() + x;          // Change in x-axis
+                newRank = square->getRank() - y;     // Change in y-axis
+            }
+
+            // Only move forward if coordinate is on the board
+            if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
+                ChessSquare *possibleMove = this->getSquare(newRank, newFile);
+                bool possibleMoveOccupied = possibleMove->getOccupyingPiece() == nullptr ? false : true;
+                if (possibleMoveOccupied == true) {
+                    possibleMoveSquares.push_back(possibleMove);
+                }
+            }
+        }
+    }
+
+    return moves;
+}
+
+// TODO place this somewhere and pass the kings rank, file, color, if its coming from check already to it
+bool ChessBoard::checkCheck(int kingRank, int kingFile, bool isWhite, bool check) {
+
+    std:: vector<int> directionsVector = {
+        1, -1,
+        2, -2,
+        3, -3,
+        4, -4,
+        5, -5,
+        6, -6,
+        7, -7,
+        0, 0,
+        1, 1,
+        2, 2,
+        3, 3,
+        4, 4,
+        5, 5,
+        6, 6,
+        7, 7,
+        0, 0,
+        -1, 1,
+        -2, 2,
+        -3, 3,
+        -4, 4,
+        -5, 5,
+        -6, 6,
+        -7, 7,
+        0, 0,
+        -1, -1,
+        -2, -2,
+        -3, -3,
+        -4, -4,
+        -5, -5,
+        -6, -6,
+        -7, -7,
+        0, 0,
+        0, -1,
+        0, -2,
+        0, -3,
+        0, -4,
+        0, -5,
+        0, -6,
+        0, -7,
+        0, 0,
+        0, 1,
+        0, 2,
+        0, 3,
+        0, 4,
+        0, 5,
+        0, 6,
+        0, 7,
+        0, 0,
+        1, 0,
+        2, 0,
+        3, 0,
+        4, 0,
+        5, 0,
+        6, 0,
+        7, 0,
+        0, 0,
+        -1, 0,
+        -2, 0,
+        -3, 0,
+        -4, 0,
+        -5, 0,
+        -6, 0,
+        -7, 0,
+    };
+
+    bool lineStopped = false;
+    int newRank, newFile;
+
+    ChessSquare *kingSquare = boardSquares[kingRank][kingFile];
+
+    // For each coordinate
+    for (int i = 0; i < (int) directionsVector.size(); i+=2) {
+
+        // Pull set of coordinates from vector
+        int x = directionsVector[i];
+        int y = directionsVector[i+1];
+
+        // Reset lineStopped when a new direction is started (marked by 0, 0 coords)
+        if (x == 0 && y == 0) {
+            lineStopped = false;
+            continue;
+        }
+
+        // Determine the next square to check
+        if (lineStopped == false) {
+            if (isWhite != true) {
+                // Light pieces
+                newFile = kingSquare->getFile() - x;          // Change in x-axis
+                newRank = kingSquare->getRank() + y;     // Change in y-axis
+            } else {
+                // Dark pieces
+                newFile = kingSquare->getFile() + x;          // Change in x-axis
+                newRank = kingSquare->getRank() - y;     // Change in y-axis
+            }
+
+            // Only move forward if coordinate is on the board
+            if (newRank < 8 && newFile < 8 && newRank >= 0 && newFile >= 0) {
+                ChessSquare *squareToCheck = this->getSquare(newRank, newFile);
+                bool squareOccupied = squareToCheck->getOccupyingPiece() == nullptr ? false : true;
+
+                // Only move forward if the square is occupied
+                if (squareOccupied == false) {
+                    // Do nothing
+                } else {
+                    ChessPiece *piece = squareToCheck->getOccupyingPiece();
+
+                    if (piece->getWhite() == isWhite) {
+                        // If square is occupied by friendly, that is blocks the line
+                        lineStopped = true;
+                    } else {
+                        std::vector<ChessSquare*> moves = getPossibleMoves(squareToCheck);
+
+                        // If the kings square is in the pieces possible moves, then check is present
+                        for (ChessSquare* testingSquare : moves) {
+                            if (kingSquare == testingSquare) {
+                                // CHECK
+                                // Check for any escape
+                                if (check == false) {
+                                    QColor color = QColor(176,196,222);
+                                    kingSquare->toggleSquareCustom(color);
+                                    bool endgame = checkmateCheck(kingSquare, isWhite);
+                                    if (endgame == true) {
+                                        endGame(kingSquare);
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool ChessBoard::checkmateCheck(ChessSquare *kingSquare, bool isWhite)
+{
+    // Get the possible moves that the king has
+    std::vector<ChessSquare*> kingsMoves = getPossibleMoves(kingSquare);
+    bool danger = true;
+
+    // If no moves then mate
+    if (kingsMoves.empty() == true) {
+        endGame(kingSquare);
+    } else {
+        // Check to see if any possible squares are safe
+        for (ChessSquare* testingSquare : kingsMoves) {
+            bool danger = checkCheck(testingSquare->getRank(), testingSquare->getFile(), isWhite, true);
+            if (danger == false) {
+                QColor color = QColor(188, 143, 143);
+
+                testingSquare->toggleSquareCustom(color);
+                return false;
+            }
+        }
+    }
+    return danger;
+}
+
+void ChessBoard::endGame(ChessSquare *square)
+{
+    ChessPiece *loser = square->getOccupyingPiece();
+    QString color = loser->getWhite() == true ? "White" : "Black";
+    QString notification = "Game Over! " + color + " loses!";
+    QMessageBox *message = new QMessageBox();
+    message->addButton(QMessageBox::Ok);
+    message->setText(notification);
+    message->show();
+    Q_EMIT game_over();
+    this->close();
 }
 
 // ----------------------- //
 // GET / SET METHODS //
 // ---------------------- //
 
-/* Return reference to the ChessSquare object at specified rank and file */
+// Return reference to the ChessSquare object at specified rank and file
 ChessSquare* ChessBoard::getSquare(int rank, int file)
 {
     return boardSquares[rank][file];
@@ -243,7 +564,7 @@ ChessSquare* ChessBoard::getSquare(int rank, int file)
 // LOGIC RELATED FUNCTIONS //
 // ------------------------------- //
 
-/* Returns true if the specified chess quare object is a valid place to move */
+// Returns true if the specified chess quare object is a valid place to move
 bool ChessBoard::squareInPossibleMoves(ChessSquare *square)
 {
     for (ChessSquare *s : possibleMoveSquares) {
@@ -254,7 +575,7 @@ bool ChessBoard::squareInPossibleMoves(ChessSquare *square)
     return false;
 }
 
-/* Reset all yellow squares to original color */
+// Reset all yellow squares to original color
 void ChessBoard::resetHighlightedSquares() {
     while (!highlightedSquares.empty()) {
         ChessSquare *square = highlightedSquares.back();
@@ -264,7 +585,7 @@ void ChessBoard::resetHighlightedSquares() {
     return;
 }
 
-/* Reset all red squares to original color */
+// Reset all red squares to original color
 void ChessBoard::resetRedSquares() {
     while (!redSquares.empty()) {
         ChessSquare *square = redSquares.back();
@@ -274,7 +595,7 @@ void ChessBoard::resetRedSquares() {
     return;
 }
 
-/* Empty the possible moves vector */
+// Empty the possible moves vector
 void ChessBoard::resetPossibleMoveSquares() {
     while(!possibleMoveSquares.empty()) {
         possibleMoveSquares.pop_back();
@@ -296,7 +617,9 @@ void ChessBoard::printMoveDebug(QString header) {
 // CHESS SQUARE RELATED FUNCTIONS //
 // ------------------------------------------//
 
-/* Runs only if square clicked has piece on it! Highlight all potential moves based on the piece selected */
+
+
+// Runs only if square clicked has piece on it! Highlight all potential moves based on the piece selected
 void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
     ChessPiece *selectedPiece = square->getOccupyingPiece();
     selectPiece(selectedPiece, square);
@@ -366,9 +689,11 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
     return;
 }
 
-/* This slot runs if the user left clicks on a square */
+// This slot runs if the user left clicks on a square
 void ChessBoard::squareLeftClicked(int rank, int file)
 {
+    checkCheck(whiteKing->rank, whiteKing->file, true, false);
+    checkCheck(blackKing->rank, blackKing->file, false, false);
     // Check that click was legal
     if (boardSquares[rank][file] == nullptr) {
         qDebug() << "User has somehow clicked on a square that does not exist";
@@ -376,10 +701,15 @@ void ChessBoard::squareLeftClicked(int rank, int file)
         ChessSquare *squareClicked = this->getSquare(rank, file);
 
         // If move currently pending
-        if (movePending) {
-            if (squareInPossibleMoves(squareClicked)) {
+        if (movePending == true) {
+            if (squareInPossibleMoves(squareClicked) == true) {
                 // qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
+                getStats();
+                Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
+                // moveBlack();
+                checkCheck(whiteKing->rank, whiteKing->file, true, false);
+                checkCheck(blackKing->rank, blackKing->file, false, false);
             } else {
                 // qDebug() << "Move pending but not moving piece.";
                 movePending = false;
@@ -422,20 +752,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
         }
     }
 
-    // Move black piece
-    if (whiteToPlay == false) {
-         qDebug() << "----------------------------------------------------------------";
-        qDebug() << "Black moving...";
-        QString UCI = this->boardToUCI();
-
-        std::vector<ChessSquare*> moveSquares = this->getNextMove(UCI);
-        selectedSquare = moveSquares[1];
-        this->movePiece(moveSquares[0]);
-        selectedSquare = nullptr;
-
-        whiteToPlay = true;
-    }
-
     qDebug() << "----------------------------------------------------------------";
 
     return;
@@ -457,9 +773,9 @@ void ChessBoard::selectSquare(ChessSquare *squareClicked) {
         selectedSquare->resetColor();
     }
     selectedSquare = squareClicked;
-    squareClicked->toggleSquareYellow();
+    squareClicked->toggleSquareYellow(); // TOGGLE SQUARE COLOR
     if (squareClicked->getOccupyingPiece() != nullptr) {
-        highlightPossibleSquares(squareClicked);
+        highlightPossibleSquares(squareClicked); // TOGGLE highlight possible moves here
     }
 
     return;
@@ -499,6 +815,7 @@ void ChessBoard::deselectSquare(ChessSquare * squareClicked) {
 void ChessBoard::movePiece(ChessSquare *squareClicked)
 {
     ChessPiece *pieceToMove = selectedSquare->getOccupyingPiece(); // Get piece from old square
+    lastMove = moveToAlgebraic(pieceToMove, squareClicked);
 
     removePieceFromSquare(selectedSquare); // Remove sprite from old square
     deselectPiece(pieceToMove, squareClicked); // Add sprite to new square and deselect piece
@@ -522,11 +839,13 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
             rook->moved = true;
         }
     } else if (pieceToMove->getName() == "King") {
-        // King specific (castling)
+        // King specific (castling/check)
         King *king = dynamic_cast<King*>(pieceToMove);
         if (king->moved == false) {
             king->moved = true;
         }
+        king->rank = squareClicked->getRank();
+        king->file = squareClicked->getFile();
     }
 
     // If en passant capture, remove captured pawn
@@ -542,12 +861,42 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
         fullMoveCounter += 2;
     }
 
-    lastMove = moveToAlgebraic(pieceToMove, squareClicked);
     whiteToPlay = whiteToPlay == true ? false : true;
     lastMovedPiece = pieceToMove;
     manageEnPassant();
 
-    Q_EMIT moveCompleted(lastMove);
+    // getStats();
+
+    return;
+}
+
+void ChessBoard::moveBlack()
+{
+    qDebug() << "----------------------------------------------------------------";
+    qDebug() << "Black moving...";
+
+//    Q_EMIT switchMascot(1);
+    // Randomly sleep to simulate thinking of computer
+    QElapsedTimer timer;
+    timer.start();
+
+    std::random_device random_gen;
+    std::mt19937 gen(random_gen());
+    std::uniform_int_distribution<int> distribution(2, 5);
+    int random_number = distribution(gen);
+    while (timer.elapsed() < random_number * 1000) {
+
+    }
+
+        selectedSquare = nextBestMoveSquares[1];
+        this->movePiece(nextBestMoveSquares[0]);
+        selectedSquare = nullptr;
+
+        whiteToPlay = true;
+
+    getStats();
+//    Q_EMIT switchMascot(0);
+    Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
 
     return;
 }
@@ -566,6 +915,7 @@ void ChessBoard::selectPiece(ChessPiece *selectedPiece, ChessSquare *square) {
 }
 
 /* This function is responsible for:
+ * - literally moving the piece
  * - updating the pieces "selected" flag
  * - changing the color of the piece on the board back to its base color
  */
@@ -630,6 +980,7 @@ void ChessBoard::removePieceFromSquare(ChessSquare *square)
         }
         square->setOccupyingPiece(nullptr);
     }
+
     return;
 }
 
@@ -814,34 +1165,34 @@ QString ChessBoard::boardToUCI()
         uci = uci + "-";
     }
     // Denote halfmove and fullmove
-   uci = uci + " ";
-   uci = uci + QString::fromStdString(std::to_string(halfMoveCounter));
-   uci = uci + " ";
-   uci = uci + QString::fromStdString(std::to_string(fullMoveCounter));
+    uci = uci + " ";
+    uci = uci + QString::fromStdString(std::to_string(halfMoveCounter));
+    uci = uci + " ";
+    uci = uci + QString::fromStdString(std::to_string(fullMoveCounter));
 
-   qDebug() << uci;
+    qDebug() << uci;
 
-   return uci;
+    return uci;
 }
 
 /* Convert the most recent move into algebraic notation */
-QString ChessBoard::moveToAlgebraic(ChessPiece *piece, ChessSquare *square)
+QString ChessBoard::moveToAlgebraic(ChessPiece *movedPiece, ChessSquare *square)
 {
-    QString p;
-    QString name = piece->getName();
+    QString piece, algebraic;
+    QString name = movedPiece->getName();
 
     if (name == "Pawn") {
         // pawns dont get letter appended
     } else if (name == "Rook") {
-        p = p + "R";
+        piece = piece + "R";
     } else if (name == "Knight") {
-        p = p + "N";
+        piece = piece + "N";
     } else if (name == "Bishop") {
-        p = p + "B";
+        piece = piece + "B";
     } else if (name == "Queen") {
-        p = p + "Q";
+        piece = piece + "Q";
     } else if (name == "King") {
-        p = p + "K";
+        piece = piece + "K";
     } else {
         qDebug() << "Error getting piece type in moveToAlgebraic()";
     }
@@ -849,7 +1200,11 @@ QString ChessBoard::moveToAlgebraic(ChessPiece *piece, ChessSquare *square)
     char file = 96 + square->getFile() + 1;
     int rank = 8 - square->getRank();
 
-    QString algebraic = p + file + QString::fromStdString(std::to_string(rank));
+    if (square->getOccupyingPiece() != nullptr) {
+        algebraic = piece + "x" + file + QString::fromStdString(std::to_string(rank));
+    } else {
+        algebraic = piece + file + QString::fromStdString(std::to_string(rank));
+    }
 
     return algebraic;
 }

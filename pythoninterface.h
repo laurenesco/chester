@@ -10,6 +10,7 @@ public:
     PythonInterface();
     QString getEvaluation(QString UCI);
     QString getNextMove(QString UCI);
+    QString getStats(QString UCI);
     void testPython(QLabel *label);
 };
 

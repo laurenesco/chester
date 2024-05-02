@@ -7,6 +7,7 @@
 //
 
 #include <QLabel>
+#include <QMovie>
 #include "ui_boardscreen.h"
 #include "boardscreen.h"
 #include "chess_classes/chessboard.h"
@@ -23,14 +24,10 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     setGeometry(200, 85, 1500, 900);
     this->config = config;
 
-    /*
-    // Set styling
-    ui->centralwidget->setStyleSheet("background-color: #25292b");
-    ui->statusbar->setStyleSheet("background-color: #25292b");
-    ui->frmEngine->setStyleSheet("background-color: #25292b");
-    ui->frmStats->setStyleSheet("background-color: #353a3d");
-    ui->frmMoves->setStyleSheet("background-color: #353a3d");
-    */
+    // Create the evaluation bar
+    evalBar = new EvaluationBar();
+    evalBar->setStyleSheet("border-radius: 10px;"); // Not working :(
+    this->ui->frm_eval->layout()->addWidget(evalBar);
 
     // Creating and adding the chessboard to the window
     ChessBoard *chessboard = new ChessBoard(ui->frmBoard);
@@ -39,11 +36,10 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     // Configuring the moves frame
     ui->lbl_moveDisplay->setWordWrap(true);  // Enable word wrap
 
+    // Connect to the moveCompleted signal in ChessBoard class
     connect(chessboard, &ChessBoard::moveCompleted, this, &BoardScreen::moveCompleted);
-
-//    PythonInterface *python = new PythonInterface();
-//    python->testPython(this->ui->lbl_eval);
-    // Py_SetProgramName(L"C:/Users/laesc/OneDrive/Desktop/chester/python");
+    connect(chessboard, &ChessBoard::game_over, this, &BoardScreen::on_btn_closeWindow_clicked);
+    connect(chessboard, &ChessBoard::switchMascot, this, &BoardScreen::switchMascot);
 }
 
 BoardScreen::~BoardScreen()
@@ -54,6 +50,15 @@ BoardScreen::~BoardScreen()
 QString BoardScreen::getMovesLabel()
 {
     return ui->lbl_moveDisplay->text();
+}
+
+void BoardScreen::setMascot()
+{
+//    QString path = R"(C:/Users/laesc/OneDrive/Desktop/chester/icons/still_mascot.png)";
+//    QPixmap img(path);
+//    img = img.scaled(img.size()*.9, Qt::KeepAspectRatio);
+//    ui->lbl_mascot->setPixmap(img);
+    return;
 }
 
 void BoardScreen::setMovesLabel(QString updatedString)
@@ -68,15 +73,36 @@ void BoardScreen::on_btn_closeWindow_clicked()
     this->close();
 }
 
-void BoardScreen::moveCompleted(QString algebraic)
+void BoardScreen::switchMascot(int status) {
+//    if (status == 1) {
+//        QMovie *movie = new QMovie("C:/Users/laesc/OneDrive/Desktop/chester/icons/knight_mirrored.gif");
+//        ui->lbl_mascot->setMovie(movie);
+//        ui->lbl_mascot->setScaledContents(true);
+//        movie->start();
+//    } else {
+//        setMascot();
+//    }
+
+    return;
+
+}
+
+void BoardScreen::moveCompleted(QString algebraic, int winning, int evaluation)
 {
+    // Update move bank
     if (this->ui->lbl_moveDisplay->text().isEmpty()) {
         this->setMovesLabel(algebraic);
         return;
     }
+
     QString currentText = this->getMovesLabel();
     currentText = currentText + ", " + algebraic;
     this->setMovesLabel(currentText);
+
+    // Update evaluation bar
+    int value = winning == 1 ? evaluation : (0 - evaluation);
+    evalBar->setEvaluation(value);
+
     return;
 }
 

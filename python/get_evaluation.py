@@ -1,17 +1,19 @@
-import chess
+from stockfish import Stockfish
 
-def get_evaluation(board):
-  engine = chess.engine.SimpleEngine.configure({"Skill Level": 20})  
-  result = engine.play(board, chess.engine.LimitTime(time=0.1))  
-  evaluation = engine.evaluate(board)
+def get_board_evaluation(fen_string):
 
-  # Convert centipawn evaluation to a more user-friendly display string
-  score_str = f"{evaluation/100:.2f}"  
+  # Set up Stockfish engine (replace with your engine path if needed)
+  engine = Stockfish(r"C:\Users\laesc\OneDrive\Desktop\chester\stockfish\stockfish-windows-x86-64-avx2.exe")
 
-  # Add symbol based on evaluation (positive for white advantage, negative for black)
-  if evaluation > 0:
-      score_str = "+" + score_str
-  elif evaluation < 0:
-      score_str = "-" + score_str
+  engine.set_fen_position(fen_string)
+  evaluation = engine.get_evaluation()
 
-  return score_str
+  if evaluation["type"] == "cp":
+    return f"{evaluation['value'] / 100}?{evaluation['type']}"
+  elif evaluation["type"] == "mate":
+    return f"{evaluation['value']}?{evaluation['type']}"
+  else:
+    return "Evaluation type not recognized"
+
+fen = "r1bqk1nr/pppp1ppp/n7/2b1p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 0 1" 
+print(get_board_evaluation(fen))
