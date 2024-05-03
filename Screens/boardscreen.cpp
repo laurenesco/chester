@@ -14,7 +14,7 @@
 #include "chess_classes/chesssquare.h"
 #include "pythoninterface.h"
 
-BoardScreen::BoardScreen(Config *config, QWidget *parent) :
+BoardScreen::BoardScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::BoardScreen)
 {
@@ -22,7 +22,6 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("chesster");
     setGeometry(200, 85, 1500, 900);
-    this->config = config;
 
     // Create the evaluation bar
     evalBar = new EvaluationBar();
@@ -38,7 +37,7 @@ BoardScreen::BoardScreen(Config *config, QWidget *parent) :
 
     // Connect to the moveCompleted signal in ChessBoard class
     connect(chessboard, &ChessBoard::moveCompleted, this, &BoardScreen::moveCompleted);
-    connect(chessboard, &ChessBoard::game_over, this, &BoardScreen::on_btn_closeWindow_clicked);
+    connect(chessboard, &ChessBoard::game_over, this, &BoardScreen::game_over);
     connect(chessboard, &ChessBoard::switchMascot, this, &BoardScreen::switchMascot);
 }
 
@@ -82,6 +81,21 @@ void BoardScreen::switchMascot(int status) {
 //    } else {
 //        setMascot();
 //    }
+
+    return;
+
+}
+
+void BoardScreen::game_over(QString notification)
+{
+    qDebug() << layout()->count();
+    QLayoutItem *item = ui->frm_eval->layout()->itemAt(0);
+    ui->frm_eval->layout()->removeItem(item);
+
+    QLabel *label = new QLabel();
+    label->setText(notification);
+    label->setAlignment(Qt::AlignCenter);
+    this->ui->frm_eval->layout()->addWidget(label);
 
     return;
 

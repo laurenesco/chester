@@ -25,7 +25,7 @@ class HelpScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit HelpScreen(Config *config, QWidget *parent = nullptr);
+    explicit HelpScreen(QWidget *parent = nullptr);
     ~HelpScreen();
 
 Q_SIGNALS:

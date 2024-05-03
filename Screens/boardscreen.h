@@ -23,7 +23,7 @@ class BoardScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit BoardScreen(Config *config, QWidget *parent = nullptr);
+    explicit BoardScreen(QWidget *parent = nullptr);
     ~BoardScreen();
     void setMovesLabel(QString updatedString);
     QString getMovesLabel();
@@ -49,6 +49,7 @@ private Q_SLOTS:
     void on_btn_closeWindow_clicked();
     void moveCompleted(QString algebraic, int winning, int evaluation); // See evaluation struct in ChessBoard.h for details on winning and evaluation
     void switchMascot(int status);
+    void game_over(QString notification);
 };
 
 #endif // BOARDSCREEN_H

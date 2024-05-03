@@ -26,7 +26,7 @@ class SettingsScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit SettingsScreen(Config *config, QWidget *parent = nullptr);
+    explicit SettingsScreen(QWidget *parent = nullptr);
     ~SettingsScreen();
 
     void fillComboBoxes();
@@ -36,6 +36,15 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void on_btn_closeWindow_clicked();
+    void on_cmb_difficulty_currentTextChanged(const QString &arg1);
+    void on_cmb_color_currentTextChanged(const QString &arg1);
+    void on_cmb_assist_currentTextChanged(const QString &arg1);
+
+    void on_cmb_assist_activated(int index);
+
+    void on_cmb_color_activated(int index);
+
+    void on_cmb_difficulty_activated(int index);
 
 private:
     Ui::SettingsScreen *ui;

@@ -52,7 +52,6 @@ SOURCES += \
     chess_classes/piece_classes/queen.cpp \
     chess_classes/piece_classes/rook.cpp \
     env/config.cpp \
-    logic.cpp \
     main.cpp \
 
 HEADERS += \
@@ -74,7 +73,6 @@ HEADERS += \
     chess_classes/piece_classes/queen.h \
     chess_classes/piece_classes/rook.h \
     env/config.h \
-    logic.h \
 
 FORMS += \
     screens/boardscreen.ui \

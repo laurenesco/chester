@@ -22,10 +22,10 @@
 // - april 5 poster done
 
 #include "screens/startscreen.h"
+#include "env/config.h"
 
 #include <QApplication>
 #include <QFile>
-
 #include <QFontDatabase>
 
 int main(int argc, char *argv[])
@@ -41,10 +41,7 @@ int main(int argc, char *argv[])
     QString styleSheet = QLatin1String(file.readAll());
     qApp->setStyleSheet(styleSheet);
 
-    // Create configuration object
-    Config *config = new Config();
-
-    StartScreen *s = new StartScreen(config);
+    StartScreen *s = new StartScreen();
     s->setWindowState(Qt::WindowMaximized);
     s->show();
 

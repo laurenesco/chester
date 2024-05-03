@@ -34,8 +34,8 @@ background-color: #000000
 }
 
 QMessageBox {
-background: black;
-background-color: black;
+    background: black;
+    background-color: black;
 }
 
 QComboBox {

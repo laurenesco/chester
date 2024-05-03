@@ -10,14 +10,16 @@
 #include "ui_settingsscreen.h"
 
 // Constructor
-SettingsScreen::SettingsScreen(Config *config, QWidget *parent) :
+SettingsScreen::SettingsScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsScreen)
 {
     // Setup the mainwindow
     ui->setupUi(this);
     setWindowTitle("chesster - Settings");
-    this->config = config;
+    this->config = new Config();
+    config->refreshConfig();
+    qDebug() << "Opening settings screen: Assist mode:" << config->getAssistModeOn() << "Color:" << config->getColor() << "Difficulty:" << config->getDifficulty();
 
     fillComboBoxes();
 }
@@ -33,57 +35,84 @@ void SettingsScreen::fillComboBoxes()
     // Difficulty combobox
     QStringList list = {"Easy", "Medium", "Hard"};
     ui->cmb_difficulty->addItems(list);
+    int index = config->getDifficulty() - 1;
+    qDebug() << "Difficulty index:" << index;
+    ui->cmb_difficulty->setCurrentIndex(index);
 
     // Player color
     list = {"White", "Black"};
     ui->cmb_color->addItems(list);
+    index = config->getColor() == true ? 0 : 1;
+    qDebug() << "Color index:" << index;
+    ui->cmb_color->setCurrentIndex(index);
 
     // Assisted mode
     list = {"On", "Off"};
     ui->cmb_assist->addItems(list);
+    index = config->getAssistModeOn() == true ? 0 : 1;
+    qDebug() << "Assist mode state:" << config->getAssistModeOn() << "Assisted mode:" << index;
+    ui->cmb_assist->setCurrentIndex(index);
 }
 
 // On pressing Close button, emit closing signal and close this form
 void SettingsScreen::on_btn_closeWindow_clicked()
 {
+    qDebug() << "Closing settings screen: Assist mode:" << config->getAssistModeOn() << "Color:" << config->getColor() << "Difficulty:" << config->getDifficulty();
     Q_EMIT settingsScreenClosed();
     this->close();
 }
 
-// sql code:
-// Set up the database connection
-//Config dbConfig;
-//dbConfig.configDatabase();
-//dbConfig.openDatabase();
+// On difficulty change
+void SettingsScreen::on_cmb_difficulty_currentTextChanged(const QString &arg1)
+{
 
-//// Execute a query to select all attributes from the table "questions"
-//QString queryString = "SELECT game_id, game_winner_color FROM metadata_game";
-//QSqlQuery query;
-//query.prepare(queryString);
-//if (!query.exec()) {
-//    qWarning() << "Error: Unable to execute query:" << query.lastError().text();
-//}
-
-//// Output results to the terminal
-//while (query.next()) {
-//    int questionId = query.value(0).toInt();
-//    QString question = query.value(1).toString();
-//    qDebug() << "Game ID:" << questionId << "Winner:" << question;
-//}
-
-//query.clear();
-//dbConfig.closeDatabase();
-
-// Example query:
-/*
-QString insertQuery = "INSERT INTO your_table_name (column1, column2) VALUES (?, ?)";
-QSqlQuery query;
-query.prepare(insertQuery);
-query.addBindValue(value1);
-query.addBindValue(value2);
-
-if (!query.exec()) {
-    qDebug() << "Error executing insert query:" << query.lastError().text();
-    return 1;
 }
-*/
+
+// On color changed
+void SettingsScreen::on_cmb_color_currentTextChanged(const QString &arg1)
+{
+
+}
+
+// On assist mode changed
+void SettingsScreen::on_cmb_assist_currentTextChanged(const QString &arg1)
+{
+
+}
+
+
+void SettingsScreen::on_cmb_assist_activated(int index)
+{
+    // Possible options list = {"On", "Off"};
+    bool active = index == 0 ? true : false;
+    config->setAssistModeOn(active);
+    config->saveConfig();
+    return;
+}
+
+
+void SettingsScreen::on_cmb_color_activated(int index)
+{
+    // Possible options {"White", "Black"};
+    bool isWhite = index == 0 ? true : false;
+    config->setColor(isWhite);
+    config->saveConfig();
+    return;
+}
+
+
+void SettingsScreen::on_cmb_difficulty_activated(int index)
+{
+    // Possible options {"Easy", "Medium", "Hard"};
+    if (index == 0) {
+        config->setDifficulty(1);
+    } else if (index == 2) {
+        config->setDifficulty(2);
+    } else {
+        config->setDifficulty(3);
+    }
+
+    config->saveConfig();
+    return;
+}
+

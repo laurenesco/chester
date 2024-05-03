@@ -12,21 +12,19 @@ Config::Config()
 {
     m_configPath = "C:/Users/laesc/OneDrive/Desktop/chester/env/config.json";
     db = (QSqlDatabase::addDatabase("QPSQL"));
+    configDatabase();
 }
 
 int Config::configDatabase()
 {
-    qDebug() << Qt::endl << "Entering configDatabase()" << Qt::endl;
 
     parseJSON();
 
-    // /*
     db.setHostName("localhost");
     db.setPort(5432);
     db.setDatabaseName("chesster");
     db.setUserName("postgres");
     db.setPassword("postgres");
-    // */
 
      /*
     db.setHostName(m_rootObject.value("database").toObject().value("host").toString());
@@ -35,8 +33,6 @@ int Config::configDatabase()
     db.setUserName(m_rootObject.value("database").toObject().value("username").toString());
     db.setPassword(m_rootObject.value("database").toObject().value("password").toString());
      */
-
-    qDebug() << Qt::endl << "Leaving configDatabase()" << Qt::endl;
 
     return 1;
 }
@@ -72,12 +68,95 @@ int Config::parseJSON() {
     return 1;
 }
 
+void Config::refreshConfig()
+{
+    // Set up the database connection
+    Config dbConfig;
+    dbConfig.openDatabase();
+
+    // Execute a query to select all attributes from the table "configuration"
+    QString queryString = "SELECT config_color, config_assist, config_difficulty FROM configuration WHERE config_id = 1";
+    QSqlQuery query;
+    query.prepare(queryString);
+    if (!query.exec()) {
+        qWarning() << "Error: Unable to execute query:" << query.lastError().text();
+    } else {
+        if (query.next()) { // Check if there is at least one record
+            bool configColor = query.value(0).toBool();
+            bool configAssist = query.value(1).toBool();
+            int configDifficulty = query.value(2).toInt();
+            this->setAssistModeOn(configAssist);
+            this->setDifficulty(configDifficulty);
+            this->setColor(configColor);
+            qDebug() << "Updating config object, setting assist to:" << configAssist << "and color to:" << configColor << "and diff to:" << configDifficulty;
+        } else {
+            qWarning() << "No configuration found for config_id = 1";
+        }
+    }
+
+    query.clear();
+    dbConfig.closeDatabase();
+    return;
+}
+
+void Config::saveConfig()
+{
+    Config dbConfig;
+    dbConfig.openDatabase();
+
+        QString insertQuery = "UPDATE configuration SET config_color = ?, config_assist = ?, config_difficulty = ? WHERE config_id = 1";
+        QSqlQuery query;
+        query.prepare(insertQuery);
+        query.addBindValue(this->color);
+        query.addBindValue(this->assistModeOn);
+        query.addBindValue(this->difficulty);
+
+        if (!query.exec()) {
+            qDebug() << "Error executing update query:" << query.lastError().text();
+            return ;
+        }
+
+    query.clear();
+    dbConfig.closeDatabase();
+    return;
+}
+
+int Config::getDifficulty() const
+{
+    return difficulty;
+}
+
+void Config::setDifficulty(int newDifficulty)
+{
+    difficulty = newDifficulty;
+}
+
+bool Config::getColor() const
+{
+    return color;
+}
+
+void Config::setColor(bool newColor)
+{
+    color = newColor;
+}
+
+bool Config::getAssistModeOn() const
+{
+    return assistModeOn;
+}
+
+void Config::setAssistModeOn(bool newAssistModeOn)
+{
+    assistModeOn = newAssistModeOn;
+}
+
 int Config::openDatabase()
 {
     bool connectioncheck = db.open();
 
     if (connectioncheck == true){
-        qDebug() << "Connection to database established." << Qt::endl;
+        // qDebug() << "Connection to database established." << Qt::endl;
         return 1;
     } else {
         qDebug() << QSqlDatabase::drivers() << Qt::endl;
@@ -90,7 +169,7 @@ int Config::closeDatabase()
 {
     if (db.isOpen()) {
         db.close();
-        qDebug() << "Database closed.";
+        // qDebug() << "Database closed.";
         return 1;
     } else {
         qDebug() << "No database open.";

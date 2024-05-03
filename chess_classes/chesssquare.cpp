@@ -25,15 +25,26 @@ void ChessSquare::setBaseColor(int rank, int file) {
     return;
 }
 
+QColor ChessSquare::getBaseColor() {
+    if ((rank + file) % 2 != 0) {
+        return QColor(52,58,64);
+    } else {
+        return QColor(206,212,218);
+    }
+}
+
 void ChessSquare::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton) {           // Right mouse click event
-        rightClick();
-    } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
-        leftClick();
+    if (disabled == true) {
+        event->ignore();
+    } else {
+        if (event->button() == Qt::RightButton) {           // Right mouse click event
+            rightClick();
+        } else if (event->button() == Qt::LeftButton) {     // Left mouse click event
+            leftClick();
+        }
     }
     return;
-    // QGraphicsRectItem::mousePressEvent(event);      // Send event to QGraphicsRectItem event handler
 }
 
 // On left "main" click
@@ -60,8 +71,16 @@ void ChessSquare::toggleSquareRed() {
 }
 
 void ChessSquare::toggleSquareYellow() {
-    if (!(this->brush().color() == QColor(252, 223, 116))) {
-        this->setBrush(QColor(252, 223, 116));
+    // Check to see if it is already yellow
+    if (this->brush().color() == this->getBaseColor()) {
+        QColor whiteColor = QColor(206,212,218);
+        if (this->getBaseColor() == whiteColor) {
+            // Light sqaures
+            this->setBrush(QColor(255,240,173));
+        } else {
+            // Dark squares
+            this->setBrush(QColor(252,226,108));
+        }
     } else {
         setBaseColor(rank, file);
     }
@@ -107,6 +126,11 @@ void ChessSquare::setFile(int file)
         this->file = file;
     }
     return;
+}
+
+void ChessSquare::setDisabled(bool newDisabled)
+{
+    disabled = newDisabled;
 }
 
 int ChessSquare::getRank()

@@ -9,7 +9,6 @@
 #include <regex>
 
 #include "chessboard.h"
-#include "logic.h"
 #include "pythoninterface.h"
 #include "qboxlayout.h"
 #include <cmath>
@@ -32,6 +31,8 @@ ChessBoard::ChessBoard(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(chessView);
     setLayout(layout);
+    this->config = new Config();
+    config->refreshConfig();
 
     createChessBoard();
     loadStartingPosition();
@@ -495,8 +496,8 @@ bool ChessBoard::checkCheck(int kingRank, int kingFile, bool isWhite, bool check
                                 // CHECK
                                 // Check for any escape
                                 if (check == false) {
-                                    QColor color = QColor(176,196,222);
-                                    kingSquare->toggleSquareCustom(color);
+                                    QColor color = QColor(188, 143, 143);
+                                    if (config->getAssistModeOn() == true) { kingSquare->toggleSquareCustom(color); }
                                     bool endgame = checkmateCheck(kingSquare, isWhite);
                                     if (endgame == true) {
                                         endGame(kingSquare);
@@ -527,9 +528,8 @@ bool ChessBoard::checkmateCheck(ChessSquare *kingSquare, bool isWhite)
         for (ChessSquare* testingSquare : kingsMoves) {
             bool danger = checkCheck(testingSquare->getRank(), testingSquare->getFile(), isWhite, true);
             if (danger == false) {
-                QColor color = QColor(188, 143, 143);
-
-                testingSquare->toggleSquareCustom(color);
+                QColor color = QColor(176,196,222);
+                if (config->getAssistModeOn() == true) { testingSquare->toggleSquareCustom(color); }
                 return false;
             }
         }
@@ -542,12 +542,18 @@ void ChessBoard::endGame(ChessSquare *square)
     ChessPiece *loser = square->getOccupyingPiece();
     QString color = loser->getWhite() == true ? "White" : "Black";
     QString notification = "Game Over! " + color + " loses!";
-    QMessageBox *message = new QMessageBox();
-    message->addButton(QMessageBox::Ok);
-    message->setText(notification);
-    message->show();
-    Q_EMIT game_over();
-    this->close();
+
+    // Disable all chess squares
+    for (int rank = 0; rank < 8; rank++) {
+        for (int file = 0; file < 8; file++) {
+            ChessSquare *square = boardSquares[rank][file];
+            square->setDisabled(true);
+        }
+    }
+
+    Q_EMIT game_over(notification);
+
+    return;
 }
 
 // ----------------------- //
@@ -661,27 +667,67 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
 
                 if (squareOccupied == false) {
                     // If square is not occupied, it is a potential move
-                    possibleMove->toggleSquareYellow();
+                    if (config->getAssistModeOn() == true) { possibleMove->toggleSquareYellow(); }
                     highlightedSquares.push_back(possibleMove);
                     possibleMoveSquares.push_back(possibleMove);
                     movePending = true;
                 } else if (selectedPiece->getWhite() == true && possibleMove->getOccupyingPiece()->getWhite() == false) {
                     // If selected piece is white and target piece is black, it is potential move but blocks the line
-                    possibleMove->toggleSquareYellow();
-                    highlightedSquares.push_back(possibleMove);
-                    possibleMoveSquares.push_back(possibleMove);
-                    movePending = true;
-                    lineStopped = true;
+                    if (selectedPiece->getName() != "Pawn") {
+                        if (config->getAssistModeOn() == true) { possibleMove->toggleSquareYellow(); }
+                        highlightedSquares.push_back(possibleMove);
+                        possibleMoveSquares.push_back(possibleMove);
+                        movePending = true;
+                        lineStopped = true;
+                    }
                 } else if (selectedPiece->getWhite() == false && possibleMove->getOccupyingPiece()->getWhite() == true) {
                     // If selected piece is black and target piece is white, it is potential move but blocks the line
-                    possibleMove->toggleSquareYellow();
-                    highlightedSquares.push_back(possibleMove);
-                    possibleMoveSquares.push_back(possibleMove);
-                    movePending = true;
-                    lineStopped = true;
+                    if (selectedPiece->getName() != "Pawn") {
+                        if (config->getAssistModeOn() == true) { possibleMove->toggleSquareYellow(); }
+                        highlightedSquares.push_back(possibleMove);
+                        possibleMoveSquares.push_back(possibleMove);
+                        movePending = true;
+                        lineStopped = true;
+                    }
                 } else {
                     // If square is occupied by friendly, that is blocks the line
                     lineStopped = true;
+                }
+            }
+        }
+    }
+
+    if (selectedPiece->getName() == "Pawn") {
+        // Check attack squares for pawns
+        std::vector<int> attackCoords = { -1, 1, 1, 1 };
+
+        // Highlight potential moves yellow
+        for (int i = 0; i < (int) attackCoords.size(); i+=2)
+        {
+            int attackRank, attackFile;
+
+            // Pull set of coordinates from vector
+            int attackx = attackCoords[i];
+            int attacky = attackCoords[i+1];
+
+            if (selectedPiece->getWhite() != true) {
+                // Close side of board
+                attackFile = square->getFile() - attackx;          // Change in x-axis
+                attackRank = square->getRank() + attacky;     // Change in y-axis
+            } else {
+                // Far side of board
+                attackFile = square->getFile() + attackx;          // Change in x-axis
+                attackRank = square->getRank() - attacky;     // Change in y-axis
+            }
+
+            // Only move forward if coordinate is on the board
+            if (attackRank < 8 && attackFile < 8 && attackRank >= 0 && attackFile >= 0) {
+                ChessSquare *attackMove = this->getSquare(attackRank, attackFile);
+                bool possibleMoveOccupied = attackMove->getOccupyingPiece() == nullptr ? false : true;
+                if (possibleMoveOccupied == true) {
+                    if (config->getAssistModeOn() == true) { attackMove->toggleSquareYellow(); }
+                    possibleMoveSquares.push_back(attackMove);
+                    highlightedSquares.push_back(attackMove);
                 }
             }
         }
@@ -705,7 +751,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
             if (squareInPossibleMoves(squareClicked) == true) {
                 // qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
-                getStats();
+                // getStats(); // TODO
                 Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
                 // moveBlack();
                 checkCheck(whiteKing->rank, whiteKing->file, true, false);
@@ -894,7 +940,7 @@ void ChessBoard::moveBlack()
 
         whiteToPlay = true;
 
-    getStats();
+     // getStats(); // TODO
 //    Q_EMIT switchMascot(0);
     Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
 
@@ -1039,7 +1085,7 @@ void ChessBoard::manageEnPassant()
                             vulnerableRank = vulnerableRank - 1;
                         }
                         enPassantSquare = boardSquares[vulnerableRank][leftAttackFile + 1];
-                        enPassantSquare->toggleSquareCustom(color);
+                        if (config->getAssistModeOn() == true) { enPassantSquare->toggleSquareCustom(color); }
                         enPassantPiece = pawn;
                         qDebug() << "en passant square:" << enPassantSquare->getRank() << enPassantSquare->getFile();
                         return;
@@ -1056,7 +1102,7 @@ void ChessBoard::manageEnPassant()
                             vulnerableRank = vulnerableRank - 1;
                         }
                         enPassantSquare = boardSquares[vulnerableRank][rightAttackFile - 1];
-                        enPassantSquare->toggleSquareCustom(color);
+                        if (config->getAssistModeOn() == true) { enPassantSquare->toggleSquareCustom(color); }
                         enPassantPiece = pawn;
                         qDebug() << "en passant square:" << enPassantSquare->getRank() << enPassantSquare->getFile();
                         return;

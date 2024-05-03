@@ -59,7 +59,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame_4">
+        <widget class="QFrame" name="frm_lbl_eval">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>

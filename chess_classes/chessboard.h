@@ -17,6 +17,7 @@
 #include "piece_classes//knight.h"
 #include "chesssquare.h"
 #include "chessmove.h"
+#include "../env/config.h"
 
 #include <QWidget>
 #include <QGraphicsRectItem>
@@ -38,6 +39,7 @@ private:
     clock_t end;
     void start_time();
     void end_time(QString name);
+    Config *config;
 
     // Chess squares comprising board
     ChessSquare* boardSquares[8][8];
@@ -112,7 +114,7 @@ private:
 Q_SIGNALS:
     void moveCompleted(QString algebraic, int winning, int value);
     void switchMascot(int status);
-    void game_over();
+    void game_over(QString notification);
 
 private Q_SLOTS:
     void squareLeftClicked(int rank, int file);

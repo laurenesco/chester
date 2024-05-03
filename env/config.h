@@ -33,8 +33,20 @@ public:
     int openDatabase();
     int closeDatabase();
     int parseJSON();
+    void refreshConfig();
+    void saveConfig();
+
+    int getDifficulty() const;
+    void setDifficulty(int newDifficulty);
+
+    bool getColor() const;
+    void setColor(bool newColor);
+
+    bool getAssistModeOn() const;
+    void setAssistModeOn(bool newAssistModeOn);
 
 private:
+    // Database members
     QJsonObject m_rootObject;
     QString m_configPath;
     QFile m_configFile;
@@ -43,6 +55,11 @@ private:
     QString m_dbusername;
     QString m_dbPassword;
     int m_dbPort;
+
+    // Settings members
+    int difficulty = 1;
+    bool color = true;
+    bool assistModeOn = true;
 };
 
 #endif // CONFIG_H

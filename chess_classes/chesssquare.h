@@ -28,6 +28,7 @@ public:
     void setOccupyingPiece(ChessPiece *newOccupyingPiece);
     void setRank(int rank);
     void setFile(int file);
+    bool disabled = false;
 
     int getRank();
     int getFile();
@@ -36,6 +37,9 @@ public:
     void toggleSquareYellow();
     void resetColor();
     void toggleSquareCustom(QColor color);
+
+    QColor getBaseColor();
+    void setDisabled(bool newDisabled);
 
 Q_SIGNALS:
     void squareLeftClicked(int rank, int file);

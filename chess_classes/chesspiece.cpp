@@ -44,7 +44,12 @@ QPixmap ChessPiece::getSelectedIcon()
     QPixmap originalDarkIcon = this->getIcon();
     QPixmap lightIcon = originalDarkIcon.scaled(originalDarkIcon.size());
     QPainter painter(&lightIcon);
-    QColor color(255, 182, 193);
+    QColor color;
+    if (this->getWhite() == true) {
+        color.setRgb(96,129,153);
+    } else {
+        color.setRgb(96,129,153);
+    }
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(lightIcon.rect(), color);

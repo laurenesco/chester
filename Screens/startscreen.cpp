@@ -11,14 +11,14 @@
 #include "boardscreen.h"
 
 // Constructor
-StartScreen::StartScreen(Config *config, QWidget *parent) :
+StartScreen::StartScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::StartScreen)
 {
     // Setup the mainwindow
     ui->setupUi(this);
     setWindowTitle("chesster");
-    this->config = config;
+    this->config = new Config();
 
      // Load logo
     QString path = R"(C:/Users/laesc/OneDrive/Desktop/chester/logos/8bitlogo.png)";
@@ -48,13 +48,14 @@ StartScreen::~StartScreen()
 // Reopen this form (main menu) whenever a child form emits it's "I'm closing" signal
 void StartScreen::on_childScreenClosed()
 {
+    config->refreshConfig();
     this->show();
 }
 
 // On pressing Play button, open a new instance of the game screen and hide the main menu
 void StartScreen::on_btn_play_clicked()
 {
-    BoardScreen *boardScreen = new BoardScreen(config, this);
+    BoardScreen *boardScreen = new BoardScreen(this);
     boardScreen->setWindowState(Qt::WindowMaximized);
     boardScreen->show();
 
@@ -66,7 +67,7 @@ void StartScreen::on_btn_play_clicked()
 // On pressing Help button, open a new instance of the help screen and hide the main menu
 void StartScreen::on_btn_help_clicked()
 {
-    HelpScreen *helpScreen = new HelpScreen(config, this);
+    HelpScreen *helpScreen = new HelpScreen(this);
     helpScreen->setWindowState(Qt::WindowMaximized);
     helpScreen->show();
 
@@ -78,7 +79,7 @@ void StartScreen::on_btn_help_clicked()
 // On pressing Settings button, open a new instance of the settings screen and hide the main menu
 void StartScreen::on_btn_settings_clicked()
 {
-    SettingsScreen *settingsScreen = new SettingsScreen(config, this);
+    SettingsScreen *settingsScreen = new SettingsScreen(this);
     settingsScreen->setWindowState(Qt::WindowMaximized);
     settingsScreen->show();
 

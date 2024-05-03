@@ -12,7 +12,7 @@
 #include <QBoxLayout>
 #include <QTextEdit>
 
-HelpScreen::HelpScreen(Config *config, QWidget *parent) :
+HelpScreen::HelpScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::HelpScreen)
 {

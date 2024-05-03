@@ -25,6 +25,7 @@
 #include "boardscreen.h"
 #include "helpscreen.h"
 #include "settingsscreen.h"
+#include "env/config.h"
 
 namespace Ui {
 class StartScreen;
@@ -35,7 +36,7 @@ class StartScreen : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit StartScreen(Config *config, QWidget *parent = nullptr);
+    explicit StartScreen(QWidget *parent = nullptr);
     ~StartScreen();
 
 private Q_SLOTS:
