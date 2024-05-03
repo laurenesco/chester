@@ -14,7 +14,9 @@
 class Bishop : public ChessPiece {
 
 public:
-    Bishop();
+    Bishop(bool playerIsWhite);
+
+    bool playerIsWhite;
 };
 
 #endif // BISHOP_H

@@ -18,11 +18,13 @@
 class ChessPiece
 {
 public:
-    ChessPiece();
+    ChessPiece(bool playerIsWhite);
 
     virtual QPixmap getIcon();
     virtual QPixmap getLightIcon();
     virtual QPixmap getDarkIcon();
+    virtual QPixmap getPlayerIcon();
+    virtual QPixmap getOppIcon();
     virtual QString getName();
     virtual int getColor();
     virtual std:: vector<int> getMovesVector();
@@ -30,6 +32,7 @@ public:
     virtual QGraphicsPixmapItem* getSprite();
     QPixmap getSelectedIcon();
     QString getFEN();
+    bool playerIsWhite;
 
     virtual void setIsSelected(bool status);
     virtual void setSprite(QGraphicsPixmapItem *sprite);

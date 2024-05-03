@@ -60,7 +60,7 @@ void ChessBoard::createChessBoard() {
     //    qDebug() << "====== Entering createChessBoard";
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
-            ChessSquare *square = new ChessSquare(file * tileSize, rank * tileSize, tileSize, tileSize);
+            ChessSquare *square = new ChessSquare(file * tileSize, rank * tileSize, tileSize, tileSize, this->config->getColor());
             square->setPen(Qt::NoPen);
             chessScene->addItem(square);
 
@@ -82,12 +82,20 @@ void ChessBoard::loadStartingPosition() {
         for (int j = 0; j < 8; j++) {
             int rank = (i == 0) ? 1 : 6;
 
-            Pawn *pawn = new Pawn();
+            Pawn *pawn = new Pawn(this->config->getColor());
 
             if (rank == 6) {
-                pawn->setWhite(true);
+                if (config->getColor() == true) {
+                    pawn->setWhite(true);
+                } else {
+                    pawn->setWhite(false);
+                }
             } else {
-                pawn->setWhite(false);
+                if (config->getColor() == true) {
+                    pawn->setWhite(false);
+                } else {
+                    pawn->setWhite(true);
+                }
             }
 
             int color = pawn->getWhite() == true ? 1 : 2;
@@ -102,11 +110,15 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 0 : 7;
 
-            Rook *rook = new Rook();
+            Rook *rook = new Rook(this->config->getColor());
 
             if (rank == 7) {
                 // Rank 7, white pieces
-                rook->setWhite(true);
+                if (config->getColor() == true) {
+                    rook->setWhite(true);
+                } else {
+                    rook->setWhite(false);
+                }
                 if (file == 0) {
                     // File 0, kingside
                     whiteKingsideRook = rook;
@@ -116,7 +128,11 @@ void ChessBoard::loadStartingPosition() {
                 }
             } else {
                 // Rank 0, black pieces
-                rook->setWhite(false);
+                if (config->getColor() == true) {
+                    rook->setWhite(false);
+                } else {
+                    rook->setWhite(true);
+                }
                 if (file == 0) {
                     // File 0, kingside
                     blackKingsideRook = rook;
@@ -138,12 +154,20 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 1 : 6;
 
-            Knight *knight = new Knight();
+            Knight *knight = new Knight(this->config->getColor());
 
             if (rank == 7) {
-                knight->setWhite(true);
+                if (config->getColor() == true) {
+                    knight->setWhite(true);
+                } else {
+                    knight->setWhite(false);
+                }
             } else {
-                knight->setWhite(false);
+                if (config->getColor() == true) {
+                    knight->setWhite(false);
+                } else {
+                    knight->setWhite(true);
+                }
             }
 
             int color = knight->getWhite() == true ? 1 : 2;
@@ -157,12 +181,20 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 2 : 5;
 
-            Bishop *bishop = new Bishop();
+            Bishop *bishop = new Bishop(this->config->getColor());
 
             if (rank == 7) {
-                bishop->setWhite(true);
+                if (config->getColor() == true) {
+                    bishop->setWhite(true);
+                } else {
+                    bishop->setWhite(false);
+                }
             } else {
-                bishop->setWhite(false);
+                if (config->getColor() == true) {
+                    bishop->setWhite(false);
+                } else {
+                    bishop->setWhite(true);
+                }
             }
 
             int color = bishop->getWhite() == true ? 1 : 2;
@@ -176,14 +208,24 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 4 : 4;
 
-            King *king = new King();
+            King *king = new King(this->config->getColor());
 
             if (rank == 7) {
-                whiteKing = king;
-                king->setWhite(true);
+                if (config->getColor() == true) {
+                    whiteKing = king;
+                    king->setWhite(true);
+                } else {
+                    blackKing = king;
+                    king->setWhite(false);
+                }
             } else {
-                blackKing = king;
-                king->setWhite(false);
+                if (config->getColor() == true) {
+                    blackKing = king;
+                    king->setWhite(false);
+                } else {
+                    whiteKing = king;
+                    king->setWhite(true);
+                }
             }
 
             king->rank = rank;
@@ -200,13 +242,20 @@ void ChessBoard::loadStartingPosition() {
             int rank = (i == 0) ? 0 : 7;
             int file = (j == 0) ? 3 : 3;
 
-            Queen *queen = new Queen();
+            Queen *queen = new Queen(this->config->getColor());
 
             if (rank == 7) {
-                queen->setWhite(true);
-            }
-            else {
-                queen->setWhite(false);
+                if (config->getColor() == true) {
+                    queen->setWhite(true);
+                } else {
+                    queen->setWhite(false);
+                }
+            } else {
+                if (config->getColor() == true) {
+                    queen->setWhite(false);
+                } else {
+                    queen->setWhite(true);
+                }
             }
 
             int color = queen->getWhite() == true ? 1 : 2;
@@ -623,8 +672,6 @@ void ChessBoard::printMoveDebug(QString header) {
 // CHESS SQUARE RELATED FUNCTIONS //
 // ------------------------------------------//
 
-
-
 // Runs only if square clicked has piece on it! Highlight all potential moves based on the piece selected
 void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
     ChessPiece *selectedPiece = square->getOccupyingPiece();
@@ -650,13 +697,23 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
 
         if (lineStopped == false) {
             if (selectedPiece->getWhite() != true) {
-                // Light pieces [Currently opponent side]
-                newFile = square->getFile() - x;          // Change in x-axis
-                newRank = square->getRank() + y;     // Change in y-axis
+                if (config->getColor() == true) {
+                    // Opp side
+                    newFile = square->getFile() - x;          // Change in x-axis
+                    newRank = square->getRank() + y;     // Change in y-axis
+                } else {
+                    newFile = square->getFile() + x;          // Change in x-axis
+                    newRank = square->getRank() - y;     // Change in y-axis
+                }
             } else {
-                // Dark pieces [Currently player side]
-                newFile = square->getFile() + x;          // Change in x-axis
-                newRank = square->getRank() - y;     // Change in y-axis
+                // Player side
+                if (config->getColor() == true) {
+                    newFile = square->getFile() + x;          // Change in x-axis
+                    newRank = square->getRank() - y;     // Change in y-axis
+                } else {
+                    newFile = square->getFile() - x;          // Change in x-axis
+                    newRank = square->getRank() + y;     // Change in y-axis
+                }
             }
 
             // Only move forward if coordinate is on the board
@@ -711,13 +768,23 @@ void ChessBoard::highlightPossibleSquares(ChessSquare *square) {
             int attacky = attackCoords[i+1];
 
             if (selectedPiece->getWhite() != true) {
-                // Close side of board
-                attackFile = square->getFile() - attackx;          // Change in x-axis
-                attackRank = square->getRank() + attacky;     // Change in y-axis
+                if (config->getColor() == true) {
+                    // Opp side
+                    attackRank = square->getFile() - attackx;          // Change in x-axis
+                    attackFile = square->getRank() + attacky;     // Change in y-axis
+                } else {
+                    attackFile = square->getFile() + attackx;          // Change in x-axis
+                    attackRank = square->getRank() - attacky;     // Change in y-axis
+                }
             } else {
-                // Far side of board
-                attackFile = square->getFile() + attackx;          // Change in x-axis
-                attackRank = square->getRank() - attacky;     // Change in y-axis
+                // Player side
+                if (config->getColor() == true) {
+                    attackFile = square->getFile() + attackx;          // Change in x-axis
+                    attackRank = square->getRank() - attacky;     // Change in y-axis
+                } else {
+                    attackFile = square->getFile() - attackx;          // Change in x-axis
+                    attackRank = square->getRank() + attacky;     // Change in y-axis
+                }
             }
 
             // Only move forward if coordinate is on the board
@@ -740,6 +807,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
 {
     checkCheck(whiteKing->rank, whiteKing->file, true, false);
     checkCheck(blackKing->rank, blackKing->file, false, false);
+
     // Check that click was legal
     if (boardSquares[rank][file] == nullptr) {
         qDebug() << "User has somehow clicked on a square that does not exist";
@@ -749,7 +817,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
         // If move currently pending
         if (movePending == true) {
             if (squareInPossibleMoves(squareClicked) == true) {
-                // qDebug() << "Move pending and moving piece.";
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
                 // getStats(); // TODO
                 Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
@@ -757,7 +824,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                 checkCheck(whiteKing->rank, whiteKing->file, true, false);
                 checkCheck(blackKing->rank, blackKing->file, false, false);
             } else {
-                // qDebug() << "Move pending but not moving piece.";
                 movePending = false;
                 deselectPiece(selectedSquare->getOccupyingPiece(), selectedSquare);
                 resetPossibleMoveSquares();
@@ -771,7 +837,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                 }
             }
         } else {
-            // qDebug() << "No move pending";
             // Reset data from previous click
             resetPossibleMoveSquares();
             resetHighlightedSquares();
@@ -783,17 +848,14 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                         deselectPiece(selectedSquare->getOccupyingPiece(), selectedSquare);
                     }
                     selectSquare(squareClicked);
-                    // qDebug() << "No move pending and square not already selected.";
                 } else { // Else if the square was already actively selected (deselect square)
                     deselectSquare(squareClicked);
                     if (squareClicked->getOccupyingPiece() != nullptr) {
                         deselectPiece(squareClicked->getOccupyingPiece(), squareClicked);
                     }
-                    // qDebug() << "No move pending and square was already selected.";
                 }
             } else {
                 selectSquare(squareClicked);
-                // qDebug() << "No move pending and no square already selected.";
             }
         }
     }
@@ -819,9 +881,19 @@ void ChessBoard::selectSquare(ChessSquare *squareClicked) {
         selectedSquare->resetColor();
     }
     selectedSquare = squareClicked;
-    squareClicked->toggleSquareYellow(); // TOGGLE SQUARE COLOR
+    squareClicked->toggleSquareYellow();
     if (squareClicked->getOccupyingPiece() != nullptr) {
-        highlightPossibleSquares(squareClicked); // TOGGLE highlight possible moves here
+        ChessPiece *piece = squareClicked->getOccupyingPiece();
+        bool white = piece->getWhite();
+        if (white == true && whiteToPlay == true) {
+            highlightPossibleSquares(squareClicked);
+        } else if (white == true && whiteToPlay == false) {
+
+        } else if (white == false && whiteToPlay == false) {
+            highlightPossibleSquares(squareClicked);
+        } else {
+
+        }
     }
 
     return;
@@ -921,7 +993,7 @@ void ChessBoard::moveBlack()
     qDebug() << "----------------------------------------------------------------";
     qDebug() << "Black moving...";
 
-//    Q_EMIT switchMascot(1);
+    //    Q_EMIT switchMascot(1);
     // Randomly sleep to simulate thinking of computer
     QElapsedTimer timer;
     timer.start();
@@ -934,14 +1006,14 @@ void ChessBoard::moveBlack()
 
     }
 
-        selectedSquare = nextBestMoveSquares[1];
-        this->movePiece(nextBestMoveSquares[0]);
-        selectedSquare = nullptr;
+    selectedSquare = nextBestMoveSquares[1];
+    this->movePiece(nextBestMoveSquares[0]);
+    selectedSquare = nullptr;
 
-        whiteToPlay = true;
+    whiteToPlay = true;
 
-     // getStats(); // TODO
-//    Q_EMIT switchMascot(0);
+    // getStats(); // TODO
+    //    Q_EMIT switchMascot(0);
     Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
 
     return;
@@ -1205,7 +1277,7 @@ QString ChessBoard::boardToUCI()
     // Denote en passant status
     uci = uci + " ";
     if (enPassantSquare != nullptr) {
-        ChessPiece *pawn = new ChessPiece();
+        ChessPiece *pawn = new ChessPiece(this->config->getColor());
         uci = uci + this->moveToAlgebraic(pawn, enPassantSquare);
     } else {
         uci = uci + "-";

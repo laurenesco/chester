@@ -9,9 +9,9 @@
 #include "chesspiece.h"
 
 // Constructor
-ChessPiece::ChessPiece()
+ChessPiece::ChessPiece(bool playerIsWhite)
 {
-
+    this->playerIsWhite = playerIsWhite;
 }
 
 QPixmap ChessPiece::getIcon() {
@@ -23,7 +23,7 @@ QPixmap ChessPiece::getLightIcon()
     QPixmap originalDarkIcon = this->getIcon();
     QPixmap lightIcon = originalDarkIcon.scaled(originalDarkIcon.size());
     QPainter painter(&lightIcon);
-    QColor color(255, 255, 255);
+    QColor color = QColor(255, 255, 255);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(lightIcon.rect(), color);
@@ -32,11 +32,31 @@ QPixmap ChessPiece::getLightIcon()
     painter.end();
 
     return lightIcon;
+
 }
 
 QPixmap ChessPiece::getDarkIcon()
 {
     return this->getIcon();
+
+}
+
+QPixmap ChessPiece::getPlayerIcon()
+{
+    if (this->playerIsWhite == true) {
+        return this->getLightIcon();
+    } else {
+        return this->getDarkIcon();
+    }
+}
+
+QPixmap ChessPiece::getOppIcon()
+{
+    if (this->playerIsWhite == false) {
+        return this->getLightIcon();
+    } else {
+        return this->getDarkIcon();
+    }
 }
 
 QPixmap ChessPiece::getSelectedIcon()

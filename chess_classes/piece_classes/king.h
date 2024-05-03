@@ -14,12 +14,13 @@
 class King : public ChessPiece {
 
 public:
-    King();
+    King(bool playerIsWhite);
     bool moved;
     int rank;
     int file;
     bool check = false;
     bool mate = false;
+    bool playerIsWhite;
 };
 
 #endif // KING_H

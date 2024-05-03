@@ -8,8 +8,9 @@
 
 #include "bishop.h"
 
-Bishop::Bishop()
+Bishop::Bishop(bool playerIsWhite) : ChessPiece(playerIsWhite)
 {
+    this->playerIsWhite = playerIsWhite;
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//bishop1.png");
     name = "Bishop";
     movesVector = {

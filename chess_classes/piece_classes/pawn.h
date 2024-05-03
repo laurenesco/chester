@@ -14,7 +14,9 @@
 class Pawn : public ChessPiece {
 
 public:
-    Pawn();
+    Pawn(bool playerIsWhite);
+
+    bool playerIsWhite;
 
     int getMoveCounter();
     void incrementMoveCounter();

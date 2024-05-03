@@ -8,8 +8,9 @@
 
 #include "pawn.h"
 
-Pawn::Pawn()
+Pawn::Pawn(bool playerIsWhite) : ChessPiece(playerIsWhite)
 {
+    this->playerIsWhite = playerIsWhite;
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//pawn1.png");
     name = "Pawn";
     movesVector = {

@@ -8,8 +8,9 @@
 
 #include "king.h"
 
-King::King()
+King::King(bool playerIsWhite) : ChessPiece(playerIsWhite)
 {
+    this->playerIsWhite = playerIsWhite;
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//king1.png");
     name = "King";
     movesVector = {

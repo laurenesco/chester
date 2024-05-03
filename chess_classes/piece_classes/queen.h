@@ -14,7 +14,8 @@
 class Queen : public ChessPiece {
 
 public:
-    Queen();
+    Queen(bool playerIsWhite);
+    bool playerIsWhite;
 };
 
 #endif // QUEEN_H

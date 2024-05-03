@@ -8,28 +8,38 @@
 
 #include "chesssquare.h"
 
-ChessSquare::ChessSquare(int posX, int posY, int width, int height)
+ChessSquare::ChessSquare(int posX, int posY, int width, int height, bool white)
     : QGraphicsRectItem(posX, posY, width, height)
 {
+    this->playerIsWhite = white;
     this->rank = posX;
     this->file = posY;
     setBaseColor(posX, posY);
 }
 
 void ChessSquare::setBaseColor(int rank, int file) {
+
+    QColor baseColor = this->getBaseColor();
+
     if ((rank + file) % 2 != 0) {
-        this->setBrush(QColor(52,58,64));
+        this->setBrush(baseColor);
     } else {
-        this->setBrush(QColor(206,212,218));
+        this->setBrush(baseColor);
     }
     return;
 }
 
 QColor ChessSquare::getBaseColor() {
+    QColor bottomLeftColor;
+    QColor otherColor;
+
+    bottomLeftColor = QColor(206,212,218);
+    otherColor = QColor(52,58,64);
+
     if ((rank + file) % 2 != 0) {
-        return QColor(52,58,64);
+        return otherColor;
     } else {
-        return QColor(206,212,218);
+        return bottomLeftColor;
     }
 }
 

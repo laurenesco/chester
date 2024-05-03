@@ -14,7 +14,8 @@
 class Rook : public ChessPiece {
 
 public:
-    Rook();
+    Rook(bool playerIsWhite);
+    bool playerIsWhite;
     bool moved = false;
 };
 

@@ -21,7 +21,7 @@ class ChessSquare : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 
 public:
-    ChessSquare(int posX, int posY, int width, int height);
+    ChessSquare(int posX, int posY, int width, int height, bool white);
 
     // Get/set methods
     ChessPiece *getOccupyingPiece() const;
@@ -29,6 +29,7 @@ public:
     void setRank(int rank);
     void setFile(int file);
     bool disabled = false;
+    bool playerIsWhite;
 
     int getRank();
     int getFile();

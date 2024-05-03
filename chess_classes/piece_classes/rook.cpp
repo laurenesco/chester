@@ -8,8 +8,9 @@
 
 #include "rook.h"
 
-Rook::Rook()
+Rook::Rook(bool playerIsWhite) : ChessPiece(playerIsWhite)
 {
+    this->playerIsWhite = playerIsWhite;
     icon.load("C://Users//laesc//OneDrive//Desktop//chester//icons//rook1.png");
     name = "Rook";
     movesVector = {
