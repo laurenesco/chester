@@ -820,7 +820,7 @@ void ChessBoard::squareLeftClicked(int rank, int file)
                 movePiece(squareClicked); // Move piece will deselect piece, empty out highlight and move vectors, reset base square color
                 // getStats(); // TODO
                 Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
-                // moveBlack();
+                moveBlack();
                 checkCheck(whiteKing->rank, whiteKing->file, true, false);
                 checkCheck(blackKing->rank, blackKing->file, false, false);
             } else {
@@ -861,7 +861,6 @@ void ChessBoard::squareLeftClicked(int rank, int file)
     }
 
     qDebug() << "----------------------------------------------------------------";
-
     return;
 }
 
@@ -983,7 +982,7 @@ void ChessBoard::movePiece(ChessSquare *squareClicked)
     lastMovedPiece = pieceToMove;
     manageEnPassant();
 
-    // getStats();
+     getStats();
 
     return;
 }
@@ -1012,7 +1011,7 @@ void ChessBoard::moveBlack()
 
     whiteToPlay = true;
 
-    // getStats(); // TODO
+     getStats();
     //    Q_EMIT switchMascot(0);
     Q_EMIT moveCompleted(lastMove, eval.winning, eval.value);
 
